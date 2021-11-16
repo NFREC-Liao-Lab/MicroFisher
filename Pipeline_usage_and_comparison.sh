@@ -7,7 +7,7 @@ tar -zxvf 28S_fungal_sequences.tar.gz
 
 #Extract sample sequences from the 28S_fungal_sequences
 
-for num in ${10,50,100};do
+for num in 10 50 100 ;do
    for i in $(seq 1 5);do
        mkdir $Test_Fungi_RefSeq/simulating_$num""seqs.${i}
        mkdir $Test_Fungi_RefSeq/simulating_$num""seqs.${i}/splite_seq
