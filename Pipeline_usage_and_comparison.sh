@@ -7,12 +7,35 @@ tar -zxvf 28S_fungal_sequences.tar.gz
 
 #Extract sample sequences from the 28S_fungal_sequences
 
-for num in 10 50 100 ;do
+#######################################################
+#test using the refseq rRNA sequences
+#######################################################
+
+run_test () {
+Test_Fungi_RefSeq=/home/microbiome/data_storage/test/Test_Fungi_RefSeq
+DB_taxonomy=/home/microbiome/data_storage/test/short_DBs/DB_taxonomy
+ITS_DBs=/home/microbiome/data_storage/test/short_DBs/ITS_DBs
+LSU_D1D2_DBs=/home/microbiome/data_storage/test/short_DBs/LSU_D1D2_DBs
+LSU_D1D2_DBs_new=/home/microbiome/data_storage/test/short_DBs/LSU_D1D2_DBs_new
+
+for num in 10 50 100;do
+echo $num
    for i in $(seq 1 5);do
        mkdir $Test_Fungi_RefSeq/simulating_$num""seqs.${i}
        mkdir $Test_Fungi_RefSeq/simulating_$num""seqs.${i}/splite_seq
        
-       seed=$[RANDOM%100+10]
+       for repeat in $(seq 1 100);do
+         seed=$[RANDOM%100+10]
+         seqnum=$(cat $Test_Fungi_RefSeq/RefSeq_Fungi/28S_fungal_sequences.fa  |seqkit sample -n $num -s $seed |grep -c ">")
+         echo $seqnum
+         if [ $seqnum -eq $num ];
+         then
+             break
+         else
+             continue
+         fi
+       done
+         
        cat $Test_Fungi_RefSeq/RefSeq_Fungi/28S_fungal_sequences.fa  |seqkit sample -n $num -s $seed > $Test_Fungi_RefSeq/simulating_$num""seqs.${i}/28S_fungal_sequences_sample_$num""seqs.${i}.fasta
        cat $Test_Fungi_RefSeq/simulating_$num""seqs.${i}/28S_fungal_sequences_sample_$num""seqs.${i}.fasta |seqkit split2 -s 1 --out-dir $Test_Fungi_RefSeq/simulating_$num""seqs.${i}/splite_seq
        
@@ -57,5 +80,16 @@ for num in 10 50 100 ;do
         time centrifuge-kreport -x $LSU_D1D2_DBs_new/LSU_D1_fisher_new \
                    $Test_Fungi_RefSeq/simulating_$num""seqs.${i}/simulating_$num""seqs.${i}.LSU_DB2.novaseq_reads.reprot.tsv \
                    > $Test_Fungi_RefSeq/simulating_$num""seqs.${i}/simulating_$num""seqs.${i}.LSU_DB2.novaseq_reads.kreprot.tsv
-
+  done
 done
+
+
+
+}
+
+export -f run_test
+
+run_test
+
+
+
