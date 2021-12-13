@@ -10,7 +10,9 @@ tar -zxvf 28S_fungal_sequences.tar.gz
 #######################################################
 #test using the refseq rRNA sequences
 #######################################################
+#!/bin/bash
 
+conda activate metagenome
 
 run_miniLength_test () {
 
