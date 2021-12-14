@@ -124,16 +124,16 @@ for length in 70 80 90 100 110 120 130 140 150; do
                     fi
                    echo $DB
                    #generate the classification result by using centrifuge
-                   time centrifuge -p 24 -k 1  --min-hitlen $length -x $DB  \
-                          -1  $result_dir/simulating_${num}species_${replicate}.short_read_R1.fastq.gz  \
-                          -2  $result_dir/simulating_${num}species_${replicate}.short_read_R2.fastq.gz  \
-                          -S  $stat_result/simulating_${num}species_${length}_${replicate}_${DB_cat}.short_read.result \
-                          --report-file $stat_result/simulating_${num}species_${length}_${replicate}_${DB_cat}.short_read.reprot.tsv 
-                   time centrifuge-kreport -x $DB  \
-                          $stat_result/simulating_${num}species_${length}_${replicate}_${DB_cat}.short_read.reprot.tsv \
-                            > $stat_result/simulating_${num}species_${length}_${replicate}_${DB_cat}.short_read.kreprot.tsv
-                    
-                    
+                   if [ ! -f "$stat_result/simulating_${num}species_${length}_${replicate}_${DB_cat}.short_read.reprot.tsv" ]; then
+                        time centrifuge -p 24 -k 1  --min-hitlen $length -x $DB  \
+                            -1  $result_dir/simulating_${num}species_${replicate}.short_read_R1.fastq.gz  \
+                            -2  $result_dir/simulating_${num}species_${replicate}.short_read_R2.fastq.gz  \
+                            -S  $stat_result/simulating_${num}species_${length}_${replicate}_${DB_cat}.short_read.result \
+                            --report-file $stat_result/simulating_${num}species_${length}_${replicate}_${DB_cat}.short_read.reprot.tsv 
+                   fi
+                        time centrifuge-kreport -x $DB  \
+                             $stat_result/simulating_${num}species_${length}_${replicate}_${DB_cat}.short_read.reprot.tsv \
+                               > $stat_result/simulating_${num}species_${length}_${replicate}_${DB_cat}.short_read.kreprot.tsv
                     
                     
                     #evaluate the classification performance 
