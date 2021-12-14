@@ -90,14 +90,14 @@ for length in 70 80 90 100 110 120 130 140 150; do
                        --genomes $seq_dir/ITS/*.fasta \
                        --model MiSeq \
                        --abundance exponential \
-                       --n_reads 40M \
+                       --n_reads 20M \
                        --output $result_dir/simulating_${num}species_${replicate}_ITS.short_read
            #cat $result_dir/simulating_${num}species_${length}_${replicate}_ITS.short_read_abundance.txt |sed 's/ITS/LSU/g' > $result_dir/simulating_${num}species_${length}_${replicate}_LSU.short_read_abundance.txt
                  time iss generate --cpus 24 --quiet  --compress \
                        --genomes $seq_dir/LSU/*.fasta \
                        --model MiSeq \
                        --abundance exponential \
-                       --n_reads 40M \
+                       --n_reads 20M \
                        --output $result_dir/simulating_${num}species_${replicate}_LSU.short_read
             #combine the simulating dataset from ITS and LSU RefSeq database
             cat $result_dir/simulating_${num}species_${replicate}_ITS.short_read_R1.fastq.gz  $result_dir/simulating_${num}species_${replicate}_LSU.short_read_R1.fastq.gz > $result_dir/simulating_${num}species_${replicate}.short_read_R1.fastq.gz
