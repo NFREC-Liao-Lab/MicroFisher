@@ -171,7 +171,7 @@ for length in 70 80 90 100 110 120 130 140 150; do
                                fi
                         done
          
-                        cat $stat_result/simulating_${num}species_${replicate}.taxonomy.txt |cut -d ";" -f $TL |cut -d"_" -f 3 |sort -u |while read taxa; do
+                        cat $result_dir/simulating_${num}species_${replicate}.taxonomy.txt |cut -d ";" -f $TL |cut -d"_" -f 3 |sort -u |while read taxa; do
                             var2=$(cat $stat_result/simulating_${num}species_${length}_${replicate}_${DB_cat}.short_read.kreprot.tsv |grep -w "${level}" |grep "$taxa")
                               if [ "$var2" = "" ]; then
                                    echo $taxa >> $stat_result/simulating_${num}species_${length}_${replicate}_${DB_cat}_False_negative.txt
