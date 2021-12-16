@@ -222,4 +222,18 @@ run_miniLength_test
 
 
 
+for f in stat_result_simulating* ; do
+    i=$(echo $f |cut -d"_" -f 3,4,5,6,7,8)
+    echo ${i} >> result_file/${i}.final_combine.csv
+    echo "ITS1" >> result_file/${i}.final_combine.csv
+    cat $f/${i}_ITS1.stat_combine.csv >> result_file/${i}.final_combine.csv
+    echo "ITS2" >> result_file/${i}.final_combine.csv
+    cat $f/${i}_ITS2.stat_combine.csv >> result_file/${i}.final_combine.csv  
+    echo "LsuD1" >> result_file/${i}.final_combine.csv
+    cat $f/${i}_LsuD1.stat_combine.csv >> result_file/${i}.final_combine.csv  
+    echo "LsuD2" >> result_file/${i}.final_combine.csv
+    cat $f/${i}_LsuD2.stat_combine.csv >> result_file/${i}.final_combine.csv  
+done
+
+
 
