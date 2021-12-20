@@ -50,8 +50,8 @@ for length in 70 80 90 100 110 120 130 140 150; do
                  cat $result_dir/species_list |while read taxa; do
                      genus=$(echo $taxa |cut -d" " -f 1)
                      species=$(echo $taxa |cut -d" " -f 2)
-                     cat $Test_Fungi_RefSeq/RefSeq_Fungi/ITS_RefSeq_Fungi.fa  |seqkit seq -w 0 -g -u |grep -A 1 "${taxa}" >> $seq_dir/ITS/${genus}_${species}.fasta
-                     cat $Test_Fungi_RefSeq/RefSeq_Fungi/28S_fungal_sequences.fa  |seqkit seq -w 0 -g -u |grep -A 1 "${taxa}" >> $seq_dir/LSU/${genus}_${species}.fasta
+                     cat $Test_Fungi_RefSeq/RefSeq_Fungi/ITS_RefSeq_Fungi.fa  |seqkit seq -w 0 -g -u |grep -A 1 "${taxa}" > $seq_dir/ITS/${genus}_${species}.fasta
+                     cat $Test_Fungi_RefSeq/RefSeq_Fungi/28S_fungal_sequences.fa  |seqkit seq -w 0 -g -u |grep -A 1 "${taxa}" > $seq_dir/LSU/${genus}_${species}.fasta
                  done
                  #generate the taxonomy of selected fungal species
                  for fasta in $(ls $seq_dir/ITS/*.fasta) ; do
@@ -282,8 +282,8 @@ for length in 140 ; do
                  cat $result_dir/species_list |while read taxa; do
                      genus=$(echo $taxa |cut -d" " -f 1)
                      species=$(echo $taxa |cut -d" " -f 2)
-                     cat $Test_Fungi_RefSeq/RefSeq_Fungi/ITS_RefSeq_Fungi.fa  |seqkit seq -w 0 -g -u |grep -A 1 "${taxa}" >> $seq_dir/ITS/${genus}_${species}.fasta
-                     cat $Test_Fungi_RefSeq/RefSeq_Fungi/28S_fungal_sequences.fa  |seqkit seq -w 0 -g -u |grep -A 1 "${taxa}" >> $seq_dir/LSU/${genus}_${species}.fasta
+                     cat $Test_Fungi_RefSeq/RefSeq_Fungi/ITS_RefSeq_Fungi.fa  |seqkit seq -w 0 -g -u |grep -A 1 "${taxa}" > $seq_dir/ITS/${genus}_${species}.fasta
+                     cat $Test_Fungi_RefSeq/RefSeq_Fungi/28S_fungal_sequences.fa  |seqkit seq -w 0 -g -u |grep -A 1 "${taxa}" > $seq_dir/LSU/${genus}_${species}.fasta
                  done
                  #generate the taxonomy of selected fungal species
                  for fasta in $(ls $seq_dir/ITS/*.fasta) ; do
