@@ -21,10 +21,12 @@ DB_taxonomy=/home/microbiome/data_storage/SATA2/Fisher_test/short_DBs/DB_taxonom
 ITS_DBs=/home/microbiome/data_storage/SATA2/Fisher_test/short_DBs/ITS_DBs
 LSU_D1D2_DBs=/home/microbiome/data_storage/SATA2/Fisher_test/short_DBs/LSU_D1D2_DBs
 LSU_D1D2_DBs_new=/home/microbiome/data_storage/SATA2/Fisher_test/short_DBs/LSU_D1D2_DBs_new
+DB_combination=/home/microbiome/data_storage/SATA2/Fisher_test/short_DBs/DB_combination
 ITS1_fisher=$ITS_DBs/ITS1_fisher
 ITS2_fisher=$ITS_DBs/ITS2_fisher
 LsuD1_fisher=$LSU_D1D2_DBs_new/LSU_D1_fisher_new
 LsuD2_fisher=$LSU_D1D2_DBs_new/LSU_D2_fisher_new
+DB_combination_fisher=$DB_combination/DB_combination_fisher
 mkdir $Test_Fungi_RefSeq/hitlength_test
 mkdir $Test_Fungi_RefSeq/hitlength_test/stat_result
 
@@ -253,10 +255,12 @@ DB_taxonomy=/home/microbiome/data_storage/SATA2/Fisher_test/short_DBs/DB_taxonom
 ITS_DBs=/home/microbiome/data_storage/SATA2/Fisher_test/short_DBs/ITS_DBs
 LSU_D1D2_DBs=/home/microbiome/data_storage/SATA2/Fisher_test/short_DBs/LSU_D1D2_DBs
 LSU_D1D2_DBs_new=/home/microbiome/data_storage/SATA2/Fisher_test/short_DBs/LSU_D1D2_DBs_new
+DB_combination=/home/microbiome/data_storage/SATA2/Fisher_test/short_DBs/DB_combination
 ITS1_fisher=$ITS_DBs/ITS1_fisher
 ITS2_fisher=$ITS_DBs/ITS2_fisher
 LsuD1_fisher=$LSU_D1D2_DBs_new/LSU_D1_fisher_new
 LsuD2_fisher=$LSU_D1D2_DBs_new/LSU_D2_fisher_new
+DB_combination_fisher=$DB_combination/DB_combination_fisher
 mkdir $Test_Fungi_RefSeq/SpeciesNum_test
 mkdir $Test_Fungi_RefSeq/SpeciesNum_test/stat_result
 
