@@ -459,3 +459,180 @@ run_speciesNum_test
 
 
 
+
+
+
+#########################################################################################################
+#########################################################################################################
+
+run_speciesNum_combination_test () {
+
+Test_Fungi_RefSeq=/home/microbiome/data_storage/SATA2/Fisher_test/Test_Fungi_RefSeq
+DB_taxonomy=/home/microbiome/data_storage/SATA2/Fisher_test/short_DBs/DB_taxonomy
+ITS_DBs=/home/microbiome/data_storage/SATA2/Fisher_test/short_DBs/ITS_DBs
+LSU_D1D2_DBs=/home/microbiome/data_storage/SATA2/Fisher_test/short_DBs/LSU_D1D2_DBs
+LSU_D1D2_DBs_new=/home/microbiome/data_storage/SATA2/Fisher_test/short_DBs/LSU_D1D2_DBs_new
+DB_combination=/home/microbiome/data_storage/SATA2/Fisher_test/short_DBs/DB_combination
+ITS1_fisher=$ITS_DBs/ITS1_fisher
+ITS2_fisher=$ITS_DBs/ITS2_fisher
+LsuD1_fisher=$LSU_D1D2_DBs_new/LSU_D1_fisher_new
+LsuD2_fisher=$LSU_D1D2_DBs_new/LSU_D2_fisher_new
+DB_combination_fisher=$DB_combination/DB_combination_fisher
+
+
+for length in 140; do
+   for num in 50 100 200 ; do
+       for replicate in 1 2 3 4 5; do      
+           result_dir=$Test_Fungi_RefSeq/SpeciesNum_test/simulating_${num}species_${replicate}
+           seq_dir=$Test_Fungi_RefSeq/SpeciesNum_test/simulating_${num}species_${replicate}/splite_seq
+           stat_result=$Test_Fungi_RefSeq/SpeciesNum_test/stat_result/stat_result_simulating_${num}species_${length}_${replicate}
+           
+           ITS1_report=$stat_result/simulating_${num}species_${length}_${replicate}_ITS1.short_read.reprot.tsv
+           ITS2_report=$stat_result/simulating_${num}species_${length}_${replicate}_ITS2.short_read.reprot.tsv
+           LusD1_report=$stat_result/simulating_${num}species_${length}_${replicate}_LsuD1.short_read.reprot.tsv
+           LusD2_report=$stat_result/simulating_${num}species_${length}_${replicate}_LsuD2.short_read.reprot.tsv
+           
+           cat $ITS1_report |cut -f 2 > $stat_result/ITS1_taxID
+           cat $ITS2_report |cut -f 2 > $stat_result/ITS2_taxID
+           cat $LusD1_report |cut -f 2 > $stat_result/LusD1_taxID
+           cat $LusD2_report |cut -f 2 > $stat_result/LusD2_taxID
+           
+           
+           
+           rm -f $stat_result/all_database_final_prediction
+           cat $stat_result/ITS1_taxID | while read line ; do
+               taxID=$line
+               var1=$( cat $stat_result/LusD1_taxID | grep -w "${taxID}" )
+               var2=$( cat $stat_result/LusD2_taxID | grep -w "${taxID}" )
+               var3=$( cat $stat_result/ITS2_taxID | grep -w "${taxID}" )
+               if [ "$var1" != "" -o "$var2" != "" -o "$var3" != "" ]; then
+                  echo $taxID >> $stat_result/all_database_final_prediction
+               fi
+            done
+            cat $stat_result/ITS2_taxID | while read line ; do
+               taxID=$line
+               var4=$( cat $stat_result/LusD1_taxID | grep -w "${taxID}" )
+               var5=$( cat $stat_result/LusD2_taxID | grep -w "${taxID}" )
+               if [ "$var4" != "" -o "$var5" != "" ]; then
+                  echo $taxID >> $stat_result/all_database_final_prediction
+               fi
+            done
+            cat $stat_result/LusD1_taxID | while read line ; do
+               taxID=$line
+               var6=$( cat $stat_result/LusD2_taxID | grep -w "${taxID}" )
+               if [ "$var6" ]; then
+                  echo $taxID >> $stat_result/all_database_final_prediction
+               fi
+            done
+            
+            
+            
+            
+            rm -f $stat_result/ITS1_taxID $stat_result/ITS2_taxID $stat_result/LusD1_taxID $stat_result/LusD2_taxID
+                   
+            rm -f $stat_result/all_database_final_prediction.report.tsv
+            cat $ITS1_report |head -n 1 >> $stat_result/all_database_final_prediction.report.tsv
+            cat $stat_result/all_database_final_prediction|sort -u |while read line; do
+                taxID=$line
+                var1=$(cat $ITS1_report |awk -F "\t"  '{if ($2 == '$taxID') print }')
+                var2=$(cat $ITS2_report |awk -F "\t"  '{if ($2 == '$taxID') print }')
+                var3=$(cat $LusD1_report |awk -F "\t"  '{if ($2 == '$taxID') print }')
+                var4=$(cat $LusD2_report |awk -F "\t"  '{if ($2 == '$taxID') print }')
+                if [ "$var1" != "" ]; then
+                   cat $ITS1_report |awk -F "\t"  '{if ($2 == '$taxID') print }' >> $stat_result/all_database_final_prediction.report.tsv
+                elif [ "$var2" != "" ]; then
+                   cat $ITS2_report |awk -F "\t"  '{if ($2 == '$taxID') print }' >> $stat_result/all_database_final_prediction.report.tsv
+                elif [ "$var3" != "" ]; then
+                   cat $LusD2_report |awk -F "\t"  '{if ($2 == '$taxID') print }' >> $stat_result/all_database_final_prediction.report.tsv
+                elif [ "$var4" != "" ]; then
+                   cat $LusD1_report |awk -F "\t"  '{if ($2 == '$taxID') print }' >> $stat_result/all_database_final_prediction.report.tsv
+                fi
+            done
+
+            
+            time centrifuge-kreport -x $DB_combination_fisher  \
+                          $stat_result/all_database_final_prediction.report.tsv \
+                            > $stat_result/all_database_final_prediction.kreprot.tsv
+
+            rm -f $stat_result/simulating_${num}species_${length}_${replicate}_combination_Ture_Positive.txt
+            rm -f $stat_result/simulating_${num}species_${length}_${replicate}_combination_False_Positive.txt
+            rm -f $stat_result/simulating_${num}species_${length}_${replicate}_combination_False_negative.txt
+            echo "###################################################################################################" >> $stat_result/simulating_${num}species_${length}_${replicate}_combination_Ture_Positive.txt
+            echo "###################################################################################################" >> $stat_result/simulating_${num}species_${length}_${replicate}_combination_False_Positive.txt
+            echo "###################################################################################################" >> $stat_result/simulating_${num}species_${length}_${replicate}_combination_False_negative.txt
+            for level in S G F O C P ; do
+                 if [ "$level" = "S" ]; then
+                     TL=7
+                 elif [ "$level" = "G" ]; then
+                     TL=6
+                 elif [ "$level" = "F" ]; then
+                     TL=5  
+                 elif [ "$level" = "O" ]; then
+                     TL=4  
+                 elif [ "$level" = "C" ]; then
+                     TL=3  
+                 elif [ "$level" = "P" ]; then
+                     TL=2
+                 fi
+                 echo $TL
+         
+                 echo $level"######################################" >> $stat_result/simulating_${num}species_${length}_${replicate}_combination_Ture_Positive.txt
+                 echo $level"######################################" >> $stat_result/simulating_${num}species_${length}_${replicate}_combination_False_Positive.txt
+                 echo $level"######################################" >> $stat_result/simulating_${num}species_${length}_${replicate}_combination_False_negative.txt
+                 cat $stat_result/all_database_final_prediction.kreprot.tsv |grep -w "${level}" |awk '{ for(i=1; i<=5; i++){ $i=""} ; print $0 }' |sort -u|while read line; do
+                      var1=$(cat $result_dir/simulating_${num}species_${replicate}.taxonomy.txt |cut -d ";" -f $TL | grep "$line" )
+                      if [ "$var1" != "" ]; then
+                          echo $line >> $stat_result/simulating_${num}species_${length}_${replicate}_combination_Ture_Positive.txt
+                      else 
+                          echo $line >> $stat_result/simulating_${num}species_${length}_${replicate}_combination_False_Positive.txt
+                      fi
+                  done
+         
+                 cat $result_dir/simulating_${num}species_${replicate}.taxonomy.txt |cut -d ";" -f $TL |cut -d"_" -f 3 |sort -u |while read taxa; do
+                      var2=$(cat $stat_result/all_database_final_prediction.kreprot.tsv |grep -w "${level}" |grep "$taxa")
+                      if [ "$var2" = "" ]; then
+                          echo $taxa >> $stat_result/simulating_${num}species_${length}_${replicate}_combination_False_negative.txt
+                      fi
+                 done
+             done
+                                  
+             rm -f $stat_result/simulating_${num}species_${length}_${replicate}_combination_*.final_stat.csv
+             rm -f $stat_result/simulating_${num}species_${length}_${replicate}_combination.final_stat_combine.csv
+             for value in False_negative False_Positive Ture_Positive; do
+                 file=$stat_result/simulating_${num}species_${length}_${replicate}_combination_${value}.txt
+                 stat_file=$stat_result/simulating_${num}species_${length}_${replicate}_combination_${value}.final_stat.csv
+                 stat_file_combine=$stat_result/simulating_${num}species_${length}_${replicate}_combination.final_stat_combine.csv
+                 touch $stat_file_combine
+                 FN_S=$[$(cat $file |grep "S###########" -A 99999999  |grep "G#########" -B 9999999|wc -l)-2]
+                 FN_G=$[$(cat $file |grep "G###########" -A 99999999  |grep "F#########" -B 9999999|wc -l)-2]
+                 FN_F=$[$(cat $file |grep "F###########" -A 99999999  |grep "O#########" -B 9999999|wc -l)-2]
+                 FN_O=$[$(cat $file |grep "O###########" -A 99999999  |grep "C#########" -B 9999999|wc -l)-2]
+                 FN_C=$[$(cat $file |grep "C###########" -A 99999999  |grep "P#########" -B 9999999|wc -l)-2]
+                 FN_P=$[$(cat $file |grep "P###########" -A 99999999  |wc -l)-1]
+                          
+                 echo "level" " " "${value}" >> $stat_file
+                 echo "Species" " " $FN_S >> $stat_file
+                 echo "Genus" " " $FN_G >> $stat_file
+                 echo "Family" " " $FN_F >> $stat_file
+                 echo "Order" " " $FN_O >> $stat_file
+                 echo "Class" " " $FN_C >> $stat_file
+                 echo "Phylum" " " $FN_P >> $stat_file
+                          
+                 paste $stat_file_combine $stat_file > $stat_result/new
+                 mv -f $stat_result/new $stat_file_combine
+                 rm -f $stat_result/new     
+             done
+       done             
+   done
+done
+
+}
+
+
+export -f run_speciesNum_combination_test
+ 
+run_speciesNum_combination_test
+
+
+
+
