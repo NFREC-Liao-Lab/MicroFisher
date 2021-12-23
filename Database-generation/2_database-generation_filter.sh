@@ -28,43 +28,7 @@ conda activate RNASeq
 
 apt-get install ncbi-blast+-legacy
 ###############################################
-#pre-filter the LSU region by using the metaxa2
-
-#https://zhuanlan.zhihu.com/p/345533172
-#https://microbiology.se/publ/metaxa2_users_guide_2.2.pdf
-
-   metaxa2 -i fungi_nucleotide.part_089.fasta \
-        -o fungi_nucleotide.part_089.rRNA.ssu \
-        -f fasta \
-        -t e \
-        -g lsu \
-        --complement T \
-        --truncate T \
-        --mode a \
-        --selection_priority sum \
-        --not_found T \
-        --preserve T \
-        --cpu 22 --multi_thread T &
-
-
-        
-# metaxa2 -i suillu_rhizopogon_database.fasta \     #input file name
-#        -o suillu_rhizopogon_database_LSU \        #output
-#        -f fasta \                                 #input format {a, auto; f, fasta; q, fastq; p, paired-end; pa, paired-fasta}
-#        -t e \                                     #target organisms  {b, bacteria, a, archaea, e, eukaryota,m, mitochondrial, c,chloroplast, A, all}
-#        -g lsu \                                   #identify and extract SSU or LSU rRNA genes (lsu/ssu)
-#        --mode a \                                 # Controls the Metaxa2 operating mode {m,metagenome, g,genome, a, auto}
-#        --complement T \                           # Metaxa2 checks both DNA strands for matches to HMM-profiles.  (T/F)
-#        --truncate T \                             # Removes ends of SSU/LSU sequences if they are outside of the SSU/LSU region
-#        --selection_priority domains \             # Determines what will be of highest priority when assessing the origin of the sequence {score, sum, domains, eval}
-#        --not_found T \                            # If on, Metaxa outputs a list of entries that do notseem to be SSU/LSU sequences
-#        --preserve T \
-#        --cpu $CPU --multi_thread T 
-
-
-
-
-        
+      
 ###############################################
 #splite the big file
 seqkit split2 -s 100000 fungi_nucleotide.fasta --out-dir splited_seq --threads 24
@@ -80,6 +44,8 @@ ITS4_rev="TCCTCCGCTTATTGATATGC"
 ITS4_fwd="GCATATCAATAAGCGGAGGA"
 ITS2_rev="GCTGCGTTCTTCATCGATGC"
 ITS3_fwd="GCATCGATGAAGAACGCAGC"
+
+ITS_extract=/home/microbiome/data_storage/SATA2/fungal_nucleotide/ITS_regions/ITS_extract_by_primers
 
 i=$1
 base=$(basename "$i" .fasta)
@@ -149,21 +115,6 @@ export -f extract_rRNA
 time parallel -j 12 --eta --load 99% --noswap  extract_rRNA ::: $(ls *.organized_ITS_rmdup_rmlongSeq.fasta)
 
 
-
-# mv SILVA_138.1_LSUParc_tax_silva_DNA_database_LSU_ITSx_no_detections.fasta SILVA_138.1_LSUParc_tax_silva_LSU_DNA_pre-filtered_database.fasta
-
-
-# ITSx -i suillu_rhizopogon_database_LSU.eukaryota.fasta \
-#     -o suillu_rhizopogon_database_ITS \
-#     -t Fungi \    #Organiams
-#     --save_regions SSU,ITS1,5.8S,ITS2,LSU \ 
-#     --only_full F \  
-#     --selection_priority domains \  # Determines what will be of highest priority when assessing the origin of the sequence {score, sum, domains, eval}
-#     --complement T \  checks both DNA strands for matches to HMM-profiles.  (T/F)
-#     --truncate T \
-#     --not_found T \
-#     --preserve T \
-#     --cpu $CPU --multi_thread T
 
 
 
@@ -431,13 +382,13 @@ else
        then
            if [ "$var5" != "" ];
            then
-               echo -ne "$seq_name\n$line\n" |seqkit amplicon --quiet -F $forward_LF340_1_primer -r -245:-70 >> $base.D1.result.fasta
+               echo -ne "$seq_name\n$line\n" |seqkit amplicon --quiet -F $forward_LF340_1_primer -r -245:-70 -f >> $base.D1.result.fasta
                echo -ne "$seq_name\n$line\n" |seqkit amplicon --quiet -F $forward_LF340_1_primer -R $reverse_LR3R_primer -r 90:-80 >> $base.D2.result.fasta
            else
                SeqLength=$(echo -ne "$seq_name\n$line\n" |seqkit fx2tab -l| awk '{print $3}')
                if  [ "$SeqLength" -lt 700 ];
                then
-                   echo -ne "$seq_name\n$line\n" |seqkit amplicon --quiet -F $forward_LF340_1_primer -r -245:-70 >> $base.D1.result.fasta
+                   echo -ne "$seq_name\n$line\n" |seqkit amplicon --quiet -F $forward_LF340_1_primer -r -245:-70 -f >> $base.D1.result.fasta
                    echo -ne "$seq_name\n$line\n" |seqkit amplicon --quiet -F $forward_LF340_1_primer -r 90:340 >> $base.D2.result.fasta
                 fi
             fi
@@ -445,13 +396,13 @@ else
        then
            if [ "$var5" != "" ];
            then
-               echo -ne "$seq_name\n$line\n" |seqkit amplicon --quiet -F $forward_LF340_2_primer -r -245:-70 >> $base.D1.result.fasta
+               echo -ne "$seq_name\n$line\n" |seqkit amplicon --quiet -F $forward_LF340_2_primer -r -245:-70 -f >> $base.D1.result.fasta
                echo -ne "$seq_name\n$line\n" |seqkit amplicon --quiet -F $forward_LF340_2_primer -R $reverse_LR3R_primer -r 90:-80 >> $base.D2.result.fasta
            else
                SeqLength=$(echo -ne "$seq_name\n$line\n" |seqkit fx2tab -l| awk '{print $3}')
                if  [ "$SeqLength" -lt 700 ];
                then
-                   echo -ne "$seq_name\n$line\n" |seqkit amplicon --quiet -F $forward_LF340_2_primer -r -245:-70 >> $base.D1.result.fasta
+                   echo -ne "$seq_name\n$line\n" |seqkit amplicon --quiet -F $forward_LF340_2_primer -r -245:-70 -f >> $base.D1.result.fasta
                    echo -ne "$seq_name\n$line\n" |seqkit amplicon --quiet -F $forward_LF340_2_primer -r 90:340 >> $base.D2.result.fasta
                 fi
             fi
