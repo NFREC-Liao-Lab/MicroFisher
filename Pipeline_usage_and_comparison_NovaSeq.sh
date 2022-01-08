@@ -758,7 +758,7 @@ for f in stat_result_simulating* ; do
     i=$(echo $f |cut -d"_" -f 3,4,5,6,7,8)
     group_id=$(echo $f |cut -d"_" -f 3,4,5,6,7,8)
     length=$(echo $f |cut -d"_" -f 5)
-    speciesNum=$(echo $f |cut -d"_" -f 4| sed 's/species//')
+    speciesNum=$(echo $f |cut -d"_" -f 4)
     
     for DB in ITS1 ITS2 LsuD1 LsuD2; do
        for taxa_level in Species Genus Family Order Class Phylum; do
@@ -1018,7 +1018,7 @@ for f in stat_result_simulating* ; do
     i=$(echo $f |cut -d"_" -f 3,4,5,6,7,8)
     group_id=$(echo $f |cut -d"_" -f 3,4,5,6,7,8)
     length=$(echo $f |cut -d"_" -f 5)
-    speciesNum=$(echo $f |cut -d"_" -f 4 |sed 's/species//g')
+    speciesNum=$(echo $f |cut -d"_" -f 4 )
     
     for DB in ITS LSU ITS_LSU; do
        for taxa_level in Species Genus Family Order Class Phylum; do
