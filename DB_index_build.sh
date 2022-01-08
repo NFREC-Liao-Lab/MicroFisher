@@ -24,3 +24,17 @@ centrifuge-build --conversion-table $LSU_D1D2_DBs_new/accession2taxid --taxonomy
 
 centrifuge-build --conversion-table $DB_combination/accession2taxid_combination --taxonomy-tree $DB_taxonomy/nodes.dmp --name-table $DB_taxonomy/names.dmp $DB_combination/combination_rmdup.fa $DB_combination_fisher
 
+
+
+
+
+
+
+########################################################################
+centrifuge-build --conversion-table $DB_taxonomy/accession2taxid --taxonomy-tree $DB_taxonomy/nodes.dmp --name-table $DB_taxonomy/names.dmp $ITS_DBs/fungi_rRNA.ITS1_uniq_chimera_filter_subsample.fa $ITS_DBs/ITS1_fisher
+centrifuge-build --conversion-table $DB_taxonomy/accession2taxid --taxonomy-tree $DB_taxonomy/nodes.dmp --name-table $DB_taxonomy/names.dmp $ITS_DBs/fungi_rRNA.ITS2_uniq_chimera_filter_subsample.fa $ITS_DBs/ITS2_fisher
+
+centrifuge-build --conversion-table $LSU_D1D2_DBs_new/accession2taxid --taxonomy-tree $DB_taxonomy/nodes.dmp --name-table $DB_taxonomy/names.dmp $LSU_D1D2_DBs_new/fungi_LSU_D1_uniq_subsample.fasta $LSU_D1D2_DBs_new/LSU_D1_fisher_new
+centrifuge-build --conversion-table $LSU_D1D2_DBs_new/accession2taxid --taxonomy-tree $DB_taxonomy/nodes.dmp --name-table $DB_taxonomy/names.dmp $LSU_D1D2_DBs_new/fungi_LSU_D2_uniq_subsample.fasta $LSU_D1D2_DBs_new/LSU_D2_fisher_new
+
+centrifuge-build --conversion-table $DB_combination/accession2taxid_combination --taxonomy-tree $DB_taxonomy/nodes.dmp --name-table $DB_taxonomy/names.dmp $DB_combination/combination_subsample_rmdup.fa $DB_combination_fisher
