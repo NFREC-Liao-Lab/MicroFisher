@@ -225,7 +225,7 @@ run_miniLength_test
 
 
 rm -f DBs_separated/*
-echo -ne "group_id\tspeciesNum\tDatabase\tlength\ttaxa_level\tFalse_negative\tFalse_Positive\tTure_Positive\tSensitivity\tAccuracy\tPrecision\n" >> DBs_separated/hitlength_DBs_separated.csv
+echo -ne "group_id\tspeciesNum\tDatabase\tlength\ttaxa_level\t\tFalse_negative\tFalse_Positive\tTure_Positive\n" >> DBs_separated/hitlength_DBs_separated.txt
 for f in stat_result_simulating* ; do
     i=$(echo $f |cut -d"_" -f 3,4,5,6,7,8)
     group_id=$(echo $f |cut -d"_" -f 3,4,5,6,7,8)
@@ -249,7 +249,7 @@ for f in stat_result_simulating* ; do
           fi
           
           value=$(cat $f/${i}_${DB}.stat_combine.csv |awk NR==$TL |sed "s/$taxa_level//g")
-          echo -ne "$group_id\t$speciesNum\t$DB\t$length\t$taxa_level\t$value\t\t\t\n" >> DBs_separated/hitlength_DBs_separated.csv
+          echo -ne "$group_id\t$speciesNum\t$DB\t$length\t$taxa_level $value\n" >> DBs_separated/hitlength_DBs_separated.txt
        done
     done
 done
@@ -497,7 +497,7 @@ run_miniLength_combination_test
 
 
 rm -f DBs_combine/*
-echo -ne "group_id\tspeciesNum\tDatabase\tlength\ttaxa_level\tFalse_negative\tFalse_Positive\tTure_Positive\tSensitivity\tAccuracy\tPrecision\n" >> DBs_combine/hitlength_DBs_combine.csv
+echo -ne "group_id\tspeciesNum\tDatabase\tlength\ttaxa_level\t\tFalse_negative\tFalse_Positive\tTure_Positive\n" >> DBs_combine/hitlength_DBs_combine.txt
 for f in stat_result_simulating* ; do
     i=$(echo $f |cut -d"_" -f 3,4,5,6,7,8)
     group_id=$(echo $f |cut -d"_" -f 3,4,5,6,7,8)
@@ -521,7 +521,7 @@ for f in stat_result_simulating* ; do
           fi
           
           value=$(cat $f/${i}_${DB}_combination.final_stat_combine.csv |awk NR==$TL |sed "s/$taxa_level//g")
-          echo -ne "$group_id\t$speciesNum\t$DB\t$length\t$taxa_level\t$value\t\t\t\n" >> DBs_combine/hitlength_DBs_combine.csv
+          echo -ne "$group_id\t$speciesNum\t$DB\t$length\t$taxa_level $value\n" >> DBs_combine/hitlength_DBs_combine.txt
        done
     done
 done
@@ -752,6 +752,36 @@ run_speciesNum_test
 
 
 
+rm -f DBs_separated/*
+echo -ne "group_id\tspeciesNum\tDatabase\tlength\ttaxa_level\t\tFalse_negative\tFalse_Positive\tTure_Positive\n" >> DBs_separated/hitlength_DBs_separated.txt
+for f in stat_result_simulating* ; do
+    i=$(echo $f |cut -d"_" -f 3,4,5,6,7,8)
+    group_id=$(echo $f |cut -d"_" -f 3,4,5,6,7,8)
+    length=$(echo $f |cut -d"_" -f 5)
+    speciesNum=$(echo $f |cut -d"_" -f 4| sed 's/species//')
+    
+    for DB in ITS1 ITS2 LsuD1 LsuD2; do
+       for taxa_level in Species Genus Family Order Class Phylum; do
+          if [ "$taxa_level" = "Species" ]; then
+                     TL=2
+          elif [ "$taxa_level" = "Genus" ]; then
+                     TL=3
+          elif [ "$taxa_level" = "Family" ]; then
+                     TL=4  
+          elif [ "$taxa_level" = "Order" ]; then
+                     TL=5  
+          elif [ "$taxa_level" = "Class" ]; then
+                     TL=6  
+          elif [ "$taxa_level" = "Phylum" ]; then
+                     TL=7
+          fi
+          
+          value=$(cat $f/${i}_${DB}.stat_combine.csv |awk NR==$TL |sed "s/$taxa_level//g")
+          echo -ne "$group_id\t$speciesNum\t$DB\t$length\t$taxa_level $value\n" >> DBs_separated/hitlength_DBs_separated.txt
+       done
+    done
+done
+
 
 
 
@@ -925,3 +955,41 @@ done
 export -f run_speciesNum_combination_test
  
 run_speciesNum_combination_test
+
+
+
+
+
+
+
+rm -f DBs_combine/*
+echo -ne "group_id\tspeciesNum\tDatabase\tlength\ttaxa_level\t\tFalse_negative\tFalse_Positive\tTure_Positive\n" >> DBs_combine/hitlength_DBs_combine.txt
+for f in stat_result_simulating* ; do
+    i=$(echo $f |cut -d"_" -f 3,4,5,6,7,8)
+    group_id=$(echo $f |cut -d"_" -f 3,4,5,6,7,8)
+    length=$(echo $f |cut -d"_" -f 5)
+    speciesNum=$(echo $f |cut -d"_" -f 4)
+    
+    for DB in ITS LSU ITS_LSU; do
+       for taxa_level in Species Genus Family Order Class Phylum; do
+          if [ "$taxa_level" = "Species" ]; then
+                     TL=2
+          elif [ "$taxa_level" = "Genus" ]; then
+                     TL=3
+          elif [ "$taxa_level" = "Family" ]; then
+                     TL=4  
+          elif [ "$taxa_level" = "Order" ]; then
+                     TL=5  
+          elif [ "$taxa_level" = "Class" ]; then
+                     TL=6  
+          elif [ "$taxa_level" = "Phylum" ]; then
+                     TL=7
+          fi
+          
+          value=$(cat $f/${i}_${DB}_combination.final_stat_combine.csv |awk NR==$TL |sed "s/$taxa_level//g")
+          echo -ne "$group_id\t$speciesNum\t$DB\t$length\t$taxa_level $value\n" >> DBs_combine/hitlength_DBs_combine.txt
+       done
+    done
+done
+
+
