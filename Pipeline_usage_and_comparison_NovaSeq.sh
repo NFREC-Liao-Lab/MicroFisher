@@ -753,7 +753,7 @@ run_speciesNum_test
 
 
 rm -f DBs_separated/*
-echo -ne "group_id\tspeciesNum\tDatabase\tlength\ttaxa_level\t\tFalse_negative\tFalse_Positive\tTure_Positive\n" >> DBs_separated/hitlength_DBs_separated.txt
+echo -ne "group_id\tspeciesNum\tDatabase\tlength\ttaxa_level\t\tFalse_negative\tFalse_Positive\tTure_Positive\n" >> DBs_separated/speciesNum_DBs_separated.txt
 for f in stat_result_simulating* ; do
     i=$(echo $f |cut -d"_" -f 3,4,5,6,7,8)
     group_id=$(echo $f |cut -d"_" -f 3,4,5,6,7,8)
@@ -777,7 +777,7 @@ for f in stat_result_simulating* ; do
           fi
           
           value=$(cat $f/${i}_${DB}.stat_combine.csv |awk NR==$TL |sed "s/$taxa_level//g")
-          echo -ne "$group_id\t$speciesNum\t$DB\t$length\t$taxa_level $value\n" >> DBs_separated/hitlength_DBs_separated.txt
+          echo -ne "$group_id\t$speciesNum\t$DB\t$length\t$taxa_level $value\n" >> DBs_separated/speciesNum_DBs_separated.txt
        done
     done
 done
@@ -1013,12 +1013,12 @@ run_speciesNum_combination_test
 
 
 rm -f DBs_combine/*
-echo -ne "group_id\tspeciesNum\tDatabase\tlength\ttaxa_level\t\tFalse_negative\tFalse_Positive\tTure_Positive\n" >> DBs_combine/hitlength_DBs_combine.txt
+echo -ne "group_id\tspeciesNum\tDatabase\tlength\ttaxa_level\t\tFalse_negative\tFalse_Positive\tTure_Positive\n" >> DBs_combine/speciesNum_DBs_combine.txt
 for f in stat_result_simulating* ; do
     i=$(echo $f |cut -d"_" -f 3,4,5,6,7,8)
     group_id=$(echo $f |cut -d"_" -f 3,4,5,6,7,8)
     length=$(echo $f |cut -d"_" -f 5)
-    speciesNum=$(echo $f |cut -d"_" -f 4)
+    speciesNum=$(echo $f |cut -d"_" -f 4 |sed 's/species//g')
     
     for DB in ITS LSU ITS_LSU; do
        for taxa_level in Species Genus Family Order Class Phylum; do
@@ -1037,7 +1037,7 @@ for f in stat_result_simulating* ; do
           fi
           
           value=$(cat $f/${i}_${DB}_combination.final_stat_combine.csv |awk NR==$TL |sed "s/$taxa_level//g")
-          echo -ne "$group_id\t$speciesNum\t$DB\t$length\t$taxa_level $value\n" >> DBs_combine/hitlength_DBs_combine.txt
+          echo -ne "$group_id\t$speciesNum\t$DB\t$length\t$taxa_level $value\n" >> DBs_combine/speciesNum_DBs_combine.txt
        done
     done
 done
