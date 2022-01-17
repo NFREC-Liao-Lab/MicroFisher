@@ -566,7 +566,7 @@ DB_combination_fisher=$DB_combination/DB_combination_fisher
 mkdir $Test_Fungi_RefSeq/SpeciesNum_test
 mkdir $Test_Fungi_RefSeq/SpeciesNum_test/stat_result
 
-for length in 140 ; do
+for length in 130 ; do
    for num in  50 100 200; do
        for replicate in 1 2 3 4 5; do      
            result_dir=$Test_Fungi_RefSeq/SpeciesNum_test/simulating_${num}species_${replicate}
