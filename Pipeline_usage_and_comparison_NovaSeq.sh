@@ -819,10 +819,10 @@ for length in 140; do
            seq_dir=$Test_Fungi_RefSeq/SpeciesNum_test/simulating_${num}species_${replicate}/splite_seq
            stat_result=$Test_Fungi_RefSeq/SpeciesNum_test/stat_result/stat_result_simulating_${num}species_${length}_${replicate}
            
-           ITS1_kreport=$stat_result/simulating_${num}species_${length}_${replicate}_ITS1.short_read.reprot.tsv
-           ITS2_kreport=$stat_result/simulating_${num}species_${length}_${replicate}_ITS2.short_read.reprot.tsv
-           LusD1_kreport=$stat_result/simulating_${num}species_${length}_${replicate}_LsuD1.short_read.reprot.tsv
-           LusD2_kreport=$stat_result/simulating_${num}species_${length}_${replicate}_LsuD2.short_read.reprot.tsv
+           ITS1_kreport=$stat_result/simulating_${num}species_${length}_${replicate}_ITS1.short_read.kreprot.tsv
+           ITS2_kreport=$stat_result/simulating_${num}species_${length}_${replicate}_ITS2.short_read.kreprot.tsv
+           LusD1_kreport=$stat_result/simulating_${num}species_${length}_${replicate}_LsuD1.short_read.kreprot.tsv
+           LusD2_kreport=$stat_result/simulating_${num}species_${length}_${replicate}_LsuD2.short_read.kreprot.tsv
            
          #  cat $ITS1_report |cut -f 2 > $stat_result/ITS1_taxID
          #  cat $ITS2_report |cut -f 2 > $stat_result/ITS2_taxID
