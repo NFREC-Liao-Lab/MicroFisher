@@ -1,9 +1,13 @@
 #The scripts for an example pipeline usage and comparisons with other packages
 
+##########################################################################################################
 #The example data collection
-#Download the RefSeq 28S_fungal_sequences from NCBI
+#Download the RefSeq from NCBI
+###########################################################################################################
 wget -c https://ftp.ncbi.nih.gov/blast/db/28S_fungal_sequences.tar.gz
 tar -zxvf 28S_fungal_sequences.tar.gz
+wget -c https://ftp.ncbi.nih.gov/blast/db/ITS_RefSeq_Fungi.tar.gz
+tar -zxvf ITS_RefSeq_Fungi.tar.gz
 
 #Extract sample sequences from the 28S_fungal_sequences
 
@@ -15,7 +19,7 @@ tar -zxvf 28S_fungal_sequences.tar.gz
 conda activate metagenome
 
 run_miniLength_test () {
-
+# set the work directory
 Test_Fungi_RefSeq=/home/microbiome/data_storage/SATA2/Fisher_test/Test_Fungi_RefSeq
 DB_taxonomy=/home/microbiome/data_storage/SATA2/Fisher_test/short_DBs/DB_taxonomy
 ITS_DBs=/home/microbiome/data_storage/SATA2/Fisher_test/short_DBs/ITS_DBs
@@ -30,8 +34,11 @@ DB_combination_fisher=$DB_combination/DB_combination_fisher
 mkdir $Test_Fungi_RefSeq/hitlength_test
 mkdir $Test_Fungi_RefSeq/hitlength_test/stat_result
 
+#set the minimum hit legth
 for length in 70 80 90 100 110 120 130 140 150; do
+   #set the number of fungal species in the simulating dataset
    for num in 100; do
+       #set the number of replicates
        for replicate in 1 2 3 4 5; do      
            result_dir=$Test_Fungi_RefSeq/hitlength_test/simulating_${num}species_${replicate}
            seq_dir=$Test_Fungi_RefSeq/hitlength_test/simulating_${num}species_${replicate}/splite_seq
@@ -45,9 +52,9 @@ for length in 70 80 90 100 110 120 130 140 150; do
            else
               echo "$result_dir   exist"
            fi
-           #check the simulating dataset exist or not, if not, then simulate the from RefSeq
+           #check the simulating dataset exist or not, if not, then extract the from RefSeq
            if [ ! -f "$result_dir/simulating_${num}species_${replicate}.short_read_R1.fastq.gz" ];then
-                 #randomly select fungal species from the RefSeq database from simulating
+                 #randomly select fungal species from the RefSeq database
                  cat $Test_Fungi_RefSeq/RefSeq_Fungi/28S_ITS_common_species_unique |shuf -n $num > $result_dir/species_list
                  cat $result_dir/species_list |while read taxa; do
                      genus=$(echo $taxa |cut -d" " -f 1)
@@ -94,7 +101,7 @@ for length in 70 80 90 100 110 120 130 140 150; do
                        --abundance exponential \
                        --n_reads 5M \
                        --output $result_dir/simulating_${num}species_${replicate}_ITS.short_read
-           #cat $result_dir/simulating_${num}species_${length}_${replicate}_ITS.short_read_abundance.txt |sed 's/ITS/LSU/g' > $result_dir/simulating_${num}species_${length}_${replicate}_LSU.short_read_abundance.txt
+                 #cat $result_dir/simulating_${num}species_${length}_${replicate}_ITS.short_read_abundance.txt |sed 's/ITS/LSU/g' > $result_dir/simulating_${num}species_${length}_${replicate}_LSU.short_read_abundance.txt
                  time iss generate --cpus 24 --quiet  --compress \
                        --genomes $seq_dir/LSU/*.fasta \
                        --model novaseq \
@@ -298,120 +305,121 @@ for length in 150 140 130 120 110 100 90 80 70; do
            seq_dir=$Test_Fungi_RefSeq/hitlength_test/simulating_${num}species_${replicate}/splite_seq
            stat_result=$Test_Fungi_RefSeq/hitlength_test/stat_result/stat_result_simulating_${num}species_${length}_${replicate}
            
-           ITS1_report=$stat_result/simulating_${num}species_${length}_${replicate}_ITS1.short_read.reprot.tsv
-           ITS2_report=$stat_result/simulating_${num}species_${length}_${replicate}_ITS2.short_read.reprot.tsv
-           LusD1_report=$stat_result/simulating_${num}species_${length}_${replicate}_LsuD1.short_read.reprot.tsv
-           LusD2_report=$stat_result/simulating_${num}species_${length}_${replicate}_LsuD2.short_read.reprot.tsv
+           ITS1_kreport=$stat_result/simulating_${num}species_${length}_${replicate}_ITS1.short_read.kreprot.tsv
+           ITS2_kreport=$stat_result/simulating_${num}species_${length}_${replicate}_ITS2.short_read.kreprot.tsv
+           LusD1_kreport=$stat_result/simulating_${num}species_${length}_${replicate}_LsuD1.short_read.kreprot.tsv
+           LusD2_kreport=$stat_result/simulating_${num}species_${length}_${replicate}_LsuD2.short_read.kreprot.tsv
            
-           cat $ITS1_report |cut -f 2 > $stat_result/ITS1_taxID
-           cat $ITS2_report |cut -f 2 > $stat_result/ITS2_taxID
-           cat $LusD1_report |cut -f 2 > $stat_result/LusD1_taxID
-           cat $LusD2_report |cut -f 2 > $stat_result/LusD2_taxID
+          # cat $ITS1_report |awk '{ for(i=1; i<=5; i++){ $i=""} ; print $0 }'  > $stat_result/ITS1_taxID
+          # cat $ITS2_report |cut -f 2 > $stat_result/ITS2_taxID
+          # cat $LusD1_report |cut -f 2 > $stat_result/LusD1_taxID
+          # cat $LusD2_report |cut -f 2 > $stat_result/LusD2_taxID
            
            
            
            rm -f $stat_result/ITS_LSU_database_final_prediction
-           cat $stat_result/ITS1_taxID | while read line ; do
-               taxID=$line
-               var1=$( cat $stat_result/LusD1_taxID | grep -w "${taxID}" )
-               var2=$( cat $stat_result/LusD2_taxID | grep -w "${taxID}" )
-               var3=$( cat $stat_result/ITS2_taxID | grep -w "${taxID}" )
+           cat $ITS1_kreport | while read line ; do
+               taxID=$(echo $line|awk '{print $5}')
+               var1=$( cat $LusD1_kreport |awk '{print $5}' | grep -w "${taxID}" )
+               var2=$( cat $LusD2_kreport |awk '{print $5}' | grep -w "${taxID}" )
+               var3=$( cat $ITS2_kreport |awk '{print $5}' | grep -w "${taxID}" )
                if [ "$var1" != "" -o "$var2" != "" -o "$var3" != "" ]; then
-                  echo $taxID >> $stat_result/ITS_LSU_database_final_prediction
+                  echo $line >> $stat_result/ITS_LSU_database_final_prediction
                fi
             done
-            cat $stat_result/ITS2_taxID | while read line ; do
-               taxID=$line
-               var4=$( cat $stat_result/LusD1_taxID | grep -w "${taxID}" )
-               var5=$( cat $stat_result/LusD2_taxID | grep -w "${taxID}" )
+            cat $ITS2_kreport | while read line ; do
+               taxID=$(echo $line|awk '{print $5}')
+               var4=$( cat $LusD1_kreport |awk '{print $5}' | grep -w "${taxID}" )
+               var5=$( cat $LusD2_kreport |awk '{print $5}' | grep -w "${taxID}" )
                if [ "$var4" != "" -o "$var5" != "" ]; then
-                  echo $taxID >> $stat_result/ITS_LSU_database_final_prediction
+                  echo $line >> $stat_result/ITS_LSU_database_final_prediction
                fi
             done
-            cat $stat_result/LusD1_taxID | while read line ; do
-               taxID=$line
-               var6=$( cat $stat_result/LusD2_taxID | grep -w "${taxID}" )
-               if [ "$var6" ]; then
-                  echo $taxID >> $stat_result/ITS_LSU_database_final_prediction
+            cat $LusD1_kreport | while read line ; do
+               taxID=$(echo $line|awk '{print $5}')
+               var6=$( cat $LusD2_kreport |awk '{print $5}' | grep -w "${taxID}" )
+               if [ "$var6" != "" ]; then
+                  echo  $line >> $stat_result/ITS_LSU_database_final_prediction
                fi
             done
             
             
             rm -f $stat_result/ITS_database_final_prediction
-           cat $stat_result/ITS1_taxID | while read line ; do
-               taxID=$line
-               var1=$( cat $stat_result/ITS2_taxID | grep -w "${taxID}" )
+           cat $ITS1_kreport | while read line ; do
+               taxID=$(echo $line|awk '{print $5}')
+               var1=$( cat $ITS2_kreport |awk '{print $5}' | grep -w "${taxID}" )
                if [ "$var1" != "" ]; then
-                  echo $taxID >> $stat_result/ITS_database_final_prediction
+                  echo $line >> $stat_result/ITS_database_final_prediction
                fi
             done
             
             
             rm -f $stat_result/LSU_database_final_prediction
-            cat $stat_result/LusD1_taxID | while read line ; do
-               taxID=$line
-               var1=$( cat $stat_result/LusD2_taxID | grep -w "${taxID}" )
+            cat $LusD1_kreport | while read line ; do
+               taxID=$(echo $line|awk '{print $5}')
+               var1=$( cat $LusD2_kreport |awk '{print $5}' | grep -w "${taxID}" )
                if [ "$var1" != "" ]; then
-                  echo $taxID >> $stat_result/LSU_database_final_prediction
+                  echo $line >> $stat_result/LSU_database_final_prediction
                fi
             done
               
-            rm -f $stat_result/ITS1_taxID $stat_result/ITS2_taxID $stat_result/LusD1_taxID $stat_result/LusD2_taxID
+           # rm -f $stat_result/ITS1_taxID $stat_result/ITS2_taxID $stat_result/LusD1_taxID $stat_result/LusD2_taxID
                    
-            rm -f $stat_result/ITS_LSU_database_final_prediction.report.tsv
-            cat $ITS1_report |head -n 1 >> $stat_result/ITS_LSU_database_final_prediction.report.tsv
-            cat $stat_result/ITS_LSU_database_final_prediction|sort -u |while read line; do
-                taxID=$line
-                var1=$(cat $ITS1_report |awk -F "\t"  '{if ($2 == '$taxID') print }')
-                var2=$(cat $ITS2_report |awk -F "\t"  '{if ($2 == '$taxID') print }')
-                var3=$(cat $LusD2_report |awk -F "\t"  '{if ($2 == '$taxID') print }')
-                var4=$(cat $LusD1_report |awk -F "\t"  '{if ($2 == '$taxID') print }')
-                if [ "$var1" != "" ]; then
-                   cat $ITS1_report |awk -F "\t"  '{if ($2 == '$taxID') print }' >> $stat_result/ITS_LSU_database_final_prediction.report.tsv
-                elif [ "$var2" != "" ]; then
-                   cat $ITS2_report |awk -F "\t"  '{if ($2 == '$taxID') print }' >> $stat_result/ITS_LSU_database_final_prediction.report.tsv
-                elif [ "$var3" != "" ]; then
-                   cat $LusD2_report |awk -F "\t"  '{if ($2 == '$taxID') print }' >> $stat_result/ITS_LSU_database_final_prediction.report.tsv
-                elif [ "$var4" != "" ]; then
-                   cat $LusD1_report |awk -F "\t"  '{if ($2 == '$taxID') print }' >> $stat_result/ITS_LSU_database_final_prediction.report.tsv
-                fi
-            done
+          #  rm -f $stat_result/ITS_LSU_database_final_prediction.report.tsv
+          #  cat $ITS1_report |head -n 1 >> $stat_result/ITS_LSU_database_final_prediction.report.tsv
+          #  cat $stat_result/ITS_LSU_database_final_prediction|sort -u |while read line; do
+          #      taxID=$line
+          #      var1=$(cat $ITS1_report |awk -F "\t"  '{if ($2 == '$taxID') print }')
+          #      var2=$(cat $ITS2_report |awk -F "\t"  '{if ($2 == '$taxID') print }')
+           #     var3=$(cat $LusD2_report |awk -F "\t"  '{if ($2 == '$taxID') print }')
+           #     var4=$(cat $LusD1_report |awk -F "\t"  '{if ($2 == '$taxID') print }')
+           #     if [ "$var1" != "" ]; then
+          #         cat $ITS1_report |awk -F "\t"  '{if ($2 == '$taxID') print }' >> $stat_result/ITS_LSU_database_final_prediction.report.tsv
+          #      elif [ "$var2" != "" ]; then
+          #         cat $ITS2_report |awk -F "\t"  '{if ($2 == '$taxID') print }' >> $stat_result/ITS_LSU_database_final_prediction.report.tsv
+          #      elif [ "$var3" != "" ]; then
+          #         cat $LusD2_report |awk -F "\t"  '{if ($2 == '$taxID') print }' >> $stat_result/ITS_LSU_database_final_prediction.report.tsv
+           #     elif [ "$var4" != "" ]; then
+          #         cat $LusD1_report |awk -F "\t"  '{if ($2 == '$taxID') print }' >> $stat_result/ITS_LSU_database_final_prediction.report.tsv
+          #      fi
+          #  done
 
             
-            rm -f $stat_result/ITS_database_final_prediction.report.tsv
-            cat $ITS1_report |head -n 1 >> $stat_result/ITS_database_final_prediction.report.tsv
-            cat $stat_result/ITS_database_final_prediction|sort -u |while read line; do
-                taxID=$line
-                var1=$(cat $ITS1_report |awk -F "\t"  '{if ($2 == '$taxID') print }')
-                if [ "$var1" != "" ]; then
-                   cat $ITS1_report |awk -F "\t"  '{if ($2 == '$taxID') print }' >> $stat_result/ITS_database_final_prediction.report.tsv
-                fi
-            done
+          #  rm -f $stat_result/ITS_database_final_prediction.report.tsv
+          #  cat $ITS1_report |head -n 1 >> $stat_result/ITS_database_final_prediction.report.tsv
+          #  cat $stat_result/ITS_database_final_prediction|sort -u |while read line; do
+          #      taxID=$line
+          #      var1=$(cat $ITS1_report |awk -F "\t"  '{if ($2 == '$taxID') print }')
+          #      if [ "$var1" != "" ]; then
+          #         cat $ITS1_report |awk -F "\t"  '{if ($2 == '$taxID') print }' >> $stat_result/ITS_database_final_prediction.report.tsv
+          #      fi
+          #  done
             
-            rm -f $stat_result/LSU_database_final_prediction.report.tsv
-            cat $ITS1_report |head -n 1 >> $stat_result/LSU_database_final_prediction.report.tsv
-            cat $stat_result/LSU_database_final_prediction|sort -u |while read line; do
-                taxID=$line
-                var1=$(cat $LusD2_report |awk -F "\t"  '{if ($2 == '$taxID') print }')
-                if [ "$var1" != "" ]; then
-                   cat $LusD2_report |awk -F "\t"  '{if ($2 == '$taxID') print }' >> $stat_result/LSU_database_final_prediction.report.tsv
-                fi
-            done
+          #  rm -f $stat_result/LSU_database_final_prediction.report.tsv
+          #  cat $ITS1_report |head -n 1 >> $stat_result/LSU_database_final_prediction.report.tsv
+         #   cat $stat_result/LSU_database_final_prediction|sort -u |while read line; do
+         #       taxID=$line
+          #      var1=$(cat $LusD2_report |awk -F "\t"  '{if ($2 == '$taxID') print }')
+          #      if [ "$var1" != "" ]; then
+          #         cat $LusD2_report |awk -F "\t"  '{if ($2 == '$taxID') print }' >> $stat_result/LSU_database_final_prediction.report.tsv
+          #      fi
+          #  done
             
             
-            time centrifuge-kreport -x $DB_combination_fisher  \
-                          $stat_result/ITS_LSU_database_final_prediction.report.tsv \
-                            > $stat_result/ITS_LSU_database_final_prediction.kreprot.tsv            
+          #  time centrifuge-kreport -x $DB_combination_fisher  \
+          #                $stat_result/ITS_LSU_database_final_prediction.report.tsv \
+          #                  > $stat_result/ITS_LSU_database_final_prediction.kreprot.tsv            
             
-            time centrifuge-kreport -x $DB_combination_fisher  \
-                          $stat_result/ITS_database_final_prediction.report.tsv \
-                            > $stat_result/ITS_database_final_prediction.kreprot.tsv                        
+          #  time centrifuge-kreport -x $DB_combination_fisher  \
+          #                $stat_result/ITS_database_final_prediction.report.tsv \
+          #                  > $stat_result/ITS_database_final_prediction.kreprot.tsv                        
             
-            time centrifuge-kreport -x $DB_combination_fisher  \
-                          $stat_result/LSU_database_final_prediction.report.tsv \
-                            > $stat_result/LSU_database_final_prediction.kreprot.tsv
+          #  time centrifuge-kreport -x $DB_combination_fisher  \
+          #                $stat_result/LSU_database_final_prediction.report.tsv \
+          #                  > $stat_result/LSU_database_final_prediction.kreprot.tsv
 
     
+   
        for combine in ITS_LSU ITS LSU;do
        
             rm -f $stat_result/simulating_${num}species_${length}_${replicate}_${combine}_combination_Ture_Positive.txt
@@ -435,11 +443,12 @@ for length in 150 140 130 120 110 100 90 80 70; do
                      TL=2
                  fi
                  echo $TL
+                 
          
                  echo $level"######################################" >> $stat_result/simulating_${num}species_${length}_${replicate}_${combine}_combination_Ture_Positive.txt
                  echo $level"######################################" >> $stat_result/simulating_${num}species_${length}_${replicate}_${combine}_combination_False_Positive.txt
                  echo $level"######################################" >> $stat_result/simulating_${num}species_${length}_${replicate}_${combine}_combination_False_negative.txt
-                 cat $stat_result/${combine}_database_final_prediction.kreprot.tsv |grep -w "${level}" |awk '{ for(i=1; i<=5; i++){ $i=""} ; print $0 }' |sort -u|while read line; do
+                 cat $stat_result/${combine}_database_final_prediction |grep -w "${level}" |awk '{ for(i=1; i<=5; i++){ $i=""} ; print $0 }' |sort -u|while read line; do
                       var1=$(cat $result_dir/simulating_${num}species_${replicate}.taxonomy.txt |cut -d ";" -f $TL | grep "$line" )
                       if [ "$var1" != "" ]; then
                           echo $line >> $stat_result/simulating_${num}species_${length}_${replicate}_${combine}_combination_Ture_Positive.txt
@@ -449,7 +458,7 @@ for length in 150 140 130 120 110 100 90 80 70; do
                   done
          
                  cat $result_dir/simulating_${num}species_${replicate}.taxonomy.txt |cut -d ";" -f $TL |cut -d"_" -f 3 |sort -u |while read taxa; do
-                      var2=$(cat $stat_result/${combine}_database_final_prediction.kreprot.tsv |grep -w "${level}" |grep "$taxa")
+                      var2=$(cat $stat_result/${combine}_database_final_prediction |grep -w "${level}" |grep "$taxa")
                       if [ "$var2" = "" ]; then
                           echo $taxa >> $stat_result/simulating_${num}species_${length}_${replicate}_${combine}_combination_False_negative.txt
                       fi
