@@ -970,7 +970,7 @@ for length in 130; do
                   done
          
                  cat $result_dir/simulating_${num}species_${replicate}.taxonomy.txt |cut -d ";" -f $TL |cut -d"_" -f 3 |sort -u |while read taxa; do
-                      var2=$(cat $stat_result/${combine}_database_final_prediction.kreprot.tsv |grep -w "${level}" |grep "$taxa")
+                      var2=$(cat $stat_result/${combine}_database_final_prediction |grep -w "${level}" |grep "$taxa")
                       if [ "$var2" = "" ]; then
                           echo $taxa >> $stat_result/simulating_${num}species_${length}_${replicate}_${combine}_combination_False_negative.txt
                       fi
