@@ -15,8 +15,8 @@ file=$(basename  $1 _ACCESSION)
            taxid=$(echo $acc2taxid |cut -d" " -f 2)
            lineage=$(cat all_taxid_taxonomy |grep -w $taxid)
            if [ "$lineage" != "" ]; then
-              acc2taxid2lineage=$acc2taxid" "$lineage
-              echo $acc2taxid2lineage >> $file.2lineage
+              acc2lineage=$(echo -ne $line"\t"$lineage)
+              echo $acc2lineage >> $file.2lineage
            else
               echo $line >> $file.without_lineage
            fi
@@ -25,7 +25,7 @@ file=$(basename  $1 _ACCESSION)
         fi
     done
 
-}           
+}
 
 export -f DBs_stat
 
@@ -45,6 +45,12 @@ esummary -db nuccore -id $i | xtract -pattern DocumentSummary -element Caption,T
 
 
 
+
+
+
+
+for i in *.2lineage ; do
+    cat $i |awk '{print $4}' |cut -d";" -f 2
 
 
 
