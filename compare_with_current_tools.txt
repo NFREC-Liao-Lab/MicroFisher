@@ -1,4 +1,4 @@
-
+##part 1: pre-process  the sequences from metatranscriptomic and metagenomic dataset
 #quality control for the fastq sequences
 
 fastqc rawdata/*.gz -t 20 -o fastqc_rawdata
@@ -17,3 +17,24 @@ for i in rawdata/*_R1.fastq.gz; do
 done
 
 
+##Part 2: fungal classification using metaphlan and kaiju
+for i in cleandata/*_R1_val_1.fq.gz; do
+    basename=$(basename  "$i" _R1_val_1.fq.gz)
+    echo $basename
+    if [ ! -f classification/${basename}_metaphlan.profile.txt ]; then
+      metaphlan cleandata/${basename}_R1_val_1.fq.gz,cleandata/${basename}_R2_val_2.fq.gz  \
+             --input_type fastq  --bowtie2out classification/${basename}_metaphlan.bowtie2.bz2  \
+             --nproc 24 -o classification/${basename}_metaphlan.profile.txt
+    fi
+done
+
+
+for i in cleandata/*_R1_val_1.fq.gz; do
+    basename=$(basename  "$i" _R1_val_1.fq.gz)
+    echo $basename
+    if [ ! -f classification/${basename}_kaiju.out ]; then
+      kaiju -t database/kaiju/nodes.dmp -f database/kaiju/fungi/kaiju_db_fungi.fmi \
+            -i cleandata/${basename}_R1_val_1.fq.gz -j cleandata/${basename}_R2_val_2.fq.gz  \
+            -o classification/${basename}_kaiju.out -z 24
+    fi
+done
