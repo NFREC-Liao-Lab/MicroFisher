@@ -59,7 +59,7 @@ for i in cleandata/*_R1_val_1.fq.gz; do
             -1 cleandata/${basename}_R1_val_1.fq.gz \
             -2 cleandata/${basename}_R2_val_2.fq.gz \
             -S deNovoAssemble/${basename}.sam \
-            --al-conc-gz deNovoAssemble
+            --al-conc-gz deNovoAssemble/${basename}_aligned.gz
     rm -f deNovoAssemble/${basename}.sam
 done
     
