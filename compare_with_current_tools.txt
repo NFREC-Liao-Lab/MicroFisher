@@ -50,6 +50,9 @@ for i in cleandata/*_R1_val_1.fq.gz; do
 done
 
 
+#eukdetect
+
+
 ###########################################################################################
 #Part3: denovo assembly approach
 for i in cleandata/*_R1_val_1.fq.gz; do
