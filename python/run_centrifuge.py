@@ -17,33 +17,34 @@ class Centrifuge:
 
 
     def __init__(self, args):
-        num=100
-        replicate=5
-        self.workspace = os.path.expanduser(args.workspace)
-        centrifuge_path = os.path.expanduser(args.centrifuge)
-        db_name = args.db
+        self.args = args
+        centrifuge_path = os.path.expanduser(args.centrifuge_path)
         db_path = os.path.join(centrifuge_path, args.db_path)
-        cc = Config(cpus=4, distinct_count=1, min_len=120,
-                    db_path=db_path, db_name=db_name
+
+        self.workspace = os.path.expanduser(args.workspace)
+        self.prefix = args.prefix# f"simulating_{num}species_r{replicate}"
+
+        self.config = Config(cpus=8, distinct_count=1, min_len=args.min,
+                    db_path=db_path, db_name=args.db
                     )
 
 
-        prefix = f"simulating_{num}species_r{replicate}"
-        prefix_infile = f"{prefix}.short_read"
-        infile = [os.path.join(self.workspace, f"{prefix_infile}_R{i}.fastq.gz") for i in [1,2]]
+        infile = [os.path.join(self.workspace, f"{self.prefix}_R{i}.fastq.gz") for i in [1,2]]
 
-        prefix_outfile = f"result_{prefix}_{cc.min_len}_{cc.db_name}"
+        prefix_outfile = f"result_{self.prefix}_min{self.config.min_len}_db{self.config.db_name}"
         out_result = os.path.join(self.workspace, f"{prefix_outfile}_output.txt")
         out_report = os.path.join(self.workspace, f"{prefix_outfile}_report.tsv")
 
-        params = cc.format()
+        params = self.config.format()
         config_files = f"-1 {infile[0]} -2 {infile[1]} -S {out_result} --report-file {out_report}"
-        prog = "centrifuge"
+        prog = os.path.join(centrifuge_path, "centrifuge")
         commands = f"{prog} {params} {config_files}"
-        command_list = shlex.split(commands)
-        if (args.verbose > 0):
-            print(f"Execute commands: {commands}")
-        subprocess.run(command_list)
+        self.command_list = shlex.split(commands)
+        if args.verbose > 0:
+            print(f"==DEBUG== Execute commands: {commands}")
+
+    def run(self):
+        subprocess.run(self.command_list)
 
 
     # prog_k = "centrifuge-kreport"
