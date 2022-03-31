@@ -3,7 +3,7 @@ import pytest
 from config import Config
 
 @pytest.fixture
-def config_args():
+def setup_args():
     parser = argparse.ArgumentParser()
     parser.set_defaults(verbose=1, min=100, prefix="example",
         workspace="workspace",
@@ -11,9 +11,13 @@ def config_args():
     args = parser.parse_args()
     return args
 
-def test_init(config_args):
+@pytest.fixture
+def config(setup_args):
+    return Config(setup_args)
 
-    config = Config(config_args)
+def test_init(setup_args):
+
+    config = Config(setup_args)
     assert config.verbose == 1
     assert config.min_len == 100
     assert config.prefix == "example"
@@ -21,12 +25,15 @@ def test_init(config_args):
     assert config.workspace == "workspace"
     assert config.db == "cpath/db/dbName"
 
-def test_init(config_args):
+def test_output_files(config):
+    output = config.centrifuge_output_files()
+    expected = ("workspace/result_example_min100_dbdbName_output.txt", "workspace/result_example_min100_dbdbName_report.tsv")
+    assert expected == output
 
-    config = Config(config_args)
-    assert config.verbose == 1
-    assert config.min_len == 100
-    assert config.prefix == "example"
-    assert config.centrifuge_path == "cpath"
-    assert config.workspace == "workspace"
-    assert config.db == "cpath/db/dbName"
+def test_format(config):
+    config.centrifuge_output_files()
+    output = config.format_params_centrifuge()
+    assert "-p 1 -k 1 --min-hitlen 100 -x cpath/db/dbName" == output
+
+    output = config.format_params_kreport()
+    assert "-x cpath/db/dbName workspace/result_example_min100_dbdbName_report.tsv" == output
