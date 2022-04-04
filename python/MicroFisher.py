@@ -2,8 +2,10 @@ import os
 import argparse
 import sys
 
-
+from config import Config
 from run_centrifuge import Centrifuge
+from run_kreport import CentrifugeKReport
+
 
 def main():
 
@@ -14,7 +16,7 @@ def main():
                         help="Database name")
     parser.add_argument("-m", "--min", type=int, default=120,
                         help="minimum matching length")
-    parser.add_argument("-w", "--workspace", #type="ascii",
+    parser.add_argument("-w", "--workspace",  # type="ascii",
                         help="path to your workspace/dataset. Default '.' current location.")
     # parser.add_argument("-1", help="forward reads")
     # parser.add_argument("-2", help="forward reads")
@@ -29,9 +31,13 @@ def main():
     args = parser.parse_args()
     if args.verbose > 0:
         print(f"\n==DEBUG== Arguments: {args}")
-    centrifuge = Centrifuge(args)
+    config = Config(args)
+    centrifuge = Centrifuge(config)
+    cent_kreport = CentrifugeKReport(config)
     if not args.dry:
-        centrifuge.run()
+        is_complete = centrifuge.run()
+        if is_complete:
+            output = cent_kreport.run()
 
 
 if __name__ == "__main__":
