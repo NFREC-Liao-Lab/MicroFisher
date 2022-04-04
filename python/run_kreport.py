@@ -35,7 +35,7 @@ class CentrifugeKReport:
             kreport_output = subprocess.run(
                 self.command_list, capture_output=True)
         except Exception as err:
-            print(f"Unexpected {err=}, {type(err)=}")
+            print(f"Unexpected {err}, {type(err)}")
         with open(self.out_kreport, "wb") as f:
             f.write(kreport_output.stdout)
         if self.config.verbose > 1:

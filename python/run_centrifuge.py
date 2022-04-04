@@ -36,7 +36,7 @@ class Centrifuge:
         prog = os.path.join(self.config.centrifuge_path, "centrifuge")
         commands = f"{prog} {params} {config_files}"
         self.command_list = shlex.split(commands)
-        if config.verbose > 0:
+        if self.config.verbose > 0:
             print(f"==DEBUG== Execute commands: {commands}")
 
     def run(self):

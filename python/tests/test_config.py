@@ -1,6 +1,8 @@
 import argparse
 import pytest
 from config import Config
+import tempfile
+
 
 @pytest.fixture
 def setup_args():
@@ -11,24 +13,27 @@ def setup_args():
     args = parser.parse_args()
     return args
 
+
 @pytest.fixture
 def config(setup_args):
     return Config(setup_args)
 
-def test_init(setup_args):
 
+def test_init(setup_args):
     config = Config(setup_args)
-    assert config.verbose == 11
+    assert config.verbose == 1
     assert config.min_len == 100
     assert config.prefix == "example"
     assert config.centrifuge_path == "cpath"
     assert config.workspace == "workspace"
     assert config.db == "cpath/db/dbName"
 
+
 def test_output_files(config):
     output = config.centrifuge_output_files()
     expected = ("workspace/result_example_min100_dbdbName_output.txt", "workspace/result_example_min100_dbdbName_report.tsv")
     assert expected == output
+
 
 def test_format(config):
     config.centrifuge_output_files()
