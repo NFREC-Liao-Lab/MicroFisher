@@ -21,8 +21,8 @@ def config(setup_args):
 
 def test_init(setup_args):
     config = Config(setup_args)
-    assert config.verbose == 11
-    assert config.min_len == 1001
+    assert config.verbose == 1
+    assert config.min_len == 100
     assert config.prefix == "example"
     assert config.centrifuge_path == "cpath"
     assert config.workspace == "workspace"
