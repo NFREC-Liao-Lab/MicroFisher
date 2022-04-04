@@ -43,7 +43,7 @@ class Centrifuge:
         try:
             result = subprocess.run(self.command_list)
         except Exception as err:
-            print(f"Unexpected {err=}, {type(err)=}")
+            print(f"Unexpected {err}, {type(err)}")
 
         is_output_exist = os.path.exists(self.config.out_report)
         if result.returncode == 0 and is_output_exist:
