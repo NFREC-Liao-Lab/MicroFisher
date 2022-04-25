@@ -5,7 +5,7 @@ Testing parameters.
 python3 MicroFisher.py -vv  -w /home/microbiome/data_storage/SATA2/Fisher_test/ --centrifuge_path '' --db_path short_DBs/LSU_D1D2_DBs_new/ --prefix simulating_100species_r5.short_read  --min 120 --db ITS1 --dry
 ```
 
-Testing parameters on workstationrkstation
+Testing Centrifuge parameters on workstationrkstation
 ```bash
 python /home/microbiome/data_storage/SATA2/Fisher_test/MicroFisher/MicroFisher-Fungal-Profiling/python/MicroFisher.py -vv  -w /home/microbiome/data_storage/SATA2/Fisher_test/Test_Fungi_RefSeq/NovaSeq_test/hitlength_test/simulating_100species_5/  --db_path /home/microbiome/data_storage/SATA2/Fisher_test/short_DBs/ITS_DBs/ --prefix simulating_100species_5.short_read --dry --min 120 --db ITS1
 
@@ -14,4 +14,8 @@ python /home/microbiome/data_storage/SATA2/Fisher_test/MicroFisher/MicroFisher-F
 python /home/microbiome/data_storage/SATA2/Fisher_test/MicroFisher/MicroFisher-Fungal-Profiling/python/MicroFisher.py -vv  -w /home/microbiome/data_storage/SATA2/Fisher_test/Test_Fungi_RefSeq/NovaSeq_test/hitlength_test/simulating_100species_5/  --db_path /home/microbiome/data_storage/SATA2/Fisher_test/short_DBs/LSU_D1D2_DBs_new/ --prefix simulating_100species_5.short_read --dry --min 120 --db LSU_D1_fisher_new
 
 python /home/microbiome/data_storage/SATA2/Fisher_test/MicroFisher/MicroFisher-Fungal-Profiling/python/MicroFisher.py -vv  -w /home/microbiome/data_storage/SATA2/Fisher_test/Test_Fungi_RefSeq/NovaSeq_test/hitlength_test/simulating_100species_5/  --db_path /home/microbiome/data_storage/SATA2/Fisher_test/short_DBs/LSU_D1D2_DBs_new/ --prefix simulating_100species_5.short_read --dry --min 120 --db LSU_D2_fisher_new
+```
+Testing combination on workstation
+```
+python3 MicroFisherCombineDB.py -vv -w /home/microbiome/data_storage/SATA2/Fisher_test/Test_Fungi_RefSeq/NovaSeq_test/hitlength_test/simulating_100species_5/ --combine result_simulating_100species_5.short_read_min120_dbITS1_report.tsv result_simulating_100species_5.short_read_min120_dbITS2_fisher_report.tsv result_simulating_100species_5.short_read_min120_dbLSU_D1_fisher_new_report.tsv result_simulating_100species_5.short_read_min120_dbLSU_D2_fisher_new_report.tsv --min_overlap 3 --output combined_result.report.tsv
 ```
