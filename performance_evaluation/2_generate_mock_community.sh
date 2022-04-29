@@ -34,15 +34,15 @@ ITS2_fisher=$ITS_DBs/ITS2_fisher
 LsuD1_fisher=$LSU_D1D2_DBs_new/LSU_D1_fisher_new
 LsuD2_fisher=$LSU_D1D2_DBs_new/LSU_D2_fisher_new
 DB_combination_fisher=$DB_combination/DB_combination_fisher
-mkdir $Test_Fungi_RefSeq/hitlength_test
-mkdir $Test_Fungi_RefSeq/hitlength_test/stat_result
+mkdir $Test_Fungi_RefSeq/mock_community
+mkdir $Test_Fungi_RefSeq/mock_community/classification_result
 
  #set the number of fungal species in the simulating dataset
    for num in 50 100 200; do
       #set the number of replicates
        for replicate in 1 2 3 4 5; do      
-           result_dir=$Test_Fungi_RefSeq/hitlength_test/simulating_${num}species_${replicate}
-           seq_dir=$Test_Fungi_RefSeq/hitlength_test/simulating_${num}species_${replicate}/splite_seq
+           result_dir=$Test_Fungi_RefSeq/mock_community/simulating_${num}species_${replicate}
+           seq_dir=$Test_Fungi_RefSeq/mock_community/simulating_${num}species_${replicate}/splite_seq
            
           #check if the result directory exist or not
            if [ ! -d "$result_dir/" ];then
