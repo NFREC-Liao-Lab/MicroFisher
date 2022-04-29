@@ -88,4 +88,6 @@ mkdir $Test_Fungi_RefSeq/hitlength_test/stat_result
             fi
         done
     done
-            
+}
+
+
