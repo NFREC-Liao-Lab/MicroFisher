@@ -11,13 +11,10 @@ run_mock_classification_test () {
 Test_Fungi_RefSeq=/home/microbiome/data_storage/SATA2/Fisher_test/Test_Fungi_RefSeq
 DB_taxonomy=/home/microbiome/data_storage/SATA2/Fisher_test/short_DBs/DB_taxonomy
 MicroFisher_DBs=/home/microbiome/data_storage/SATA2/Fisher_test/short_DBs/MicroFisher_DBs
-ITS1_fisher=$ITS_DBs/ITS1_fisher
-ITS2_fisher=$ITS_DBs/ITS2_fisher
-LsuD1_fisher=$LSU_D1D2_DBs_new/LSU_D1_fisher_new
-LsuD2_fisher=$LSU_D1D2_DBs_new/LSU_D2_fisher_new
-DB_combination_fisher=$DB_combination/DB_combination_fisher
+
 mkdir $Test_Fungi_RefSeq/mock_community
 mkdir $Test_Fungi_RefSeq/mock_community/classification_result
+
 #set the minimum hit legth
 for length in 70 80 90 100 110 120 130 140 150; do
    #set the number of fungal species in the simulating dataset
