@@ -6,9 +6,14 @@ class Config:
         self.cpus = cpus
         self.distinct_count = distinct_count
         self.verbose = args.verbose
-        self.min_len = args.min
+        try:
+            self.min_len = args.min
+            self.prefix = args.prefix
+        except AttributeError as e:
+            self.min_len = 0
+            self.prefix = ""
 
-        self.prefix = args.prefix  # f"simulating_{num}species_r{replicate}"
+        
         self.centrifuge_path = os.path.expanduser(args.centrifuge_path)
         self.workspace = os.path.expanduser(args.workspace)
 

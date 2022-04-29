@@ -46,7 +46,7 @@ class Centrifuge:
             print(f"Unexpected {err}, {type(err)}")
 
         is_output_exist = os.path.exists(self.config.out_report)
-        if result.returncode == 0 and is_output_exist:
+        if is_output_exist and result.returncode == 0:
             print(f"==DEBUG== Centrifuge complete.")
             return True
         return False
