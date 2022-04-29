@@ -36,7 +36,7 @@ for length in 70 80 90 100 110 120 130 140 150; do
                      elif [ "$DB_cat" = "LsuD1" ]; then
                        DB=LSU_D1_fisher_new
                      elif [ "$DB_cat" = "LsuD2" ]; then
-                       DB=LSU_D1_fisher_new
+                       DB=LSU_D2_fisher_new
                     fi
                    echo $DB
                    #generate the classification result by using centrifuge
@@ -46,17 +46,34 @@ for length in 70 80 90 100 110 120 130 140 150; do
                                --db_path $MicroFisher_DBs \
                                --prefix simulating_${num}species_${replicate}.short_read \
                                --min $length --db $DB
-                        move $result_dir/*_report* $result_dir/*_kreport*   $stat_result
-                    fi
-               done
+                   fi
+                   mv $result_dir/*_report* $result_dir/*_output*   $stat_result
+             done
              
                #combine the classification results
                python /home/microbiome/data_storage/SATA2/Fisher_test/MicroFisher/MicroFisher-Fungal-Profiling/python/MicroFisher.py  combine -vv \
-                   -w /home/microbiome/data_storage/SATA2/Fisher_test/Test_Fungi_RefSeq/NovaSeq_test/hitlength_test/simulating_100species_5/ 
-                   --combine result_simulating_100species_5.short_read_min120_dbITS1_report.tsv result_simulating_100species_5.short_read_min120_dbITS2_fisher_report.tsv result_simulating_100species_5.short_read_min120_dbLSU_D1_fisher_new_report.tsv result_simulating_100species_5.short_read_min120_dbLSU_D2_fisher_new_report.tsv 
-                   --min_overlap 3 
-                   --output combined_result.report.tsv 
-                   --combine_db ITS1 ITS2
+                   -w $stat_result \
+                   --combine result_simulating_50species_3.short_read_min100_dbITS1_fisher_report.tsv result_simulating_50species_3.short_read_min100_dbITS2_fisher_report.tsv  \
+                   --min_overlap 2 \
+                   --output $stat_result/combine_result_ITS.tsv \
+                   --combine_db ITS
+                   
+                python /home/microbiome/data_storage/SATA2/Fisher_test/MicroFisher/MicroFisher-Fungal-Profiling/python/MicroFisher.py  combine -vv \
+                   -w $stat_result \
+                   --combine result_simulating_50species_3.short_read_min100_dbLSU_D1_fisher_new_report.tsv result_simulating_50species_3.short_read_min100_dbLSU_D2_fisher_new_report.tsv  \
+                   --min_overlap 2 \
+                   --output $stat_result/combine_result_LSU.tsv \
+                   --combine_db LSU
+                   
+                python /home/microbiome/data_storage/SATA2/Fisher_test/MicroFisher/MicroFisher-Fungal-Profiling/python/MicroFisher.py  combine -vv \
+                   -w $stat_result \
+                   --combine result_simulating_50species_3.short_read_min100_dbITS1_fisher_report.tsv result_simulating_50species_3.short_read_min100_dbITS2_fisher_report.tsv result_simulating_50species_3.short_read_min100_dbLSU_D1_fisher_new_report.tsv result_simulating_50species_3.short_read_min100_dbLSU_D2_fisher_new_report.tsv  \
+                   --min_overlap 2 \
+                   --output $stat_result/combine_result_ITS_LSU.tsv \
+                   --combine_db ITS,LSU
+        done
+    done
+ done
                         
                         
                         
