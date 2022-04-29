@@ -27,6 +27,7 @@ for length in 70 80 90 100 110 120 130 140 150; do
            
            #fungal classification applying Fisher database
             mkdir $stat_result
+            cp $result_dir/*.txt $stat_result
             for DB_cat in  ITS1 ITS2 LsuD1 LsuD2 ; do
                    if [ "$DB_cat" = "ITS1" ]; then
                        DB=ITS1_fisher
@@ -45,6 +46,7 @@ for length in 70 80 90 100 110 120 130 140 150; do
                                --db_path $MicroFisher_DBs \
                                --prefix simulating_${num}species_${replicate}.short_read \
                                --min $length --db $DB
+                        move $result_dir/*_report* $result_dir/*_kreport*   $stat_result
                     fi
                done
              
