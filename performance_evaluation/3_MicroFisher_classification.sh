@@ -53,30 +53,42 @@ for length in 70 80 90 100 110 120 130 140 150; do
                #combine the classification results
                python /home/microbiome/data_storage/SATA2/Fisher_test/MicroFisher/MicroFisher-Fungal-Profiling/python/MicroFisher.py  combine -vv \
                    -w $stat_result \
-                   --combine result_simulating_50species_3.short_read_min100_dbITS1_fisher_report.tsv result_simulating_50species_3.short_read_min100_dbITS2_fisher_report.tsv  \
+                   --combine result_simulating_${num}species_${replicate}.short_read_min${length}_dbITS1_fisher_report.tsv result_simulating_${num}species_${replicate}.short_read_min${length}_dbITS2_fisher_report.tsv  \
                    --min_overlap 2 \
                    --output $stat_result/combine_result_ITS.tsv \
                    --combine_db ITS
                    
                 python /home/microbiome/data_storage/SATA2/Fisher_test/MicroFisher/MicroFisher-Fungal-Profiling/python/MicroFisher.py  combine -vv \
                    -w $stat_result \
-                   --combine result_simulating_50species_3.short_read_min100_dbLSU_D1_fisher_new_report.tsv result_simulating_50species_3.short_read_min100_dbLSU_D2_fisher_new_report.tsv  \
+                   --combine result_simulating_${num}species_${replicate}.short_read_min${length}_dbLSU_D1_fisher_new_report.tsv result_simulating_${num}species_${replicate}.short_read_min${length}_dbLSU_D2_fisher_new_report.tsv  \
                    --min_overlap 2 \
                    --output $stat_result/combine_result_LSU.tsv \
                    --combine_db LSU
                    
                 python /home/microbiome/data_storage/SATA2/Fisher_test/MicroFisher/MicroFisher-Fungal-Profiling/python/MicroFisher.py  combine -vv \
                    -w $stat_result \
-                   --combine result_simulating_50species_3.short_read_min100_dbITS1_fisher_report.tsv result_simulating_50species_3.short_read_min100_dbITS2_fisher_report.tsv result_simulating_50species_3.short_read_min100_dbLSU_D1_fisher_new_report.tsv result_simulating_50species_3.short_read_min100_dbLSU_D2_fisher_new_report.tsv  \
+                   --combine result_simulating_${num}species_${replicate}.short_read_min${length}_dbITS1_fisher_report.tsv result_simulating_${num}species_${replicate}.short_read_min${length}_dbITS2_fisher_report.tsv result_simulating_${num}species_${replicate}.short_read_min${length}_dbLSU_D1_fisher_new_report.tsv result_simulating_${num}species_${replicate}.short_read_min${length}_dbLSU_D2_fisher_new_report.tsv  \
                    --min_overlap 2 \
                    --output $stat_result/combine_result_ITS_LSU.tsv \
                    --combine_db ITS,LSU
         done
     done
  done
+ }                    
                         
                         
                         
                         
-                        
-
+ 
+ 
+ function print () {
+    arg1=$1
+    arg2=$2
+    
+    echo $arg1
+    echo $arg2
+    echo $arg1$arg2
+ }
+ 
+ 
+ 
