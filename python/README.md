@@ -24,6 +24,7 @@ python /home/microbiome/data_storage/SATA2/Fisher_test/MicroFisher/MicroFisher-F
 testing combination with taxonmy ranks
 
 python3 run_merge_reports.py  --combine eg1.report.tsv eg2.report.tsv --mode raw
+
 python3 run_merge_reports.py  --combine eg1.report.tsv eg2.report.tsv --mode weighted
        
 ```    
