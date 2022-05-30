@@ -20,13 +20,12 @@ Testing combination on workstation
 python /home/microbiome/data_storage/SATA2/Fisher_test/MicroFisher/MicroFisher-Fungal-Profiling/python/MicroFisher.py  combine -vv -w /home/microbiome/data_storage/SATA2/Fisher_test/Test_Fungi_RefSeq/NovaSeq_test/hitlength_test/simulating_100species_5/ --combine result_simulating_100species_5.short_read_min120_dbITS1_report.tsv result_simulating_100species_5.short_read_min120_dbITS2_fisher_report.tsv result_simulating_100species_5.short_read_min120_dbLSU_D1_fisher_new_report.tsv result_simulating_100species_5.short_read_min120_dbLSU_D2_fisher_new_report.tsv --min_overlap 3 --output combined_result.report.tsv --combine_db ITS1 ITS2
 ```
 
-```
+
 testing combination with taxonmy ranks
-```
 python3 run_merge_reports.py  --combine eg1.report.tsv eg2.report.tsv --mode raw
 python3 run_merge_reports.py  --combine eg1.report.tsv eg2.report.tsv --mode weighted
        
-       
+```    
 python3 /home/microbiome/data_storage/SATA2/Fisher_test/MicroFisher/MicroFisher-Fungal-Profiling/python/run_merge_reports.py  \
        --combine result_simulating_100species_5.short_read_min120_dbITS1_report.tsv result_simulating_100species_5.short_read_min120_dbITS2_fisher_report.tsv \
        --mode raw
@@ -34,5 +33,5 @@ python3 /home/microbiome/data_storage/SATA2/Fisher_test/MicroFisher/MicroFisher-
 python3 /home/microbiome/data_storage/SATA2/Fisher_test/MicroFisher/MicroFisher-Fungal-Profiling/python/run_merge_reports.py  \
        --combine result_simulating_100species_5.short_read_min120_dbITS1_report.tsv result_simulating_100species_5.short_read_min120_dbITS2_fisher_report.tsv \
        --mode weighted
-       
+```
 
