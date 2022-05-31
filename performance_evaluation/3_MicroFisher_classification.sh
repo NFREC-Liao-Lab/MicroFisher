@@ -50,27 +50,57 @@ for length in 70 80 90 100 110 120 130 140 150; do
                    mv $result_dir/*_report* $result_dir/*_output*   $stat_result
              done
              
+             
                #combine the classification results
-               python /home/microbiome/data_storage/SATA2/Fisher_test/MicroFisher/MicroFisher-Fungal-Profiling/python/MicroFisher.py  combine -vv \
-                   -w $stat_result \
-                   --combine result_simulating_${num}species_${replicate}.short_read_min${length}_dbITS1_fisher_report.tsv result_simulating_${num}species_${replicate}.short_read_min${length}_dbITS2_fisher_report.tsv  \
-                   --min_overlap 2 \
-                   --output $stat_result/combine_result_ITS.tsv \
-                   --combine_db ITS
+              # python /home/microbiome/data_storage/SATA2/Fisher_test/MicroFisher/MicroFisher-Fungal-Profiling/python/MicroFisher.py  combine -vv \
+               #    -w $stat_result \
+               #    --combine result_simulating_${num}species_${replicate}.short_read_min${length}_dbITS1_fisher_report.tsv result_simulating_${num}species_${replicate}.short_read_min${length}_dbITS2_fisher_report.tsv  \
+               #    --min_overlap 2 \
+               #    --output $stat_result/combine_result_ITS.tsv \
+               #    --combine_db ITS
                    
-                python /home/microbiome/data_storage/SATA2/Fisher_test/MicroFisher/MicroFisher-Fungal-Profiling/python/MicroFisher.py  combine -vv \
-                   -w $stat_result \
-                   --combine result_simulating_${num}species_${replicate}.short_read_min${length}_dbLSU_D1_fisher_new_report.tsv result_simulating_${num}species_${replicate}.short_read_min${length}_dbLSU_D2_fisher_new_report.tsv  \
-                   --min_overlap 2 \
-                   --output $stat_result/combine_result_LSU.tsv \
-                   --combine_db LSU
+               # python /home/microbiome/data_storage/SATA2/Fisher_test/MicroFisher/MicroFisher-Fungal-Profiling/python/MicroFisher.py  combine -vv \
+               #    -w $stat_result \
+               #    --combine result_simulating_${num}species_${replicate}.short_read_min${length}_dbLSU_D1_fisher_new_report.tsv result_simulating_${num}species_${replicate}.short_read_min${length}_dbLSU_D2_fisher_new_report.tsv  \
+               #    --min_overlap 2 \
+                #   --output $stat_result/combine_result_LSU.tsv \
+               #    --combine_db LSU
                    
-                python /home/microbiome/data_storage/SATA2/Fisher_test/MicroFisher/MicroFisher-Fungal-Profiling/python/MicroFisher.py  combine -vv \
-                   -w $stat_result \
-                   --combine result_simulating_${num}species_${replicate}.short_read_min${length}_dbITS1_fisher_report.tsv result_simulating_${num}species_${replicate}.short_read_min${length}_dbITS2_fisher_report.tsv result_simulating_${num}species_${replicate}.short_read_min${length}_dbLSU_D1_fisher_new_report.tsv result_simulating_${num}species_${replicate}.short_read_min${length}_dbLSU_D2_fisher_new_report.tsv  \
-                   --min_overlap 2 \
-                   --output $stat_result/combine_result_ITS_LSU.tsv \
-                   --combine_db ITS,LSU
+             #   python /home/microbiome/data_storage/SATA2/Fisher_test/MicroFisher/MicroFisher-Fungal-Profiling/python/MicroFisher.py  combine -vv \
+             #      -w $stat_result \
+               #    --combine result_simulating_${num}species_${replicate}.short_read_min${length}_dbITS1_fisher_report.tsv result_simulating_${num}species_${replicate}.short_read_min${length}_dbITS2_fisher_report.tsv result_simulating_${num}species_${replicate}.short_read_min${length}_dbLSU_D1_fisher_new_report.tsv result_simulating_${num}species_${replicate}.short_read_min${length}_dbLSU_D2_fisher_new_report.tsv  \
+               #    --min_overlap 2 \
+                #   --output $stat_result/combine_result_ITS_LSU.tsv \
+                #   --combine_db ITS,LSU
+             
+             ##combine with taxonomy ranks
+             cd $stat_result
+             python  /home/microbiome/data_storage/SATA2/Fisher_test/MicroFisher/MicroFisher-Fungal-Profiling/python/run_merge_reports.py  \
+                    --combine result_simulating_${num}species_${replicate}.short_read_min${length}_dbITS1_fisher_report.tsv \
+                              result_simulating_${num}species_${replicate}.short_read_min${length}_dbITS2_fisher_report.tsv \
+                    --mode raw
+             for merged_file in  $(ls merged_output*) ; do
+                 mv $merged_file ITS_${merged_file}
+             done
+             
+             python  /home/microbiome/data_storage/SATA2/Fisher_test/MicroFisher/MicroFisher-Fungal-Profiling/python/run_merge_reports.py  \
+                    --combine result_simulating_${num}species_${replicate}.short_read_min${length}_dbLSU_D1_fisher_new_report.tsv \
+                              result_simulating_${num}species_${replicate}.short_read_min${length}_dbLSU_D2_fisher_new_report.tsv \
+                    --mode raw
+             for merged_file in  $(ls merged_output*) ; do
+                 mv $merged_file LSU_${merged_file}
+             done
+                   
+             python  /home/microbiome/data_storage/SATA2/Fisher_test/MicroFisher/MicroFisher-Fungal-Profiling/python/run_merge_reports.py  \
+                    --combine result_simulating_${num}species_${replicate}.short_read_min${length}_dbLSU_D1_fisher_new_report.tsv \
+                              result_simulating_${num}species_${replicate}.short_read_min${length}_dbLSU_D2_fisher_new_report.tsv \
+                              result_simulating_${num}species_${replicate}.short_read_min${length}_dbITS1_fisher_report.tsv \
+                              result_simulating_${num}species_${replicate}.short_read_min${length}_dbITS2_fisher_report.tsv \
+                    --mode raw
+             for merged_file in  $(ls merged_output*) ; do
+                 mv $merged_file ITS_LSU_${merged_file}
+             done
+                   
         done
     done
  done
