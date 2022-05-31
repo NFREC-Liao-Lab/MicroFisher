@@ -23,3 +23,18 @@ for length in 70 80 90 100 110 120 130 140 150; do
            result_dir=$Test_Fungi_RefSeq/mock_community/simulating_${num}species_${replicate}
            seq_dir=$Test_Fungi_RefSeq/mock_community/simulating_${num}species_${replicate}/splite_seq
            stat_result=$Test_Fungi_RefSeq/mock_community/classification_result/stat_result_simulating_${num}species_${length}_${replicate}
+           cd $stat_result
+         for db in ITS LSU ITS_LSU; do
+           for rank in class order family genus species; do
+               if [ "$rank" = "class" ]; then
+                  rank_lel=3
+               elif [ "$rank" = "order" ]; then
+                  rank_lel=4
+               elif [ "$rank" = "family" ]; then
+                  rank_lel=5
+               elif [ "$rank" = "genus" ]; then
+                  rank_lel=6
+               elif [ "$rank" = "species" ]; then
+                  rank_lel=7
+           cat ${db}_merged_output_taxa_${rank}.tsv |awk '{print $2}' |while read line; do
+               var1=$cat
