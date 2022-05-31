@@ -34,6 +34,13 @@ def normalise_data(data_each):
     return(data_n)
 
 
+def weight_data(data_each, weight=1):
+    if weight != 1:
+        data_n = {k:(v*weight) for k, v in data_each.items()}
+        return(data_n)
+    return(data_each)
+
+
 #
 # report_files = "example.report.tsv"
 # report_files = ["eg1.report.tsv", "eg2.report.tsv"]
