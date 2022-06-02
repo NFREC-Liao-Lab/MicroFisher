@@ -6,6 +6,7 @@ class Config:
         self.cpus = cpus
         self.distinct_count = distinct_count
         self.verbose = args.verbose
+
         try:
             self.min_len = args.min
             self.prefix = args.prefix
@@ -13,7 +14,6 @@ class Config:
             self.min_len = 0
             self.prefix = ""
 
-        
         self.centrifuge_path = os.path.expanduser(args.centrifuge_path)
         self.workspace = os.path.expanduser(args.workspace)
 
