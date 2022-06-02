@@ -1,4 +1,4 @@
-from taxanomy import get_desired_taxa_ranks
+from taxonomy import get_desired_taxa_ranks
 
 
 def summarise_data(parsed_data, rank):

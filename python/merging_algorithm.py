@@ -1,5 +1,5 @@
 # Merging algorithms
-import taxanomy_utils
+import taxonomy_utils
 
 MODE_CHOICES = ["boolean", "raw", "weighted", "weighted_length", "probability"]
 
@@ -33,11 +33,11 @@ def a_raw(data_summary):
 
 def a_weighted(data_summary, report_length_dict = None):
 
-    data_mode = {k: taxanomy_utils.normalise_data(v) for k, v in data_summary.items()}
+    data_mode = {k: taxonomy_utils.normalise_data(v) for k, v in data_summary.items()}
     if report_length_dict is not None:
         max_length = max(report_length_dict.values())
         weight_length = {k: v / max_length for k, v in report_length_dict.items()}
-        data_mode = {k: taxanomy_utils.weight_data(v, weight_length[k])
+        data_mode = {k: taxonomy_utils.weight_data(v, weight_length[k])
                      for k, v in data_mode.items()}
     results = a_raw(data_mode)
     normalised_factor = len(data_summary)
@@ -47,11 +47,11 @@ def a_weighted(data_summary, report_length_dict = None):
 
 def a_probability(data_summary, report_length_dict):
 
-    # data_mode = {k:taxanomy_utils.normalise_data(v) for k, v in data_summary.items()}
+    # data_mode = {k:taxonomy_utils.normalise_data(v) for k, v in data_summary.items()}
     # # if report_length_dict is not None:
     # #     max_length = max(report_length_dict.values())
     # #     weight_length = {k:v/max_length for k, v in report_length_dict.items()}
-    # #     data_mode = {k:taxanomy_utils.weight_data(v, weight_length[k]) for k, v in data_mode.items()}
+    # #     data_mode = {k:taxonomy_utils.weight_data(v, weight_length[k]) for k, v in data_mode.items()}
     # results = a_raw(data_mode)
     # normalised_factor = len(data_summary)
     # percentage = {k:v/normalised_factor for k, v in results.items()}

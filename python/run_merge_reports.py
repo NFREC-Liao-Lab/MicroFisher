@@ -1,7 +1,7 @@
 import sys
 import warnings
 import argparse
-import taxanomy_utils
+import taxonomy_utils
 import merging_algorithm
 
 # report_files = ["eg_a.report.tsv", "eg_b.report.tsv"]
@@ -68,12 +68,12 @@ def main():
     # length_list = args.length
     desired_ranks = ["class", "order", "family", "genus", "species"]
 
-    report_length_dict = taxanomy_utils.create_report_length(
+    report_length_dict = taxonomy_utils.create_report_length(
         report_files, args.length)
-    parsed_data = taxanomy_utils.parse_report_files(report_files)
+    parsed_data = taxonomy_utils.parse_report_files(report_files)
 
     for rank in desired_ranks:
-        data_summary = {k: taxanomy_utils.summarise_data(
+        data_summary = {k: taxonomy_utils.summarise_data(
             v, rank) for k, v in parsed_data.items()}
 
         if args.mode == "raw":
