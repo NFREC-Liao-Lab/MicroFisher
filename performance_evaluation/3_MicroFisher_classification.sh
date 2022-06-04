@@ -51,7 +51,9 @@ for length in 70 80 90 100 110 120 130 140 150; do
                                --min $length --db $DB
                    fi
                    cp $result_dir/*_report.tsv  $classification_result_collection
-                   mv $result_dir/*_report* $result_dir/*_output*   $stat_result
+                   cp $result_dir/*report_kreport.tsv $classification_result_collection
+                   mv $result_dir/*_report*    $stat_result
+                   mv $result_dir/*_output*   $stat_result
              done
              
              
@@ -107,7 +109,7 @@ for length in 70 80 90 100 110 120 130 140 150; do
                  cp $merged_file  $classification_result_collection/result_simulating_${num}species_${replicate}.short_read_min${length}_ITS_LSU_${merged_file}
                  mv $merged_file ITS_LSU_${merged_file}
              done
-             cp *report_kreport.tsv $classification_result_collection
+             
         done
     done
  done
