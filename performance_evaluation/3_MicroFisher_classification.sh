@@ -29,7 +29,7 @@ for length in 70 80 90 100 110 120 130 140 150; do
            
            #fungal classification applying Fisher database
             mkdir $stat_result
-            cp $result_dir/*.txt $stat_result
+            cp -f $result_dir/*.txt $stat_result
             cp -f $result_dir/*.txt $classification_result_collection
             for DB_cat in  ITS1 ITS2 LsuD1 LsuD2 ; do
                    if [ "$DB_cat" = "ITS1" ]; then
@@ -50,10 +50,10 @@ for length in 70 80 90 100 110 120 130 140 150; do
                                --prefix simulating_${num}species_${replicate}.short_read \
                                --min $length --db $DB
                    fi
-                   cp $result_dir/*_report.tsv  $classification_result_collection
-                   cp $result_dir/*report_kreport.tsv $classification_result_collection
-                   mv $result_dir/*_report*    $stat_result
-                   mv $result_dir/*_output*   $stat_result
+                   cp -f $result_dir/*_report.tsv  $classification_result_collection
+                   cp -f $result_dir/*report_kreport.tsv $classification_result_collection
+                   mv -f $result_dir/*_report*    $stat_result
+                   mv -f $result_dir/*_output*   $stat_result
              done
              
              
