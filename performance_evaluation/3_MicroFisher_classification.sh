@@ -107,7 +107,7 @@ for length in 70 80 90 100 110 120 130 140 150; do
                  cp $merged_file  $classification_result_collection/result_simulating_${num}species_${replicate}.short_read_min${length}_ITS_LSU_${merged_file}
                  mv $merged_file ITS_LSU_${merged_file}
              done
-                   
+             cp *report_kreport.tsv $classification_result_collection
         done
     done
  done
