@@ -84,8 +84,7 @@ for length in 70 80 90 100 110 120 130 140 150; do
              python  /home/microbiome/data_storage/SATA2/Fisher_test/MicroFisher/MicroFisher-Fungal-Profiling/python/run_merge_reports.py  \
                     --combine result_simulating_${num}species_${replicate}.short_read_min${length}_dbITS1_fisher_report.tsv \
                               result_simulating_${num}species_${replicate}.short_read_min${length}_dbITS2_fisher_report.tsv \
-                    #--mode raw
-                    --mode weighted
+                    --mode weighted  #option:raw
              for merged_file in  $(ls merged_output*) ; do
                  cp $merged_file  $classification_result_collection/result_simulating_${num}species_${replicate}.short_read_min${length}_ITS_${merged_file}
                  mv $merged_file ITS_${merged_file}
@@ -94,8 +93,7 @@ for length in 70 80 90 100 110 120 130 140 150; do
              python  /home/microbiome/data_storage/SATA2/Fisher_test/MicroFisher/MicroFisher-Fungal-Profiling/python/run_merge_reports.py  \
                     --combine result_simulating_${num}species_${replicate}.short_read_min${length}_dbLSU_D1_fisher_new_report.tsv \
                               result_simulating_${num}species_${replicate}.short_read_min${length}_dbLSU_D2_fisher_new_report.tsv \
-                    #--mode raw
-                    --mode weighted
+                    --mode weighted  #option:raw
              for merged_file in  $(ls merged_output*) ; do
                  cp $merged_file  $classification_result_collection/result_simulating_${num}species_${replicate}.short_read_min${length}_LSU_${merged_file}
                  mv $merged_file LSU_${merged_file}
@@ -106,8 +104,7 @@ for length in 70 80 90 100 110 120 130 140 150; do
                               result_simulating_${num}species_${replicate}.short_read_min${length}_dbLSU_D2_fisher_new_report.tsv \
                               result_simulating_${num}species_${replicate}.short_read_min${length}_dbITS1_fisher_report.tsv \
                               result_simulating_${num}species_${replicate}.short_read_min${length}_dbITS2_fisher_report.tsv \
-                    #--mode raw
-                    --mode weighted
+                    --mode weighted  #option:raw
              for merged_file in  $(ls merged_output*) ; do
                  cp $merged_file  $classification_result_collection/result_simulating_${num}species_${replicate}.short_read_min${length}_ITS_LSU_${merged_file}
                  mv $merged_file ITS_LSU_${merged_file}
