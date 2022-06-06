@@ -18,6 +18,6 @@ def init_setup_db(output_dir = "default_db"):
 
 
 
-
-if __name__ == "__main__":
-    main()
+#
+# if __name__ == "__main__":
+#     main()
