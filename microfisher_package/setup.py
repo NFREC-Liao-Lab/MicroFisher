@@ -18,10 +18,10 @@ setuptools.setup(
     },
     package_dir={"": "src"},
     # packages=['.'],
-    # packages=setuptools.find_packages(where="src"),
+    packages=setuptools.find_packages(where="src"),
     # scripts=["src/MicroFisher.py"],
     entry_points={
-        'console_scripts': ['MicroFisher=microfisher:main']
+        'console_scripts': ['MicroFisher=microfisher.microfisher:main']
     },
     # python_requires=">=3.6",
     classifiers=[

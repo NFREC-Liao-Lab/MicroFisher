@@ -2,13 +2,13 @@ import os
 import argparse
 import sys
 
-import run_centrifuge
-from config import Config
-# from run_centrifuge import Centrifuge
-# from run_kreport import CentrifugeKReport
-# from run_combine import combine
-import run_combine
-import run_init_setup
+
+from .configuration import Config
+from .run_centrifuge import Centrifuge
+from .run_kreport import CentrifugeKReport
+
+import microfisher.run_combine
+import microfisher.run_init_setup
 
 
 def search_db(args):
@@ -27,10 +27,10 @@ def search_db(args):
 def combine_results(args):
     if args.verbose > 0:
         print(f"\n==DEBUG== Arguments: {args}")
-    run_combine.combine(args)
+    microfisher.run_combine.combine_reports(args)
 
 def init_db(args):
-    run_init_setup.init_setup_db(output_dir = args.db_loc)
+    microfisher.run_init_setup.init_setup_db(output_dir = args.db_loc)
 
 
 def check_length_gt(length):

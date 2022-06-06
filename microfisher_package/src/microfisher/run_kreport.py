@@ -2,7 +2,7 @@ import os
 import sys
 import subprocess
 import shlex
-from config import Config
+# from .config import Config
 
 # del sys.modules["config"]
 # import importlib

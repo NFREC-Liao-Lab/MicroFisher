@@ -1,8 +1,7 @@
 import argparse
 import pytest
-from config import Config
 import tempfile
-
+from microfisher.configuration import Config
 
 @pytest.fixture
 def setup_args():

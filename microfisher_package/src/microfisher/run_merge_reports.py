@@ -2,9 +2,10 @@ import os
 import sys
 import warnings
 import argparse
-import taxonomy_utils
-import merging_algorithm
-import output_util
+
+from . import taxonomy_utils
+from . import merging_algorithm
+from . import output_util
 
 # report_files = ["eg_a.report.tsv", "eg_b.report.tsv"]
 # report_files = ["eg1.report.tsv", "eg2.report.tsv"]

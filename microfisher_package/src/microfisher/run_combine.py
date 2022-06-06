@@ -1,12 +1,11 @@
 import os
 import sys
 
-from config import Config
-# from run_centrifuge import Centrifuge
-from run_kreport import CentrifugeKReport
+from .configuration import Config
+from .run_kreport import CentrifugeKReport
 
 
-def combine(args):
+def combine_reports(args):
 
     if args.verbose > 0:
         print(f"\n==DEBUG== Arguments: {args}")
