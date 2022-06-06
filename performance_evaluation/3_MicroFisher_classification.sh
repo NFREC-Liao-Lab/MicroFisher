@@ -29,8 +29,8 @@ for length in 70 80 90 100 110 120 130 140 150; do
            
            #fungal classification applying Fisher database
             mkdir $stat_result
-            cp $result_dir/*.txt $stat_result
-            cp -f $result_dir/*.txt $classification_result_collection
+            yes | cp $result_dir/*.txt $stat_result
+            yes | cp $result_dir/*.txt $classification_result_collection
             for DB_cat in  ITS1 ITS2 LsuD1 LsuD2 ; do
                    if [ "$DB_cat" = "ITS1" ]; then
                        DB=ITS1_fisher
@@ -50,8 +50,10 @@ for length in 70 80 90 100 110 120 130 140 150; do
                                --prefix simulating_${num}species_${replicate}.short_read \
                                --min $length --db $DB
                    fi
-                   cp $result_dir/*_report.tsv  $classification_result_collection
-                   mv $result_dir/*_report* $result_dir/*_output*   $stat_result
+                   yes | cp $result_dir/*_report.tsv  $classification_result_collection
+                   yes | cp $result_dir/*report_kreport.tsv $classification_result_collection
+                   mv -f $result_dir/*_report*    $stat_result
+                   mv -f $result_dir/*_output*   $stat_result
              done
              
              
@@ -82,7 +84,7 @@ for length in 70 80 90 100 110 120 130 140 150; do
              python  /home/microbiome/data_storage/SATA2/Fisher_test/MicroFisher/MicroFisher-Fungal-Profiling/python/run_merge_reports.py  \
                     --combine result_simulating_${num}species_${replicate}.short_read_min${length}_dbITS1_fisher_report.tsv \
                               result_simulating_${num}species_${replicate}.short_read_min${length}_dbITS2_fisher_report.tsv \
-                    --mode raw
+                    --mode weighted  #option:raw/weighted/boolean/weighted_length --length 100 500
              for merged_file in  $(ls merged_output*) ; do
                  cp $merged_file  $classification_result_collection/result_simulating_${num}species_${replicate}.short_read_min${length}_ITS_${merged_file}
                  mv $merged_file ITS_${merged_file}
@@ -91,7 +93,7 @@ for length in 70 80 90 100 110 120 130 140 150; do
              python  /home/microbiome/data_storage/SATA2/Fisher_test/MicroFisher/MicroFisher-Fungal-Profiling/python/run_merge_reports.py  \
                     --combine result_simulating_${num}species_${replicate}.short_read_min${length}_dbLSU_D1_fisher_new_report.tsv \
                               result_simulating_${num}species_${replicate}.short_read_min${length}_dbLSU_D2_fisher_new_report.tsv \
-                    --mode raw
+                    --mode weighted  #option:raw/weighted/boolean/weighted_length --length 100 500
              for merged_file in  $(ls merged_output*) ; do
                  cp $merged_file  $classification_result_collection/result_simulating_${num}species_${replicate}.short_read_min${length}_LSU_${merged_file}
                  mv $merged_file LSU_${merged_file}
@@ -102,12 +104,12 @@ for length in 70 80 90 100 110 120 130 140 150; do
                               result_simulating_${num}species_${replicate}.short_read_min${length}_dbLSU_D2_fisher_new_report.tsv \
                               result_simulating_${num}species_${replicate}.short_read_min${length}_dbITS1_fisher_report.tsv \
                               result_simulating_${num}species_${replicate}.short_read_min${length}_dbITS2_fisher_report.tsv \
-                    --mode raw
+                    --mode weighted  #option:raw/weighted/boolean/weighted_length --length 100 500
              for merged_file in  $(ls merged_output*) ; do
                  cp $merged_file  $classification_result_collection/result_simulating_${num}species_${replicate}.short_read_min${length}_ITS_LSU_${merged_file}
                  mv $merged_file ITS_LSU_${merged_file}
              done
-                   
+             
         done
     done
  done
