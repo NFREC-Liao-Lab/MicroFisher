@@ -7,11 +7,13 @@ from run_centrifuge import Centrifuge
 from run_kreport import CentrifugeKReport
 # from run_combine import combine
 import run_combine
+import run_init_setup
 
 
 def search_db(args):
     # print('((%s))' % args.search)
-
+    if args.verbose > 0:
+        print(f"\n==DEBUG== Arguments: {args}")
     config = Config(args)
     centrifuge = Centrifuge(config)
     cent_kreport = CentrifugeKReport(config)
@@ -22,7 +24,12 @@ def search_db(args):
 
 
 def combine_results(args):
+    if args.verbose > 0:
+        print(f"\n==DEBUG== Arguments: {args}")
     run_combine.combine(args)
+
+def init_db(args):
+    run_init_setup.init_setup_db(output_dir = args.db_loc)
 
 
 def check_length_gt(length):
@@ -38,10 +45,11 @@ def check_length_gt(length):
 
 def main():
 
-    parser = argparse.ArgumentParser(description="MicroFisher: TODO XXX.")
+    parser = argparse.ArgumentParser(prog= "MicroFisher", description="%(prog)s: TODO XXX.")
     parent_parser = argparse.ArgumentParser(
         description="Parent parser.", add_help=False)
     # formatter_class=argparse.ArgumentDefaultsHelpFormatter)
+
     parent_parser.add_argument("-v", "--verbose", action='count', default=0,
                                help="Verbose mode (allow multiples)")
     parent_parser.add_argument("--dry", action="store_true", help="Dry run")
@@ -54,15 +62,18 @@ def main():
     # parser.set_defaults(func=help_message)
 
     subparsers = parser.add_subparsers(title="subcommand", dest='subcommand',
-                                       # required=True,
-                                       description="XXX", help="Different commands")
+                                       description="Collection of %(prog)s functions.", help="See additional help 'subcommand --help'")
 
-    p_search = subparsers.add_parser('search', parents=[
-                                     parent_parser], help='Search with centrifuge', conflict_handler='resolve')
+    p_init = subparsers.add_parser('init_db', #parents=[parent_parser],
+                                   help='Initialise centrifuge with prebuild databases.', conflict_handler='resolve')
+    p_search = subparsers.add_parser('search', parents=[parent_parser],
+                                     help='Search with centrifuge', conflict_handler='resolve')
+    p_combine = subparsers.add_parser('combine', parents=[parent_parser],
+                                      help='Combine results', conflict_handler='resolve')
 
-    p_combine = subparsers.add_parser('combine', parents=[
-                                      parent_parser], help='Combine results', conflict_handler='resolve')
-
+    p_init.add_argument("--db_loc", default= "default_db", required=False,
+                              help="Location to store the default centrifuge databases. (Default: ./%(default)s)")
+    p_init.set_defaults(func=init_db)
     # parser.add_argument("-1", help="forward reads")
     # parser.add_argument("-2", help="forward reads")
     # TODO(SW): Add either -1 -2 OR --prefix options later
@@ -95,9 +106,9 @@ def main():
     if args.subcommand is None:
         parser.print_help()
         sys.exit(-1)
-    if args.verbose > 0:
-        print(f"\n==DEBUG== Arguments: {args}")
 
+    # if args.verbose > 0:
+    #     print(f"\n==DEBUG== Arguments: {args}")
     args.func(args)
 
 

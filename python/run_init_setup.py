@@ -1,5 +1,4 @@
 import sys
-import warnings
 import requests
 import tempfile
 from zipfile import ZipFile

@@ -1,4 +1,47 @@
-## Work in progress
+# MicroFisher
+
+## Installation
+python3 setup.py install
+
+## Usage
+### Initialise centrifuge database
+`MicroFisher init_db --help`
+#### Arguments
+`--db_loc`: Custome location/folder for the prebuild centrifuge databases.
+
+#### Examples
+Fetch prebuild databases and store at default location.
+```bash
+MicroFisher init_db
+```
+Fetch prebuild database and store at any folder (`PATH_TO_NEW_DATABASE_FOLDER`)
+```bash
+MicroFisher init_db --db_loc PATH_TO_NEW_DATABASE_FOLDER
+```
+
+### Search taxonmy with centrifuge
+`MicroFisher search --help`
+
+#### Arguments
+`--prefix`: Prefix for the input file
+`--min`: Minimum matching length
+`--db`: Which centrifuge database to search against.
+#### Examples
+```
+MicroFisher search -vv  -w PATH_TO_WORKSPACE --min 120  --db_path PATH_TO_DATABASE --db LSU_D2
+```
+
+### Combine reports from multiple databases
+`MicroFisher combine --help`
+
+#### Combining methods
+**TODO**
+- boolean
+- raw  
+- weight
+- wegiht_length
+
+
 
 Testing parameters.
 ```bash
@@ -26,19 +69,18 @@ testing combination with taxonmy ranks
 python3 run_merge_reports.py  --combine eg1.report.tsv eg2.report.tsv --mode raw
 
 python3 run_merge_reports.py  --combine eg1.report.tsv eg2.report.tsv --mode weighted
-       
+
 ```    
 python3 /home/microbiome/data_storage/SATA2/Fisher_test/MicroFisher/MicroFisher-Fungal-Profiling/python/run_merge_reports.py  \
        --combine result_simulating_100species_5.short_read_min120_dbITS1_report.tsv result_simulating_100species_5.short_read_min120_dbITS2_fisher_report.tsv \
        --mode raw
-       
+
 python3 /home/microbiome/data_storage/SATA2/Fisher_test/MicroFisher/MicroFisher-Fungal-Profiling/python/run_merge_reports.py  \
        --combine result_simulating_100species_5.short_read_min120_dbITS1_report.tsv result_simulating_100species_5.short_read_min120_dbITS2_fisher_report.tsv \
        --mode weighted
-       
-       
+
+
 python3 /home/microbiome/data_storage/SATA2/Fisher_test/MicroFisher/MicroFisher-Fungal-Profiling/python/run_merge_reports.py  \
        --combine result_simulating_100species_5.short_read_min120_dbITS1_report.tsv result_simulating_100species_5.short_read_min120_dbITS2_fisher_report.tsv  result_simulating_100species_5.short_read_min120_dbLSU_D1_fisher_new_report.tsv result_simulating_100species_5.short_read_min120_dbLSU_D2_fisher_new_report.tsv \
        --mode raw
 ```
-
