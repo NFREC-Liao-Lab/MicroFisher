@@ -1,7 +1,14 @@
 # MicroFisher
 
 ## Installation
-python3 setup.py install
+```bash
+pip3 install microfisher_packages/
+```
+**OR**
+```bash
+cd microfisher_packages
+pip3 install .
+```
 
 ## Usage
 ### Initialise centrifuge database
@@ -28,11 +35,27 @@ MicroFisher init_db --db_loc PATH_TO_NEW_DATABASE_FOLDER
 `--db`: Which centrifuge database to search against.
 #### Examples
 ```
-MicroFisher search -vv  -w PATH_TO_WORKSPACE --min 120  --db_path PATH_TO_DATABASE --db LSU_D2
+MicroFisher search -vv  
+  -w PATH_TO_WORKSPACE \
+  --prefix example_ --min 120 \
+  --centrifuge_path PATH_TO_CENTRIFUGE \
+  --db_path PATH_TO_DATABASE --db LSU_D2 \
 ```
+
+```
+python3 -m microfisher search ---help
+```
+
 
 ### Combine reports from multiple databases
 `MicroFisher combine --help`
+`python3 -m microfisher combine --help`
+
+```
+MicroFisher combine -vv -w PATH_TO_WORKSPACE \
+--combine report_1 report_2 report_3 \
+--min_overlap 3 --output combined_result.report.tsv
+```
 
 #### Combining methods
 **TODO**
