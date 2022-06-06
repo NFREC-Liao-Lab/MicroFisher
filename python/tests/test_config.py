@@ -8,8 +8,8 @@ import tempfile
 def setup_args():
     parser = argparse.ArgumentParser()
     parser.set_defaults(verbose=1, min=100, prefix="example",
-        workspace="workspace",
-        centrifuge_path="cpath", db_path="db", db="dbName")
+                        workspace="workspace",
+                        centrifuge_path="cpath", db_path="db", db="dbName")
     args = parser.parse_args()
     return args
 

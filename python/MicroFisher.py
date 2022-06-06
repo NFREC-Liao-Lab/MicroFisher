@@ -8,6 +8,7 @@ from run_kreport import CentrifugeKReport
 # from run_combine import combine
 import run_combine
 
+
 def search_db(args):
     # print('((%s))' % args.search)
 
@@ -35,30 +36,32 @@ def check_length_gt(length):
     return RequiredLength
 
 
-
 def main():
 
     parser = argparse.ArgumentParser(description="MicroFisher: TODO XXX.")
-    parent_parser = argparse.ArgumentParser(description="Parent parser.", add_help=False)
+    parent_parser = argparse.ArgumentParser(
+        description="Parent parser.", add_help=False)
     # formatter_class=argparse.ArgumentDefaultsHelpFormatter)
     parent_parser.add_argument("-v", "--verbose", action='count', default=0,
-                        help="Verbose mode (allow multiples)")
+                               help="Verbose mode (allow multiples)")
     parent_parser.add_argument("--dry", action="store_true", help="Dry run")
     parent_parser.add_argument("-w", "--workspace",  default=".",
-                        help="path to your workspace/dataset. Default '.' current location.")
+                               help="path to your workspace/dataset. Default '.' current location.")
     parent_parser.add_argument("--centrifuge_path", default="",
-                        help="path to you centrifuge program (if it is not available in $PATH)")
+                               help="path to you centrifuge program (if it is not available in $PATH)")
     parent_parser.add_argument("--db_path", default="",
-                        help="path to the database (if it is not available by default). Currently append to centrifuge_path")
+                               help="path to the database (if it is not available by default). Currently append to centrifuge_path")
     # parser.set_defaults(func=help_message)
 
     subparsers = parser.add_subparsers(title="subcommand", dest='subcommand',
-                                        # required=True,
+                                       # required=True,
                                        description="XXX", help="Different commands")
 
-    p_search = subparsers.add_parser('search', parents=[parent_parser], help='Search with centrifuge', conflict_handler='resolve')
+    p_search = subparsers.add_parser('search', parents=[
+                                     parent_parser], help='Search with centrifuge', conflict_handler='resolve')
 
-    p_combine = subparsers.add_parser('combine', parents=[parent_parser], help='Combine results', conflict_handler='resolve')
+    p_combine = subparsers.add_parser('combine', parents=[
+                                      parent_parser], help='Combine results', conflict_handler='resolve')
 
     # parser.add_argument("-1", help="forward reads")
     # parser.add_argument("-2", help="forward reads")
