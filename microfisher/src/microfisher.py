@@ -2,9 +2,10 @@ import os
 import argparse
 import sys
 
+import run_centrifuge
 from config import Config
-from run_centrifuge import Centrifuge
-from run_kreport import CentrifugeKReport
+# from run_centrifuge import Centrifuge
+# from run_kreport import CentrifugeKReport
 # from run_combine import combine
 import run_combine
 import run_init_setup
