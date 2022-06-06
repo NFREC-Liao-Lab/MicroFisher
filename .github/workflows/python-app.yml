@@ -24,7 +24,7 @@ jobs:
       run: |
         python -m pip install --upgrade pip
         pip install flake8 pytest
-        if [ -f python/requirements.txt ]; then pip install -r python/requirements.txt; fi
+        if [ -f microfisher_package/requirements.txt ]; then pip install -r microfisher_package/requirements.txt; fi
         pip install -e microfisher_package/
     - name: Lint with flake8
       run: |
