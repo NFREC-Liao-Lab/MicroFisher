@@ -11,7 +11,7 @@ def test_centrifuge(config):
     commands = ("cpath/centrifuge -p 1 -k 1 --min-hitlen 100 -x "
                 "cpath/db/dbName "
                 "-1 workspace/example_R1.fastq.gz -2 workspace/example_R2.fastq.gz "
-                "-S workspace/result_example_min100_dbdbName_report.tsv "
+                "-S workspace/result_example_min100_dbdbName_output.txt "
                 "--report-file workspace/result_example_min100_dbdbName_report.tsv "
                 )
     expected = shlex.split(commands)

@@ -27,11 +27,9 @@ class Config:
 
     def centrifuge_output_files(self):
         prefix_outfile = f"result_{self.prefix}_min{self.min_len}_db{self.db_name}"
-        out_result = os.path.join(
-            self.workspace, f"{prefix_outfile}_output.txt")
-        self.out_report = os.path.join(
-            self.workspace, f"{prefix_outfile}_report.tsv")
-        return out_result, self.out_report
+        self.out_output = os.path.join(self.workspace, f"{prefix_outfile}_output.txt")
+        self.out_report = os.path.join(self.workspace, f"{prefix_outfile}_report.tsv")
+        return self.out_output, self.out_report
 
     def format_params_centrifuge(self):
         params = f"-p {self.cpus} -k {self.distinct_count} --min-hitlen {self.min_len} -x {self.db}"

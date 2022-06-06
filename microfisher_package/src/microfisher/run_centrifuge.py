@@ -30,9 +30,9 @@ class Centrifuge:
 
         infile = [os.path.join(
             self.config.workspace, f"{self.config.prefix}_R{i}.fastq.gz") for i in [1, 2]]
-        out_result, out_report = config.centrifuge_output_files()
+        config.centrifuge_output_files()
         params = self.config.format_params_centrifuge()
-        config_files = f"-1 {infile[0]} -2 {infile[1]} -S {out_result} --report-file {self.config.out_report}"
+        config_files = f"-1 {infile[0]} -2 {infile[1]} -S {self.config.out_output} --report-file {self.config.out_report}"
         prog = os.path.join(self.config.centrifuge_path, "centrifuge")
         commands = f"{prog} {params} {config_files}"
         self.command_list = shlex.split(commands)
