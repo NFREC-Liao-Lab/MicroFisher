@@ -1,8 +1,7 @@
 import argparse
 import pytest
-from config import Config
 import tempfile
-
+from microfisher.configuration import Config
 
 @pytest.fixture
 def setup_args():
@@ -10,7 +9,7 @@ def setup_args():
     parser.set_defaults(verbose=1, min=100, prefix="example",
                         workspace="workspace",
                         centrifuge_path="cpath", db_path="db", db="dbName")
-    args = parser.parse_args()
+    args = parser.parse_args([])
     return args
 
 
