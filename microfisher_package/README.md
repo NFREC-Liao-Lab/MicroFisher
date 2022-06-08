@@ -28,6 +28,7 @@ MicroFisher init_db --db_loc PATH_TO_NEW_DATABASE_FOLDER
 
 ### Search taxonmy with centrifuge
 `MicroFisher search --help`
+`python3 -m microfisher search --help`
 
 #### Arguments
 `--prefix`: Prefix for the input file
@@ -42,9 +43,6 @@ MicroFisher search -vv
   --db_path PATH_TO_DATABASE --db LSU_D2 \
 ```
 
-```
-python3 -m microfisher search ---help
-```
 
 
 ### Combine reports from multiple databases
@@ -53,8 +51,8 @@ python3 -m microfisher search ---help
 
 
 ```
-# boolean mode
-MicroFisher combine -vv -w PATH_TO_WORKSPACE \
+# boolean mode: verbose output, and all reports are in PATH_TO_WORKSPACE folder
+MicroFisher combine -v -w PATH_TO_WORKSPACE \
 --combine report_1 report_2 report_3 \
 --mode boolean --min_overlap 3
 
