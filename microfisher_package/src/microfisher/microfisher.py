@@ -3,15 +3,13 @@ import argparse
 import sys
 
 
-
+# from . import run_combine
+from . import run_merge_reports
+from . import run_init_setup
+from . import merging_algorithm
 from .configuration import Config
 from .run_centrifuge import Centrifuge
 from .run_kreport import CentrifugeKReport
-
-import microfisher.run_combine
-import microfisher.run_merge_reports
-import microfisher.run_init_setup
-import microfisher.merging_algorithm
 
 def search_db(args):
     # print('((%s))' % args.search)
@@ -23,18 +21,18 @@ def search_db(args):
         if is_complete:
             output = cent_kreport.run()
     if args.verbose > 0:
-        print(f"\n==DEBUG== Done:\nReport {config.out_report}")
+        print(f"\n==DEBUG== Done\tReport at {config.out_report}")
 
 
 def merge_reports(args):
-    is_complete = microfisher.run_merge_reports.run(args)
+    is_complete = run_merge_reports.run(args)
     if args.verbose > 0 and is_complete :
-        print(f"\n==DEBUG== Done:\nMerged results at {args.out_dir}")
+        print(f"\n==DEBUG== Done\tMerged results at {args.out_dir}")
 
 def init_db(args):
-    is_complete = microfisher.run_init_setup.init_setup_db(output_dir = args.db_loc)
+    is_complete = run_init_setup.init_setup_db(output_dir = args.db_loc)
     if args.verbose > 0 and is_complete:
-        print(f"\n==DEBUG== Done:\nPrebuild database at {args.db_loc}")
+        print(f"\n==DEBUG== Done\tPrebuild database at {args.db_loc}")
 
 
 
@@ -102,7 +100,7 @@ def main():
                            action=check_length_gt(2))
     p_combine.add_argument("--out_dir", default="merged_results",
                            help="Output folders for all results.")
-    p_combine.add_argument("--mode", choices=microfisher.merging_algorithm.MODE_CHOICES,
+    p_combine.add_argument("--mode", choices=merging_algorithm.MODE_CHOICES,
                            default="raw",
                            help="""Algorithm for combining results together.
     boolean: Present or absent of the taxa (optional: --min_overlap).
@@ -125,13 +123,12 @@ def main():
     p_combine.set_defaults(func=merge_reports)
 
     args = parser.parse_args()
-    print(f"\n==DEBUG== Arguments: {args}")
+    if args.verbose > 0:
+        print(f"\n==DEBUG== Arguments: {args}")
     if args.subcommand is None:
         parser.print_help()
         sys.exit(-1)
 
-    if args.verbose > 0:
-        print(f"\n==DEBUG== Arguments: {args}")
     args.func(args)
 
 
