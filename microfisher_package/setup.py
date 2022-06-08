@@ -12,6 +12,7 @@ setuptools.setup(
     description="MicroFisher pipeline",
     long_description=long_description,
     long_description_content_type="text/markdown",
+    license_files = ('LICENSE'),
     url="https://github.com/NFREC-Liao-Lab/MicroFisher-Fungal-Profiling/",
     project_urls={
         "Bug Tracker": "https://github.com/NFREC-Liao-Lab/MicroFisher-Fungal-Profiling/issues",
