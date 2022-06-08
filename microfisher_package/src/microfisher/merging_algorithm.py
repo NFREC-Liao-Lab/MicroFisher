@@ -1,5 +1,5 @@
 # Merging algorithms
-import taxonomy_utils
+from . import taxonomy_utils
 
 MODE_CHOICES = ["boolean", "raw", "weighted", "weighted_length", "probability"]
 

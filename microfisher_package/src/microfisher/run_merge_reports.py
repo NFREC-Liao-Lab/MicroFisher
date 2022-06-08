@@ -52,6 +52,8 @@ def main():
 
     args = parser.parse_args()
     print(args)
+
+def run(args):
     report_files = args.combine
     threshold = args.filter
     out_dir = args.out_dir
@@ -110,7 +112,7 @@ def main():
                 fout.write(output_filter_list)
         except TypeError:
             pass
-
+    return True
 
 if __name__ == "__main__":
     main()

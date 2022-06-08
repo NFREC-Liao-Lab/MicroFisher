@@ -16,7 +16,7 @@ def init_setup_db(output_dir = "default_db"):
     with ZipFile(temp_file, 'r') as zipObj:
        zipObj.extractall(output_dir)
 
-
+    return True
 
 #
 # if __name__ == "__main__":
