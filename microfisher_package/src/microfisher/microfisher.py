@@ -46,7 +46,7 @@ def check_length_gt(length):
             setattr(args, self.dest, values)
     return RequiredLength
 
-
+from . import __version__
 def main():
 
     parser = argparse.ArgumentParser(prog= "MicroFisher", description="%(prog)s: TODO XXX.")
@@ -59,6 +59,7 @@ def main():
     parent_parser.add_argument("--dry", action="store_true", help="Dry run")
     parent_parser.add_argument("-w", "--workspace",  default=".",
                                help="path to your workspace/dataset. Default '.' current location.")
+    parent_parser.add_argument('--version', action='version', version='%(prog)s {version}'.format(version=__version__))
     # parser.set_defaults(func=help_message)
 
     subparsers = parser.add_subparsers(title="subcommand", dest='subcommand',
@@ -123,12 +124,13 @@ def main():
     p_combine.set_defaults(func=merge_reports)
 
     args = parser.parse_args()
-    if args.verbose > 0:
-        print(f"\n==DEBUG== Arguments: {args}")
+
     if args.subcommand is None:
         parser.print_help()
         sys.exit(-1)
 
+    if args.verbose > 0:
+        print(f"\n==DEBUG== Arguments: {args}")
     args.func(args)
 
 
