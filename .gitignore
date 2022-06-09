@@ -160,4 +160,8 @@ cython_debug/
 #.idea
 
 
+# Custom
 *.tsv
+demo/
+default_db/
+merged_results/
