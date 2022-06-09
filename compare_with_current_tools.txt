@@ -49,8 +49,70 @@ for i in cleandata/*_R1_val_1.fq.gz; do
     fi
 done
 
+###########################################################################################
+#Part3:#eukdetect
 
-#eukdetect
+
+
+
+
+###########################################################################################
+#Part4: MicroFfisher
+
+MicroFisher_DBs=/home/microbiome/data_storage/SATA2/Fisher_test/short_DBs/MicroFisher_DBs
+
+for i in cleandata/*_R1.fastq.gz; do
+    basename=$(basename  "$i" _R1.fastq.gz)
+    echo $basename
+    mkdir MicroFisher/${basename}_microfisher
+    cp cleandata/${basename}_* MicroFisher/${basename}_microfisher
+    for DB_cat in  ITS1 ITS2 LsuD1 LsuD2 ; do
+                   if [ "$DB_cat" = "ITS1" ]; then
+                       DB=ITS1_fisher
+                     elif [ "$DB_cat" = "ITS2" ]; then
+                       DB=ITS2_fisher
+                     elif [ "$DB_cat" = "LsuD1" ]; then
+                       DB=LSU_D1_fisher_new
+                     elif [ "$DB_cat" = "LsuD2" ]; then
+                       DB=LSU_D2_fisher_new
+                    fi
+                   echo $DB
+                   python /home/microbiome/data_storage/SATA2/Fisher_test/MicroFisher/MicroFisher-Fungal-Profiling/python/MicroFisher.py  search -vv  \
+                               -w MicroFisher/${basename}_microfisher  \
+                               --db_path $MicroFisher_DBs \
+                               --prefix $basename \
+                               --min 120 --db $DB
+      done
+      
+      
+      cd MicroFisher/${basename}_microfisher
+      python  /home/microbiome/data_storage/SATA2/Fisher_test/MicroFisher/MicroFisher-Fungal-Profiling/python/run_merge_reports.py  \
+                    --combine result_${basename}_min120_dbITS1_fisher_report.tsv \
+                              result_${basename}_min120_dbITS2_fisher_report.tsv \
+                    --mode weighted
+
+             
+      python  /home/microbiome/data_storage/SATA2/Fisher_test/MicroFisher/MicroFisher-Fungal-Profiling/python/run_merge_reports.py  \
+                    --combine result_${basename}_min120_dbLSU_D1_fisher_new_report.tsv \
+                              result_${basename}_min120_dbLSU_D2_fisher_new_report.tsv \
+                    --mode weighted
+
+                   
+      python  /home/microbiome/data_storage/SATA2/Fisher_test/MicroFisher/MicroFisher-Fungal-Profiling/python/run_merge_reports.py  \
+                    --combine result_${basename}_min120_dbLSU_D1_fisher_new_report.tsv \
+                              result_${basename}_min120_dbLSU_D2_fisher_new_report.tsv \
+                              result_${basename}_min120_dbITS1_fisher_report.tsv \
+                              result_${basename}_min120_dbITS2_fisher_report.tsv \
+                    --mode weighted
+
+      cd /home/microbiome/data_storage/SATA2/metagenome_data/
+done
+
+
+
+
+
+
 
 
 ###########################################################################################
