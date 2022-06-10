@@ -91,18 +91,18 @@ for i in cleandata/*_R1.fastq.gz; do
                     --combine result_${basename}_min120_dbITS1_fisher_report.tsv \
                               result_${basename}_min120_dbITS2_fisher_report.tsv \
                     --mode weighted
-      for i in merged_output_* ; do
+      for i in merged_output_*.tsv ; do
           name=$(basename $i .tsv)
-          mv $i ${name}.ITS.min120.tsv
+          mv $i ${name}.ITS.min120.txt
       done
              
       python  /home/microbiome/data_storage/SATA2/Fisher_test/MicroFisher/MicroFisher-Fungal-Profiling/python/run_merge_reports.py  \
                     --combine result_${basename}_min120_dbLSU_D1_fisher_new_report.tsv \
                               result_${basename}_min120_dbLSU_D2_fisher_new_report.tsv \
                     --mode weighted
-       for i in merged_output_* ; do
+       for i in merged_output_*.tsv ; do
           name=$(basename $i .tsv)
-          mv $i ${name}.LSU.min120.tsv
+          mv $i ${name}.LSU.min120.txt
       done
                    
       python  /home/microbiome/data_storage/SATA2/Fisher_test/MicroFisher/MicroFisher-Fungal-Profiling/python/run_merge_reports.py  \
@@ -111,9 +111,9 @@ for i in cleandata/*_R1.fastq.gz; do
                               result_${basename}_min120_dbITS1_fisher_report.tsv \
                               result_${basename}_min120_dbITS2_fisher_report.tsv \
                     --mode weighted
-       for i in merged_output_* ; do
+       for i in merged_output_*.tsv ; do
           name=$(basename $i .tsv)
-          mv $i ${name}.ITS_LSU.min120.tsv
+          mv $i ${name}.ITS_LSU.min120.txt
       done
       
       cd /home/microbiome/data_storage/SATA2/metagenome_data/
@@ -145,18 +145,18 @@ for i in cleandata/*_R1.fastq.gz; do
                     --combine result_${basename}_min80_dbITS1_fisher_report.tsv \
                               result_${basename}_min80_dbITS2_fisher_report.tsv \
                     --mode weighted
-      for i in merged_output_* ; do
+      for i in merged_output_*.tsv ; do
           name=$(basename $i .tsv)
-          mv $i ${name}.ITS.min80.tsv
+          mv $i ${name}.ITS.min80.txt
       done
              
       python  /home/microbiome/data_storage/SATA2/Fisher_test/MicroFisher/MicroFisher-Fungal-Profiling/python/run_merge_reports.py  \
                     --combine result_${basename}_min80_dbLSU_D1_fisher_new_report.tsv \
                               result_${basename}_min80_dbLSU_D2_fisher_new_report.tsv \
                     --mode weighted
-       for i in merged_output_* ; do
+       for i in merged_output_*.tsv ; do
           name=$(basename $i .tsv)
-          mv $i ${name}.LSU.min80.tsv
+          mv $i ${name}.LSU.min80.txt
       done
                    
       python  /home/microbiome/data_storage/SATA2/Fisher_test/MicroFisher/MicroFisher-Fungal-Profiling/python/run_merge_reports.py  \
@@ -165,9 +165,9 @@ for i in cleandata/*_R1.fastq.gz; do
                               result_${basename}_min80_dbITS1_fisher_report.tsv \
                               result_${basename}_min80_dbITS2_fisher_report.tsv \
                     --mode weighted
-       for i in merged_output_* ; do
+       for i in merged_output_*.tsv ; do
           name=$(basename $i .tsv)
-          mv $i ${name}.ITS_LSU.min80.tsv
+          mv $i ${name}.ITS_LSU.min80.txt
       done
       
       cd /home/microbiome/data_storage/SATA2/metagenome_data/
