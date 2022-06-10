@@ -1,5 +1,4 @@
 import os
-import sys
 import subprocess
 import shlex
 # from .config import Config

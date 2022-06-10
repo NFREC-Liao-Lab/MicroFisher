@@ -6,12 +6,12 @@ def summarise_data(parsed_data, rank):
     for info in parsed_data:
         try:
             key = info[rank]
-        except KeyError as e:
+        except KeyError:
             continue
         count = int(info["numReads"])
         try:
             results[key].append(count)
-        except KeyError as e:
+        except KeyError:
             results[key] = [count]
     summary = {k: sum(v) for k, v in results.items()}
     return(summary)
@@ -28,7 +28,6 @@ def process_report(all_lines, heading):
     return(parsed_data)
 
 
-
 def normalise_data(data_each):
     total = sum(data_each.values())
     data_n = {k: (v/total) for k, v in data_each.items()}
@@ -43,6 +42,7 @@ def weight_data(data_each, weight=1):
 #
 # report_files = "example.report.tsv"
 # report_files = ["eg1.report.tsv", "eg2.report.tsv"]
+
 
 def parse_report_files(report_files):
     parsed_data = dict()

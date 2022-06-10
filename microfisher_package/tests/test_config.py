@@ -3,6 +3,7 @@ import pytest
 import tempfile
 from microfisher.configuration import Config
 
+
 @pytest.fixture
 def setup_args():
     parser = argparse.ArgumentParser()

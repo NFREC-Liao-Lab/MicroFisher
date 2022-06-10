@@ -1,7 +1,3 @@
-import os
-import sys
-import warnings
-
 
 def format_merge_single(results, threshold, label="proportion"):
 

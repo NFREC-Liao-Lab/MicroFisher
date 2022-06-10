@@ -1,4 +1,4 @@
-import os
+from . import __version__
 import argparse
 import sys
 
@@ -10,6 +10,7 @@ from . import merging_algorithm
 from .configuration import Config
 from .run_centrifuge import Centrifuge
 from .run_kreport import CentrifugeKReport
+
 
 def search_db(args):
     # print('((%s))' % args.search)
@@ -26,14 +27,14 @@ def search_db(args):
 
 def merge_reports(args):
     is_complete = run_merge_reports.run(args)
-    if args.verbose > 0 and is_complete :
+    if args.verbose > 0 and is_complete:
         print(f"\n==DEBUG== Done\tMerged results at {args.out_dir}")
 
+
 def init_db(args):
-    is_complete = run_init_setup.init_setup_db(output_dir = args.db_loc)
+    is_complete = run_init_setup.init_setup_db(output_dir=args.db_loc)
     if args.verbose > 0 and is_complete:
         print(f"\n==DEBUG== Done\tPrebuild database at {args.db_loc}")
-
 
 
 def check_length_gt(length):
@@ -46,10 +47,11 @@ def check_length_gt(length):
             setattr(args, self.dest, values)
     return RequiredLength
 
-from . import __version__
+
 def main():
 
-    parser = argparse.ArgumentParser(prog= "MicroFisher", description="%(prog)s: TODO XXX.")
+    parser = argparse.ArgumentParser(
+        prog="MicroFisher", description="%(prog)s: TODO XXX.")
     parent_parser = argparse.ArgumentParser(
         description="Parent parser.", add_help=False)
     # formatter_class=argparse.ArgumentDefaultsHelpFormatter)
@@ -59,7 +61,8 @@ def main():
     parent_parser.add_argument("--dry", action="store_true", help="Dry run")
     parent_parser.add_argument("-w", "--workspace",  default=".",
                                help="path to your workspace/dataset. Default '.' current location.")
-    parent_parser.add_argument('--version', action='version', version='%(prog)s {version}'.format(version=__version__))
+    parent_parser.add_argument('--version', action='version',
+                               version='%(prog)s {version}'.format(version=__version__))
     # parser.set_defaults(func=help_message)
 
     subparsers = parser.add_subparsers(title="subcommand", dest='subcommand',
@@ -72,10 +75,9 @@ def main():
     p_combine = subparsers.add_parser('combine', parents=[parent_parser], formatter_class=argparse.RawTextHelpFormatter,
                                       help='Combine results', conflict_handler='resolve')
 
-    p_init.add_argument("--db_loc", default= "default_db", required=False,
-                              help="Location to store the default centrifuge databases. (Default: ./%(default)s)")
+    p_init.add_argument("--db_loc", default="default_db", required=False,
+                        help="Location to store the default centrifuge databases. (Default: ./%(default)s)")
     p_init.set_defaults(func=init_db)
-
 
     # parser.add_argument("-1", help="forward reads")
     # parser.add_argument("-2", help="forward reads")
@@ -91,7 +93,6 @@ def main():
     p_search.add_argument("-m", "--min", type=int, default=120,
                           help="minimum matching length (Default: %(default)s)")
     p_search.set_defaults(func=search_db)
-
 
     # parser_kreport_only = subparsers.add_parser('kk', help='kk results')
     # p_combine.set_defaults(subcommand='combine')

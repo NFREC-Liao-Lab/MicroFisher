@@ -1,7 +1,5 @@
 import os
 import sys
-import warnings
-import argparse
 
 from . import taxonomy_utils
 from . import merging_algorithm
@@ -53,6 +51,7 @@ from . import output_util
 #     args = parser.parse_args()
 #     print(args)
 
+
 def run(args):
     report_files = [os.path.join(args.workspace, f) for f in args.combine]
     out_dir = os.path.join(args.workspace, args.out_dir)
@@ -73,7 +72,7 @@ def run(args):
 
     for rank in desired_ranks:
         data_summary = {k: taxonomy_utils.summarise_data(v, rank)
-            for k, v in parsed_data.items()}
+                        for k, v in parsed_data.items()}
 
         if args.mode == "raw":
             results = merging_algorithm.a_raw(data_summary)
@@ -83,7 +82,7 @@ def run(args):
 
         elif args.mode == "boolean":
             results = merging_algorithm.a_boolean(data_summary, min_db_conut=2)
-            sorted_key = sorted(results, key=results.get, reverse=True)
+            # sorted_key = sorted(results, key=results.get, reverse=True)
             output_list, output_filter_list = output_util.format_merge_single(
                 results, threshold=None, label="db_conut")
 
