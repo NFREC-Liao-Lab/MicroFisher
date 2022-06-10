@@ -10,7 +10,7 @@ class Config:
         try:
             self.min_len = args.min
             self.prefix = args.prefix
-        except AttributeError as e:
+        except AttributeError:
             self.min_len = 0
             self.prefix = ""
 

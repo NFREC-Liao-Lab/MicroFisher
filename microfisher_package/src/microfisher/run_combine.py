@@ -1,5 +1,5 @@
+# Deprecated
 import os
-import sys
 
 from .configuration import Config
 from .run_kreport import CentrifugeKReport
@@ -24,7 +24,7 @@ def combine_reports(args):
                 # merged_result[id] = line
                 try:
                     all_results[id].append(line)
-                except KeyError as e:
+                except KeyError:
                     all_results[id] = [line]
 
     combined_list = []
@@ -37,7 +37,6 @@ def combine_reports(args):
         for k in combined_list:
             # TODO: ONLY output the first hit. Need better way to comibne them.
             outfile.write(all_results[k][0])
-
 
     config = Config(args)
     config.out_report = args.output

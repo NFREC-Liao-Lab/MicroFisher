@@ -1,5 +1,4 @@
 import os
-import sys
 import subprocess
 import shlex
 # from .config import Config
@@ -7,12 +6,6 @@ import shlex
 # del sys.modules["config"]
 # import importlib
 # importlib.reload(config.Config)
-
-# cc = Config(3,min_len=10)
-# cc.print()
-# cc.cpus
-# cc.distinct_count
-# cc.min_len
 
 
 class Centrifuge:
