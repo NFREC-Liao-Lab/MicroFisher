@@ -1,5 +1,28 @@
 #############################################################################################
 ##part 1: pre-process  the sequences from metatranscriptomic and metagenomic dataset
+for i in $(ls ./) ; do
+    echo $i
+    mv $i/Raw_Data/*.gz ./
+done
+
+splite_paired_seq(){
+i=$1
+base=$(basename "$i" .fastq.gz)
+gunzip $i
+/home/microbiome/tools/unmerge-paired-reads.sh $base.fastq ${base}_R1.fastq ${base}_R2.fastq 
+gzip $base.fastq ${base}_R1.fastq ${base}_R2.fastq
+}
+
+export -f splite_paired_seq
+
+time parallel -j 10 --eta --load 99% --noswap  splite_paired_seq ::: $(ls *.fastq.gz)
+
+
+
+
+
+
+
 #quality control for the fastq sequences
 ##############################################################################################
 fastqc rawdata/*.gz -t 20 -o fastqc_rawdata
