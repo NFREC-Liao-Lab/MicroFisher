@@ -50,7 +50,7 @@ done
 sortmerna \
      --workdir rRNA \
      --ref /home/microbiome/tools/sortmerna/data/rRNA_databases/unite-fungi-its.fasta \
-     --ref /home/microbiome/tools/sortmerna/data/rRNA_databases/silva-euk-28s-id98.fasta \
+     --ref /home/microbiome/tools/sortmerna/data/rRNA_databases/SILVA_138.1_LSURef_NR99_tax_silva.fasta  \
      --paired_out   --zip-out \
      --reads 52547.3.379752.AAGTGTCG-AAGTGTCG_R1.fastq.gz \
      --reads 52547.3.379752.AAGTGTCG-AAGTGTCG_R2.fastq.gz \
