@@ -8,16 +8,18 @@ done
 splite_paired_seq(){
 i=$1
 base=$(basename "$i" .fastq.gz)
-gunzip $i
-/home/microbiome/tools/unmerge-paired-reads.sh $base.fastq ${base}_R1.fastq ${base}_R2.fastq 
-gzip $base.fastq; gzip ${base}_R1.fastq; gzip ${base}_R2.fastq
+if [ ! -f "${base}_R1.fastq.gz" ]; then
+  pigz -d $i
+  cat $base.fastq | paste - - - - - - - - \
+    | tee >(cut -f 1-4 | tr "\t" "\n" > ${base}_R1.fastq) \
+    | cut -f 5-8 | tr "\t" "\n" > ${base}_R2.fastq
+ fi
+pigz $base.fastq  ${base}_R1.fastq ${base}_R2.fastq
 }
 
 export -f splite_paired_seq
 
-time parallel -j 10 --eta --load 99% --noswap  splite_paired_seq ::: $(ls *.fastq.gz)
-
-
+time parallel -j 2 --eta --load 99% --noswap  splite_paired_seq ::: $(ls *.fastq.gz)
 
 
 
