@@ -10,7 +10,7 @@ i=$1
 base=$(basename "$i" .fastq.gz)
 gunzip $i
 /home/microbiome/tools/unmerge-paired-reads.sh $base.fastq ${base}_R1.fastq ${base}_R2.fastq 
-gzip $base.fastq ${base}_R1.fastq ${base}_R2.fastq
+gzip $base.fastq; gzip ${base}_R1.fastq; gzip ${base}_R2.fastq
 }
 
 export -f splite_paired_seq
@@ -41,6 +41,30 @@ for i in rawdata/*_R1.fastq.gz; do
    fi
 done
 
+
+
+#extract the rRNA sequences https://github.com/biocore/sortmerna
+############################################################################################
+sortmerna \
+     --workdir rRNA \
+     --ref /home/microbiome/tools/sortmerna/data/rRNA_databases/unite-fungi-its.fasta \
+     --ref /home/microbiome/tools/sortmerna/data/rRNA_databases/silva-euk-28s-id98.fasta \
+     --paired_out   --zip-out \
+     --reads 52547.3.379752.AAGTGTCG-AAGTGTCG_R1.fastq.gz \
+     --reads 52547.3.379752.AAGTGTCG-AAGTGTCG_R2.fastq.gz \
+     --fastx  --aligned rRNA/52547.3.379752.AAGTGTCG-AAGTGTCG \
+     --threads 24
+
+
+
+
+
+
+ --reads ${id}_workdir/${id}.fastq \
+  --paired_out \
+  --aligned $dir/remained_rRNA/${id}.all_rRNA \
+  --other $dir/rRNA_pinus_remove/${id}.non.rRNA \
+  --fastx --log -v --num_alignments 1 -a 4
 ############################################################################################
 ##Part 2: fungal classification using metaphlan and kaiju
 #https://github.com/biobakery/biobakery/wiki/metaphlan3
