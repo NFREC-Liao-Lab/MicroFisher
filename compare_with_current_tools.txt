@@ -8,13 +8,17 @@ done
 splite_paired_seq(){
 i=$1
 base=$(basename "$i" .fastq.gz)
+echo "Now processing the file ${base}"
 if [ ! -f "${base}_R1.fastq.gz" ]; then
+  echo "start to uncompress the file ${base}"
   pigz -d $i
+  echo "Start to splite the forward and reverse sequence of file ${base}"
   cat $base.fastq | paste - - - - - - - - \
     | tee >(cut -f 1-4 | tr "\t" "\n" > ${base}_R1.fastq) \
     | cut -f 5-8 | tr "\t" "\n" > ${base}_R2.fastq
  fi
 pigz $base.fastq  ${base}_R1.fastq ${base}_R2.fastq
+echo "the processing of ${base} has been done"
 }
 
 export -f splite_paired_seq
