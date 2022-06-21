@@ -34,16 +34,16 @@ time parallel -j 2 --eta --load 99% --noswap  splite_paired_seq ::: $(ls *.fastq
 fastqc rawdata/*.gz -t 20 -o fastqc_rawdata
 
 
-for i in rawdata/*_R1.fastq.gz; do
+for i in metagenome_data_raw/*_R1.fastq.gz; do
    basename=$(basename "$i" _R1.fastq.gz)
    echo $basename
-   if [ ! -f cleandata/${basename}_R2_val_2.fq.gz ]; then
+   if [ ! -f metagenome_data_clean/${basename}_R2_val_2.fq.gz ]; then
      trim_galore -q 25 --phred33 --stringency 3 --length 110 \
-               --paired rawdata/${basename}_R1.fastq.gz    rawdata/${basename}_R2.fastq.gz \
+               --paired metagenome_data_raw/${basename}_R1.fastq.gz    metagenome_data_raw/${basename}_R2.fastq.gz \
                --gzip \
                --basename $basename \
                --cores 24 \
-               -o cleandata 
+               -o metagenome_data_clean 
    fi
 done
 
