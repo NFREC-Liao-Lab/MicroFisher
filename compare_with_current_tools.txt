@@ -51,6 +51,38 @@ done
 
 #extract the rRNA sequences https://github.com/biocore/sortmerna
 ############################################################################################
+mkdir metagenome_data_rRNA
+extract_rRNA (){
+  name=$1
+  base=$(basename $name _val_1.fq.gz)
+  if [ ! -f metagenome_data_rRNA/$base.rRNA_fwd.fq.gz ]; then
+      mkdir metagenome_data_rRNA/$base
+      echo "start to process ${base}" 
+     sortmerna \
+       --workdir metagenome_data_rRNA/$base \
+       --ref /home/microbiome/tools/sortmerna/data/rRNA_databases/unite-fungi-its.fasta \
+       --ref /home/microbiome/tools/sortmerna/data/rRNA_databases/SILVA_138.1_LSURef_NR99_tax_silva.fasta \
+       --paired_out --out2  --zip-out \
+       --reads metagenome_data_clean/${base}_val_1.fq.gz \
+       --reads metagenome_data_clean/${base}_val_2.fq.gz \
+       --fastx  --aligned metagenome_data_rRNA/$base/$base.rRNA \
+       --threads 24
+     echo "processing of ${base} is done"
+   fi
+}
+
+export -f extract_rRNA
+
+
+nohup time parallel -j 2 --eta --load 100% --noswap  extract_rRNA ::: $(cat metagenome_data_clean/file_list) &
+
+
+
+
+
+
+
+
 sortmerna \
      --workdir rRNA \
      --ref /home/microbiome/tools/sortmerna/data/rRNA_databases/unite-fungi-its.fasta \
