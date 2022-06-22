@@ -37,7 +37,7 @@ fastqc rawdata/*.gz -t 20 -o fastqc_rawdata
 for i in metagenome_data_raw/*_R1.fastq.gz; do
    basename=$(basename "$i" _R1.fastq.gz)
    echo $basename
-   if [ ! -f metagenome_data_clean/${basename}_R2_val_2.fq.gz ]; then
+   if [ ! -f metagenome_data_clean/${basename}_val_2.fq.gz ]; then
      trim_galore -q 25 --phred33 --stringency 3 --length 110 \
                --paired metagenome_data_raw/${basename}_R1.fastq.gz    metagenome_data_raw/${basename}_R2.fastq.gz \
                --gzip \
