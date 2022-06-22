@@ -44,6 +44,8 @@ for i in metagenome_data_raw/*_R1.fastq.gz; do
                --basename $basename \
                --cores 24 \
                -o metagenome_data_clean 
+   else 
+     echo "${base} has beed done"
    fi
 done
 
@@ -68,6 +70,8 @@ extract_rRNA (){
        --fastx  --aligned metagenome_data_rRNA/$base/$base.rRNA \
        --threads 24
      echo "processing of ${base} is done"
+   else
+     echo "${base} has been anlyzed"
    fi
 }
 
