@@ -84,38 +84,64 @@ nohup time parallel -j 2 --eta --load 100% --noswap  extract_rRNA ::: $(cat meta
 
 ###########################################################################################】
 #MicroFisher classification
-mkdir metagenome_data_rRNA
-extract_rRNA (){
-  name=$1
-  base=$(basename $name _val_1.fq.gz)
-  if [ ! -f metagenome_data_rRNA/$base.rRNA_fwd.fq.gz ]; then
-      mkdir metagenome_data_rRNA/$base
-      echo "start to process ${base}" 
-     sortmerna \
-       --workdir metagenome_data_rRNA/$base \
-       --ref /home/microbiome/tools/sortmerna/data/rRNA_databases/unite-fungi-its.fasta \
-       --ref /home/microbiome/tools/sortmerna/data/rRNA_databases/SILVA_138.1_LSURef_NR99_tax_silva.fasta \
-       --paired_out --out2  --zip-out \
-       --reads metagenome_data_clean/${base}_val_1.fq.gz \
-       --reads metagenome_data_clean/${base}_val_2.fq.gz \
-       --fastx  --aligned metagenome_data_rRNA/$base/$base.rRNA \
-       --threads 24
-     echo "processing of ${base} is done"
+mkdir metagenome_data_Fisher
+for i in $(cat metagenome_data_clean/file_list); do
+   base=$(basename $i _val_1.fq.gz)
+   echo "start to process the file ${base}"
+  if [ ! -d metagenome_data_Fisher/$base ]; then
+   mkdir metagenome_data_Fisher/$base
+   mv metagenome_data_clean/${base}_val_1.fq.gz  metagenome_data_Fisher/$base/${base}_R1.fastq.gz
+   mv metagenome_data_clean/${base}_val_2.fq.gz  metagenome_data_Fisher/$base/${base}_R2.fastq.gz
+   
+   for length in 80 120 150; do
+       mkdir  metagenome_data_Fisher/$base/${base}_MiniHit_${length}
+       MicroFisher search -vv --db ITS1  -w metagenome_data_Fisher/$base \
+                   --prefix ${base} \
+                   --min $length  --db_path /home/microbiome/data_storage/SATA2/Fisher_test/short_DBs/MicroFisher_DBs
+                   
+       MicroFisher search -vv --db ITS2  -w metagenome_data_Fisher/$base \
+                   --prefix ${base} \
+                   --min $length  --db_path /home/microbiome/data_storage/SATA2/Fisher_test/short_DBs/MicroFisher_DBs
+                   
+       MicroFisher search -vv --db LSU_D1  -w metagenome_data_Fisher/$base \
+                   --prefix ${base} \
+                   --min $length  --db_path /home/microbiome/data_storage/SATA2/Fisher_test/short_DBs/MicroFisher_DBs
+                   
+       MicroFisher search -vv --db LSU_D2  -w metagenome_data_Fisher/$base \
+                   --prefix ${base} \
+                   --min $length  --db_path /home/microbiome/data_storage/SATA2/Fisher_test/short_DBs/MicroFisher_DBs
+       mv metagenome_data_Fisher/$base/*.txt metagenome_data_Fisher/$base/*.tsv metagenome_data_Fisher/$base/*.err \
+          metagenome_data_Fisher/$base/${base}_MiniHit_${length}
+    done
+    mv  metagenome_data_Fisher/$base/${base}_R1.fastq.gz  metagenome_data_clean/${base}_val_1.fq.gz  
+    mv  metagenome_data_Fisher/$base/${base}_R2.fastq.gz  metagenome_data_clean/${base}_val_2.fq.gz 
+    echo "processing of ${base} has been done"
    else
-     echo "${base} has been anlyzed"
+    echo "${base} was analyzed"
    fi
-}
-
-export -f extract_rRNA
+ done
 
 
-nohup time parallel -j 2 --eta --load 100% --noswap  extract_rRNA ::: $(cat metagenome_data_clean/file_list) &
 
+
+
+
+
+
+
+
+       MicroFisher combine \
+                   -w metagenome_data_Fisher/$base \
+                   --combine ${base}_dbITS1_report.tsv ${base}_dbITS2_report.tsv ${base}_LSU_D1_report.tsv ${base}_LSU_D1_report.tsv \
+                   --mode weighted --min_overlap 2
 
 
 MicroFisher search -vv --db ITS1_fisher  -w /home/microbiome/data_storage/SATA3/metagenome_data/metagenome_data_clean \
                    --prefix 12957.1.300262.ACATAGGC-GCCTATGT_val \
                    --min 120  --db_path /home/microbiome/data_storage/SATA2/Fisher_test/short_DBs/MicroFisher_DBs
+
+
+
 
 MicroFisher search -vv  
   -w PATH_TO_WORKSPACE \
