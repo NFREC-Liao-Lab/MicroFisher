@@ -94,7 +94,6 @@ for i in $(cat metagenome_data_clean/file_list); do
    mv metagenome_data_clean/${base}_val_2.fq.gz  metagenome_data_Fisher/$base/${base}_R2.fastq.gz
    
    for length in 80 120 150; do
-       mkdir  metagenome_data_Fisher/$base/${base}_MiniHit_${length}
        MicroFisher search -vv --db ITS1  -w metagenome_data_Fisher/$base \
                    --prefix ${base} \
                    --min $length  --db_path /home/microbiome/data_storage/SATA2/Fisher_test/short_DBs/MicroFisher_DBs
@@ -110,8 +109,6 @@ for i in $(cat metagenome_data_clean/file_list); do
        MicroFisher search -vv --db LSU_D2  -w metagenome_data_Fisher/$base \
                    --prefix ${base} \
                    --min $length  --db_path /home/microbiome/data_storage/SATA2/Fisher_test/short_DBs/MicroFisher_DBs
-       mv metagenome_data_Fisher/$base/*.txt metagenome_data_Fisher/$base/*.tsv metagenome_data_Fisher/$base/*.err \
-          metagenome_data_Fisher/$base/${base}_MiniHit_${length}
     done
     mv  metagenome_data_Fisher/$base/${base}_R1.fastq.gz  metagenome_data_clean/${base}_val_1.fq.gz  
     mv  metagenome_data_Fisher/$base/${base}_R2.fastq.gz  metagenome_data_clean/${base}_val_2.fq.gz 
