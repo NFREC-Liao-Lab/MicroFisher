@@ -34,6 +34,12 @@ def normalise_data(data_each):
     return(data_n)
 
 
+def inverse_normalise_data(data_each):
+    total = sum([1/v for v in data_each.values()])
+    # total = sum(data_each.values())
+    data_n = {k: ((1/v)/total) for k, v in data_each.items()}
+    return(data_n)
+
 def weight_data(data_each, weight=1):
     if weight != 1:
         data_n = {k: (v*weight) for k, v in data_each.items()}

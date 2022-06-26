@@ -108,17 +108,23 @@ def main():
     boolean: Present or absent of the taxa (optional: --min_overlap).
     raw: sum of the number of reads.
     weighted: normalised by the total number of reads.
-    weighted_length: normalised by the total number of reads and minimum length (requires --length).
-    (probability): NOT yet implemented.
+    weighted_centlength: normalised by the total number of reads and minimum length used in centrifuge (--cent_length).
+    weighted_centlength_dblen: normalised by the total number of reads, and minimum length used in centrifuge (--cent_length), and the average length of the database (--db_length).
 """)
+# (probability): NOT yet implemented.
     p_combine.add_argument("--filter", default=0.00001, type=float,
                            help="filter out taxa if the proportion is less than %(default)s")
     p_combine.add_argument("--min_overlap", default=2, required=False, type=int,
                            help="taxID present in at least (n) database, used in the 'boolean' scheme. (Default: %(default)s)")
-    p_combine.add_argument("--length", nargs="+", required=False, type=int,
-                           help="Minimum matching length used to generate reports, used in the 'weighted_length' scheme",
+    p_combine.add_argument("--cent_length", nargs="+", required=False, type=int,
+                           help="Minimum matching length used to generate reports in centrifuge, used in the 'weighted_length' scheme",
                            metavar="length_1 length_2 [length_n ...]",
                            action=check_length_gt(2))
+    p_combine.add_argument("--db_length", nargs="+", required=False, type=float,
+                           help="Average length in the database, used in the 'weighted_length' scheme",
+                           metavar="length_1 length_2 [length_n ...]",
+                           action=check_length_gt(2))
+
 
     # p_combine.add_argument("--combine_db", dest="db", required=True,
     #                        help="Combined database name")
