@@ -1,5 +1,6 @@
 import os
 import sys
+from unittest.mock import DEFAULT
 
 from . import taxonomy_utils
 from . import merging_algorithm
@@ -50,7 +51,12 @@ from . import output_util
 #
 #     args = parser.parse_args()
 #     print(args)
-
+DEFAULT_DB_LENGTH = {
+    "ITS1": 188.8,
+    "ITS2": 186.8,
+    "LSUD1": 172.8,
+    "LSUD2": 189.4
+}
 
 def run(args):
     report_files = [os.path.join(args.workspace, f) for f in args.combine]
@@ -67,15 +73,18 @@ def run(args):
     except FileExistsError:
         pass
 
-    if args.mode == "weighted_length":
-        report_length_dict = taxonomy_utils.create_report_length(report_files, args.length)
-
+    # report_length_dict = None
+    # db_length_dict = None
+    # if args.mode == "weighted_length":
+    cent_length_dict = taxonomy_utils.create_length_dict(report_files, args.cent_length)
+    db_length_dict = taxonomy_utils.create_length_dict(report_files, args.db_length)
+    print(db_length_dict)
     for rank in desired_ranks:
         data_summary = {k: taxonomy_utils.summarise_data(v, rank)
                         for k, v in parsed_data.items()}
 
         if args.mode == "raw":
-            results = merging_algorithm.a_raw(data_summary)
+            results = merging_algorithm.a_equal(data_summary)
             percentage = merging_algorithm.calculate_percentage(results)
             output_list, output_filter_list = output_util.format_merge_two(
                 results, percentage, threshold=threshold, label=["merged_reads", "percentage"])
@@ -87,12 +96,17 @@ def run(args):
                 results, threshold=None, label="db_conut")
 
         elif args.mode == "weighted":
-            results = merging_algorithm.a_weighted(data_summary)
+            results = merging_algorithm.a_weighted(data_summary, None, None)
             output_list, output_filter_list = output_util.format_merge_single(
                 results, threshold=threshold, label="proportion")
 
-        elif args.mode == "weighted_length":
-            results = merging_algorithm.a_weighted(data_summary, report_length_dict)
+        elif args.mode == "weighted_centlength":
+            results = merging_algorithm.a_weighted(data_summary, cent_length_dict, None)
+            output_list, output_filter_list = output_util.format_merge_single(
+                results, threshold=threshold, label="proportion")
+
+        elif args.mode == "weighted_centlength_dblength":
+            results = merging_algorithm.a_weighted(data_summary, cent_length_dict, db_length_dict)
             output_list, output_filter_list = output_util.format_merge_single(
                 results, threshold=threshold, label="proportion")
 

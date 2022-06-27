@@ -1,7 +1,7 @@
 # Merging algorithms
 from . import taxonomy_utils
 
-MODE_CHOICES = ["boolean", "raw", "weighted", "weighted_length", "probability"]
+MODE_CHOICES = ["boolean", "raw", "weighted", "weighted_centlength", "weighted_centlength_dblength"]
 
 
 def a_boolean(data_summary, min_db_conut):
@@ -18,7 +18,7 @@ def a_boolean(data_summary, min_db_conut):
     return(results)
 
 
-def a_raw(data_summary):
+def a_equal(data_summary):
 
     results = dict()
     for data_each in data_summary.values():
@@ -30,19 +30,28 @@ def a_raw(data_summary):
     return(results)
 
 
-def a_weighted(data_summary, report_length_dict=None):
-
+def a_weighted(data_summary, cent_length_dict=None, db_mean_length=None):
+    # print(cent_length_dict)
+    # print(db_mean_length)
     data_mode = {k: taxonomy_utils.normalise_data(v)
                  for k, v in data_summary.items()}
-    if report_length_dict is not None:
-        max_length = max(report_length_dict.values())
-        weight_length = {k: v / max_length for k,
-                         v in report_length_dict.items()}
-        data_mode = {k: taxonomy_utils.weight_data(v, weight_length[k])
+                 
+    if cent_length_dict is not None:
+        cent_weight = taxonomy_utils.normalise_data(cent_length_dict)
+        print("Cent:", cent_weight)
+        data_mode = {k: taxonomy_utils.weight_data(v, cent_weight[k])
                      for k, v in data_mode.items()}
-    results = a_raw(data_mode)
-    normalised_factor = len(data_summary)
-    percentage = {k: v / normalised_factor for k, v in results.items()}
+
+    if db_mean_length is not None:
+        db_weight = taxonomy_utils.inverse_normalise_data(db_mean_length)
+        print("DB:", db_weight)
+        data_mode = {k: taxonomy_utils.weight_data(v, db_weight[k])
+                     for k, v in data_mode.items()}
+
+    results = a_equal(data_mode)
+    # normalised_factor = sum(results.values())
+    # percentage = {k: v / normalised_factor for k, v in results.items()}
+    percentage = taxonomy_utils.normalise_data(results)
     return(percentage)
 
 

@@ -8,7 +8,7 @@ from microfisher.run_centrifuge import Centrifuge
 @pytest.mark.usefixtures("setup_args", "config")
 def test_centrifuge(config):
     centrifuge = Centrifuge(config)
-    commands = ("cpath/centrifuge -p 1 -k 1 --min-hitlen 100 -x "
+    commands = ("cpath/centrifuge -p 4 -k 1 --min-hitlen 100 -x "
                 "cpath/db/dbName "
                 "-1 workspace/example_R1.fastq.gz -2 workspace/example_R2.fastq.gz "
                 "-S workspace/result_example_min100_dbdbName_output.txt "

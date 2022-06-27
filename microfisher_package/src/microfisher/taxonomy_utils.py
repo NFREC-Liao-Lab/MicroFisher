@@ -34,6 +34,12 @@ def normalise_data(data_each):
     return(data_n)
 
 
+def inverse_normalise_data(data_each):
+    total = sum([1/v for v in data_each.values()])
+    # total = sum(data_each.values())
+    data_n = {k: ((1/v)/total) for k, v in data_each.items()}
+    return(data_n)
+
 def weight_data(data_each, weight=1):
     if weight != 1:
         data_n = {k: (v*weight) for k, v in data_each.items()}
@@ -54,10 +60,10 @@ def parse_report_files(report_files):
     return(parsed_data)
 
 
-def create_report_length(report_files, length_list):
-    report_length_dict = None
+def create_length_dict(report_files_name, length_list):
+    length_dict = None
     if length_list is not None:
-        if len(length_list) != len(report_files):
+        if len(length_list) != len(report_files_name):
             raise Exception("\nERROR: Unequal number of report_files (--combine) and length (--length)\n")
-        report_length_dict = dict(zip(report_files, length_list))
-    return(report_length_dict)
+        length_dict = dict(zip(report_files_name, length_list))
+    return(length_dict)
