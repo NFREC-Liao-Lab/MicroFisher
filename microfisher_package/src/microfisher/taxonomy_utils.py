@@ -60,10 +60,10 @@ def parse_report_files(report_files):
     return(parsed_data)
 
 
-def create_report_length(report_files, length_list):
-    report_length_dict = None
+def create_length_dict(report_files_name, length_list):
+    length_dict = None
     if length_list is not None:
-        if len(length_list) != len(report_files):
+        if len(length_list) != len(report_files_name):
             raise Exception("\nERROR: Unequal number of report_files (--combine) and length (--length)\n")
-        report_length_dict = dict(zip(report_files, length_list))
-    return(report_length_dict)
+        length_dict = dict(zip(report_files_name, length_list))
+    return(length_dict)

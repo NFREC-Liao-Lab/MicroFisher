@@ -31,6 +31,13 @@ def merge_reports(args):
         print(f"\n==DEBUG== Done\tMerged results at {args.out_dir}")
 
 
+def preset_algorithm(args):
+    args.min=120
+    args.threads=1
+    args.db="ITS1_fisher"
+    search_db(args)
+
+
 def init_db(args):
     is_complete = run_init_setup.init_setup_db(output_dir=args.db_loc)
     if args.verbose > 0 and is_complete:
@@ -74,6 +81,8 @@ def main():
                                      help='Search with centrifuge', conflict_handler='resolve')
     p_combine = subparsers.add_parser('combine', parents=[parent_parser], formatter_class=argparse.RawTextHelpFormatter,
                                       help='Combine results', conflict_handler='resolve')
+    p_full = subparsers.add_parser('preset', parents=[p_combine], formatter_class=argparse.RawTextHelpFormatter,
+                                      help='Preset pipeline', conflict_handler='resolve')
 
     p_init.add_argument("--db_loc", default="default_db", required=False,
                         help="Location to store the default centrifuge databases. (Default: ./%(default)s)")
@@ -84,7 +93,7 @@ def main():
     # TODO(SW): Add either -1 -2 OR --prefix options later
     # p_search.set_defaults(subcommand='search')
     p_search.add_argument("--prefix", required=True,
-                          help="used for both infiles and outfiles.\n Infiles are in the workspace [prefix_R1.fastq.gz,prefix_R2.fastq.gz].")
+                          help="used for both infiles and outfiles.\n Infiles are in the workspace [prefix_R1.fastq.gz, prefix_R2.fastq.gz].")
     p_search.add_argument("-d", "--db", required=True, help="Database name")
     p_search.add_argument("--centrifuge_path", default="",
                           help="path to you centrifuge program (if it is not available in $PATH)")
@@ -92,6 +101,8 @@ def main():
                           help="path to the database (if it is not available by default). Currently append to centrifuge_path")
     p_search.add_argument("-m", "--min", type=int, default=120,
                           help="minimum matching length (Default: %(default)s)")
+    p_search.add_argument("--threads", type=int, default=1,
+                          help="number of alignment threads to launch. (%(default)s)")
     p_search.set_defaults(func=search_db)
 
     # parser_kreport_only = subparsers.add_parser('kk', help='kk results')
@@ -125,10 +136,23 @@ def main():
                            metavar="length_1 length_2 [length_n ...]",
                            action=check_length_gt(2))
 
-
     # p_combine.add_argument("--combine_db", dest="db", required=True,
     #                        help="Combined database name")
     p_combine.set_defaults(func=merge_reports)
+
+
+
+    p_full.set_defaults(func=merge_reports)
+    p_full.add_argument("--preset_db", choices=["ITS+LSU", "ITS", "LSU"], default="ITS+LSU")
+    p_full.add_argument("--prefix", required=True,
+                          help="used for both infiles and outfiles.\n Infiles are in the workspace [prefix_R1.fastq.gz, prefix_R2.fastq.gz].")
+    p_full.add_argument("--centrifuge_path", default="",
+                          help="path to you centrifuge program (if it is not available in $PATH)")
+    p_full.add_argument("--db_path", default="",
+                          help="path to the database (if it is not available by default). Currently append to centrifuge_path")
+    p_full.set_defaults(func=preset_algorithm)
+
+
 
     args = parser.parse_args()
 

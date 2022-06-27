@@ -76,8 +76,8 @@ def run(args):
     # report_length_dict = None
     # db_length_dict = None
     # if args.mode == "weighted_length":
-    cent_length_dict = taxonomy_utils.create_report_length(report_files, args.cent_length)
-    db_length_dict = taxonomy_utils.create_report_length(report_files, args.db_length)
+    cent_length_dict = taxonomy_utils.create_length_dict(report_files, args.cent_length)
+    db_length_dict = taxonomy_utils.create_length_dict(report_files, args.db_length)
     print(db_length_dict)
     for rank in desired_ranks:
         data_summary = {k: taxonomy_utils.summarise_data(v, rank)
