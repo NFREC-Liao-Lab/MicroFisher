@@ -161,8 +161,8 @@ for i in $(cat metagenome_data_clean/file_list); do
    base=$(basename $i _val_1.fq.gz)
    echo "start to process the file ${base}"
   if [ ! -f metagenome_data_metaphlan/${base}_metaphlan.profile.txt ]; then
-   metaphlan metagenome_data_clean/${base}_val_1.fq.gz,cleandata/${base}_val_2.fq.gz  \
-             --input_type fastq  --bowtie2out metagenome_data_metaphlan/${basename}_metaphlan.bowtie2.bz2  \
+   metaphlan metagenome_data_clean/${base}_val_1.fq.gz,  metagenome_data_clean/${base}_val_2.fq.gz  \
+             --input_type fastq  --bowtie2out metagenome_data_metaphlan/${base}_metaphlan.bowtie2.bz2  \
              --nproc 24 -o metagenome_data_metaphlan/${base}_metaphlan.profile.txt
     echo "processing of ${base} has been done"
    else
