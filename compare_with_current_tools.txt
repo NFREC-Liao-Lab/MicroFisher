@@ -194,7 +194,7 @@ for i in $(cat metagenome_data_clean/file_list); do
 ###########################################################################################
 #Part3:#eukdetect
 eukdetect --mode runall --configfile configfile_for_metagenome.yml --cores 24
-
+snakemake --snakefile rules/eukdetect.rules --configfile [config file] --cores [cores] runall
 
 
 
