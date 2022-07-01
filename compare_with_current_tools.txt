@@ -156,37 +156,44 @@ MicroFisher search -vv
 ##Part 2: fungal classification using metaphlan and kaiju
 #https://github.com/biobakery/biobakery/wiki/metaphlan3
 #https://github.com/biobakery/MetaPhlAn/wiki/MetaPhlAn-3.0
-for i in cleandata/*_R1_val_1.fq.gz; do
-    basename=$(basename  "$i" _R1_val_1.fq.gz)
-    echo $basename
-    if [ ! -f classification/${basename}_metaphlan.profile.txt ]; then
-      metaphlan cleandata/${basename}_R1_val_1.fq.gz,cleandata/${basename}_R2_val_2.fq.gz  \
-             --input_type fastq  --bowtie2out classification/${basename}_metaphlan.bowtie2.bz2  \
-             --nproc 24 -o classification/${basename}_metaphlan.profile.txt
-    fi
-done
+mkdir metagenome_data_metaphlan
+for i in $(cat metagenome_data_clean/file_list); do
+   base=$(basename $i _val_1.fq.gz)
+   echo "start to process the file ${base}"
+  if [ ! -f metagenome_data_metaphlan/${base}_metaphlan.profile.txt ]; then
+   metaphlan metagenome_data_clean/${base}_val_1.fq.gz,cleandata/${base}_val_2.fq.gz  \
+             --input_type fastq  --bowtie2out metagenome_data_metaphlan/${basename}_metaphlan.bowtie2.bz2  \
+             --nproc 24 -o metagenome_data_metaphlan/${base}_metaphlan.profile.txt
+    echo "processing of ${base} has been done"
+   else
+    echo "${base} was analyzed"
+   fi
+ done
+
 
 #https://github.com/bioinformatics-centre/kaiju/blob/master/README.md
-for i in cleandata/*_R1_val_1.fq.gz; do
-    basename=$(basename  "$i" _R1_val_1.fq.gz)
-    echo $basename
-    if [ ! -f classification/${basename}_kaiju.out ]; then
-      kaiju -t database/kaiju/nodes.dmp -f database/kaiju/fungi/kaiju_db_fungi.fmi \
-            -i cleandata/${basename}_R1_val_1.fq.gz -j cleandata/${basename}_R2_val_2.fq.gz  \
-            -o classification/${basename}_kaiju.out -z 24
-    fi
-    
-    if [ ! -f classification/${basename}_kaiju_summary.tsv ]; then
-      kaiju2table -t database/kaiju/nodes.dmp \
+mkdir metagenome_data_kaiju
+for i in $(cat metagenome_data_clean/file_list); do
+   base=$(basename $i _val_1.fq.gz)
+   echo "start to process the file ${base}"
+  if [ ! -f metagenome_data_kaiju/${base}_kaiju.out ]; then
+    kaiju -t database/kaiju/nodes.dmp -f database/kaiju/fungi/kaiju_db_fungi.fmi \
+            -i metagenome_data_clean/${base}_val_1.fq.gz -j metagenome_data_clean/${base}_val_2.fq.gz  \
+            -o metagenome_data_kaiju/${base}_kaiju.out -z 24
+    kaiju2table -t database/kaiju/nodes.dmp \
                 -n database/kaiju/names.dmp -r genus \
-                -o classification/${basename}_kaiju_summary.tsv classification/${basename}_kaiju.out \
-                -l superkingdom,phylum,class,order,family,genus,species
-    fi
-done
+                -o metagenome_data_kaiju/${base}_kaiju_summary.tsv metagenome_data_kaiju/${base}_kaiju.out \
+                -l superkingdom,phylum,class,order,family,genus,species 
+    echo "processing of ${base} has been done"
+   else
+    echo "${base} was analyzed"
+   fi
+ done
+
 
 ###########################################################################################
 #Part3:#eukdetect
-
+eukdetect --mode runall --configfile configfile_for_metagenome.yml --cores 24
 
 
 
