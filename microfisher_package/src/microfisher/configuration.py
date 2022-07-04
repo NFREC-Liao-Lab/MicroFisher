@@ -41,7 +41,7 @@ class Config:
         elif args.single is not None:
             infiles = os.path.join(self.workspace, args.single)
             self.param_input = f"-U {infiles}"
-            self.out_prefix = args.single
+            self.out_prefix = Path(args.single).stem 
             
     def centrifuge_output_files(self):
         prefix_outfile = f"result_{self.out_prefix}_min{self.min_len}_db{self.db_name}"
