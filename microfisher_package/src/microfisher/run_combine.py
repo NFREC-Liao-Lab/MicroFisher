@@ -10,7 +10,7 @@ def combine_reports(args):
     if args.verbose > 0:
         print(f"\n==DEBUG== Arguments: {args}")
 
-    min_db_conut = args.min_overlap
+    min_db_count = args.min_overlap
     infiles = [os.path.join(args.workspace, f) for f in args.combine]
 
     all_results = {}
@@ -29,13 +29,13 @@ def combine_reports(args):
 
     combined_list = []
     for k, v in all_results.items():
-        if len(v) >= min_db_conut:
+        if len(v) >= min_db_count:
             combined_list.append(k)
 
     with open(args.output, "w") as outfile:
         outfile.write(header)
         for k in combined_list:
-            # TODO: ONLY output the first hit. Need better way to comibne them.
+            # TODO: ONLY output the first hit. Need better way to combine them.
             outfile.write(all_results[k][0])
 
     config = Config(args)

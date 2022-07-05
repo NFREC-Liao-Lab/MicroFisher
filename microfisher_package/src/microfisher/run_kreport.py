@@ -16,8 +16,8 @@ class CentrifugeKReport:
         params = config.format_params_kreport()
         commands = f"{prog} {params}"
         self.command_list = shlex.split(commands)
-        if config.verbose > 0:
-            print(f"==DEBUG== Execute commands: {commands}")
+        if config.verbose > 1:
+            print(f"===DEBUG=== Execute commands: {commands}")
 
     def run(self):
         try:
@@ -29,7 +29,7 @@ class CentrifugeKReport:
             if self.config.verbose > 1 and kreport_output.stderr:
                 with open(self.out_kreport + ".err", "wb") as f:
                     f.write(kreport_output.stderr)
-
+            return True
         except Exception as err:
             print(f"Unexpected {err}, {type(err)}")
         # print(kreport_output)

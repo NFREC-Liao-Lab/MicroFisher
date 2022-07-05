@@ -12,25 +12,17 @@ class Centrifuge:
 
     def __init__(self, config):
         self.config = config
-        # self.centrifuge_path = os.path.expanduser(args.centrifuge_path)
-        # self.workspace = os.path.expanduser(args.workspace)
-        # self.prefix = args.prefix# f"simulating_{num}species_r{replicate}"
-        #
-        # self.config = Config(cpus=8, distinct_count=1, min_len=args.min,
-        #             centrifuge_path=self.centrifuge_path
-        #             db_path=args.db_path, db_name=args.db
-        #             )
 
-        infile = [os.path.join(
-            self.config.workspace, f"{self.config.prefix}_R{i}.fastq.gz") for i in [1, 2]]
-        config.centrifuge_output_files()
         params = self.config.format_params_centrifuge()
-        config_files = f"-1 {infile[0]} -2 {infile[1]} -S {self.config.out_output} --report-file {self.config.out_report}"
+        config_files = self.config.get_io_files()
+
         prog = os.path.join(self.config.centrifuge_path, "centrifuge")
         commands = f"{prog} {params} {config_files}"
         self.command_list = shlex.split(commands)
         if self.config.verbose > 0:
-            print(f"==DEBUG== Execute commands: {commands}")
+            print(f"==DEBUG== Centrifuge: Start.")
+        if self.config.verbose > 1:
+            print(f"===DEBUG=== Execute commands: {commands}")
 
     def run(self):
         try:
@@ -40,13 +32,7 @@ class Centrifuge:
 
         is_output_exist = os.path.exists(self.config.out_report)
         if is_output_exist and result.returncode == 0:
-            print("==DEBUG== Centrifuge complete.")
+            if self.config.verbose > 0 :
+                print("==DEBUG== Centrifuge: Done.")
             return True
-        return False
-
-    # prog_k = "centrifuge-kreport"
-    # out_kreport = f"{workspace}/result_{prefix_out}_kreport.tsv"
-    # config = f"-x {cc.db_name} {out_report} {out_kreport}"
-
-    # command_list = shlex.split("ls -l -F --color='always'")
-    # subprocess.run(command_list)
+        

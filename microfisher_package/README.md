@@ -11,33 +11,59 @@ pip3 install .
 ```
 
 ## Usage
-### Initialise centrifuge database
+### Initialize centrifuge database
 `MicroFisher init_db --help`
 #### Arguments
-`--db_loc`: Custome location/folder for the prebuild centrifuge databases.
+`--db_loc`: Custom location/folder for the prebuilt centrifuge databases.
 
 #### Examples
-Fetch prebuild databases and store at default location.
+Fetch prebuilt databases and store at default location.
 ```bash
 MicroFisher init_db
 ```
-Fetch prebuild database and store at any folder (`PATH_TO_NEW_DATABASE_FOLDER`)
+Fetch prebuilt database and store is custom folder (`PATH_TO_NEW_DATABASE_FOLDER`)
 ```bash
 MicroFisher init_db --db_loc PATH_TO_NEW_DATABASE_FOLDER
 ```
 
-### Search taxonmy with centrifuge
-`MicroFisher search --help`
+### Preset pipeline
+Run both steps in the MicroFisher with default configurations.
+`MicroFisher preset --help` \
+
+#### Different preset databases
+- IST+LSU: Search against four databases: ITS1, IST2, LSU_D1, and LSU_D2.
+- IST: ITS1 and IST2
+- LSU: LSU_D1 and LSU_D2
+
+#### Examples
+```bash
+MicroFisher preset --preset_db ITS+LSU \
+-w PATH_TO_WORKSPACE \
+--prefix example_reads \
+--out_dir OUTPUT_DIR 
+```
+Full configuration
+```bash
+MicroFisher preset --preset_db ITS+LSU --verbose\
+--workspace PATH_TO_WORKSPACE
+--paired example_R1.fastq.gz example_R2.fastq.gz \ 
+--out_dir merged_result_folder --out_prefix results_prefix \
+--centrifuge_path PATH_TO_CENTRIFUGE --db_path DB_PATH --threads 2
+```
+
+### Search taxonomy with centrifuge
+`MicroFisher search --help` \
 `python3 -m microfisher search --help`
 
 #### Arguments
-`--prefix`: Prefix for the input file
-`--min`: Minimum matching length
+`--prefix`: One prefix for two paired-end files.
+`--paired`: Two paired-end files.
+`--single`: One single-end file.
 `--db`: Which centrifuge database to search against.
+`--min`: Minimum matching length.
 #### Examples
 ```
-MicroFisher search -vv  
-  -w PATH_TO_WORKSPACE \
+MicroFisher search -v -w PATH_TO_WORKSPACE \
   --prefix example_ --min 120 \
   --centrifuge_path PATH_TO_CENTRIFUGE \
   --db_path PATH_TO_DATABASE --db LSU_D2 \
@@ -46,7 +72,7 @@ MicroFisher search -vv
 
 
 ### Combine reports from multiple databases
-`MicroFisher combine --help`
+`MicroFisher combine --help` \
 `python3 -m microfisher combine --help`
 
 
@@ -73,4 +99,8 @@ MicroFisher combine --combine report_1 report_2 report_3 \
 - boolean: Present or absent of the taxa (optional: --min_overlap).
 - raw: sum of the number of reads.
 - weighted: normalised by the total number of reads.
-- weighted_length: normalised by the total number of reads and minimum length (requires --length).
+- weighted_centlength: normalised by the total number of reads and minimum
+    length used in centrifuge (--cent_length).
+- weighted_centlength_dblen: normalised by the total number of reads, and
+    minimum length used in centrifuge (--cent_length), and the average
+    length of the database (--db_length).
