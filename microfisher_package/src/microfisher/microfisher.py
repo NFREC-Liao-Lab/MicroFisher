@@ -2,14 +2,8 @@ from . import __version__
 import argparse
 import sys
 
-# from . import run_combine
-# from . import run_merge_reports
-# from . import run_init_setup
 from . import merging_algorithm
 from . import args_subcommand
-# from .configuration import Config
-# from .run_centrifuge import Centrifuge
-# from .run_kreport import CentrifugeKReport
 
 
 def check_length_gt(length):

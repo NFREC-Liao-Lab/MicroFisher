@@ -29,7 +29,7 @@ class CentrifugeKReport:
             if self.config.verbose > 1 and kreport_output.stderr:
                 with open(self.out_kreport + ".err", "wb") as f:
                     f.write(kreport_output.stderr)
-
+            return True
         except Exception as err:
             print(f"Unexpected {err}, {type(err)}")
         # print(kreport_output)

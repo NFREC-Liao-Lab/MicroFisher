@@ -7,9 +7,10 @@ from .run_kreport import CentrifugeKReport
 
 
 def init_db(args):
-    is_complete = run_init_setup.init_setup_db(output_dir=args.db_loc)
-    if args.verbose > 0 and is_complete:
-        print(f"==DEBUG== subcommand init_db completed.\tPrebuild database at {args.db_loc}.\n")
+    if not args.dry:
+        is_complete = run_init_setup.init_setup_db(output_dir=args.db_loc)
+        if is_complete:
+            print(f"==DEBUG== subcommand init_db completed.\tPrebuild database at {args.db_loc}.\n")
 
 
 def search_db(args):
@@ -20,16 +21,17 @@ def search_db(args):
     if not args.dry:
         is_complete = centrifuge.run()
         if is_complete:
-            output = cent_kreport.run()
-    if args.verbose > 0:
-        print(f"==DEBUG== subcommand search completed.\tReport at {config.out_report} folder.\n")
+            is_complete_k = cent_kreport.run()
+        if is_complete_k:
+            print(f"==DEBUG== subcommand search completed.\tResults at {config.out_report}.\n")
     return config.out_report
 
 
 def combine_reports(args):
-    is_complete = run_merge_reports.run(args)
-    if args.verbose > 0 and is_complete:
-        print(f"==DEBUG== subcommand combine completed.\tMerged results at {args.out_dir} folder.\n")
+    if not args.dry:
+        is_complete = run_merge_reports.run(args)
+        if is_complete:
+            print(f"==DEBUG== subcommand combine completed.\tMerged results at {args.out_dir} folder.\n")
 
 
 def preset_algorithm(args):

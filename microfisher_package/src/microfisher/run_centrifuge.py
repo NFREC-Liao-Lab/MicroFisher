@@ -32,13 +32,7 @@ class Centrifuge:
 
         is_output_exist = os.path.exists(self.config.out_report)
         if is_output_exist and result.returncode == 0:
-            print("==DEBUG== Centrifuge: Done.")
+            if self.config.verbose > 0 :
+                print("==DEBUG== Centrifuge: Done.")
             return True
-        return False
-
-    # prog_k = "centrifuge-kreport"
-    # out_kreport = f"{workspace}/result_{prefix_out}_kreport.tsv"
-    # config = f"-x {cc.db_name} {out_report} {out_kreport}"
-
-    # command_list = shlex.split("ls -l -F --color='always'")
-    # subprocess.run(command_list)
+        

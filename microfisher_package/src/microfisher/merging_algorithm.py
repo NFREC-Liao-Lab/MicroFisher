@@ -15,8 +15,6 @@ DEFAULT_DB_LENGTH = {
 }
 
 
-
-
 def a_boolean(data_summary, min_db_count):
 
     counts = dict()
