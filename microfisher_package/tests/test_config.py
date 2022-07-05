@@ -32,7 +32,6 @@ def test_init(setup_args):
     assert config.out_prefix == "example"
 
 
-
 def test_centrifuge_input_single(setup_args):
     setup_args.prefix = None
     setup_args.paired = None
@@ -55,10 +54,10 @@ def test_centrifuge_input_paired(setup_args):
     assert config.out_prefix == "paired_1.fastq"
 
 
-
 def test_output_files(config):
     output = config.centrifuge_output_files()
-    expected = ("workspace/result_example_min100_dbdbName_output.txt", "workspace/result_example_min100_dbdbName_report.tsv")
+    expected = ("workspace/result_example_min100_dbdbName_output.txt",
+                "workspace/result_example_min100_dbdbName_report.tsv")
     assert expected == output
 
 

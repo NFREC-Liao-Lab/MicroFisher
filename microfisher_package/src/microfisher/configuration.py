@@ -2,6 +2,7 @@
 from pathlib import Path
 import os
 
+
 class Config:
     def __init__(self, args, distinct_count=1):
         self.distinct_count = distinct_count
@@ -20,7 +21,7 @@ class Config:
         self.db_name = args.db
         self.db = os.path.join(self.db_path, self.db_name)
         self.threads = args.threads
-       
+
         self.centrifuge_input_files(args)
         self.centrifuge_output_files()
 
@@ -37,16 +38,18 @@ class Config:
             infiles = [os.path.join(
                 self.workspace, f"{i}") for i in args.paired]
             self.param_input = f"-1 {infiles[0]} -2 {infiles[1]}"
-            self.out_prefix = Path(args.paired[0]).stem 
+            self.out_prefix = Path(args.paired[0]).stem
         elif args.single is not None:
             infiles = os.path.join(self.workspace, args.single)
             self.param_input = f"-U {infiles}"
-            self.out_prefix = Path(args.single).stem 
-            
+            self.out_prefix = Path(args.single).stem
+
     def centrifuge_output_files(self):
         prefix_outfile = f"result_{self.out_prefix}_min{self.min_len}_db{self.db_name}"
-        self.out_output = os.path.join(self.workspace, f"{prefix_outfile}_output.txt")
-        self.out_report = os.path.join(self.workspace, f"{prefix_outfile}_report.tsv")
+        self.out_output = os.path.join(
+            self.workspace, f"{prefix_outfile}_output.txt")
+        self.out_report = os.path.join(
+            self.workspace, f"{prefix_outfile}_report.tsv")
         return self.out_output, self.out_report
 
     def get_io_files(self):

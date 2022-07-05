@@ -20,7 +20,9 @@ class Centrifuge:
         commands = f"{prog} {params} {config_files}"
         self.command_list = shlex.split(commands)
         if self.config.verbose > 0:
-            print(f"==DEBUG== Execute commands: {commands}")
+            print(f"==DEBUG== Centrifuge: Start.")
+        if self.config.verbose > 1:
+            print(f"===DEBUG=== Execute commands: {commands}")
 
     def run(self):
         try:
@@ -30,7 +32,7 @@ class Centrifuge:
 
         is_output_exist = os.path.exists(self.config.out_report)
         if is_output_exist and result.returncode == 0:
-            print("==DEBUG== Centrifuge complete.")
+            print("==DEBUG== Centrifuge: Done.")
             return True
         return False
 

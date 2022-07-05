@@ -1,6 +1,9 @@
 from .taxonomy import get_desired_taxa_ranks
 
 
+DESIRED_RANKS = ["class", "order", "family", "genus", "species"]
+
+
 def summarise_data(parsed_data, rank):
     results = dict()
     for info in parsed_data:
@@ -40,6 +43,7 @@ def inverse_normalise_data(data_each):
     data_n = {k: ((1/v)/total) for k, v in data_each.items()}
     return(data_n)
 
+
 def weight_data(data_each, weight=1):
     if weight != 1:
         data_n = {k: (v*weight) for k, v in data_each.items()}
@@ -64,6 +68,7 @@ def create_length_dict(report_files_name, length_list):
     length_dict = None
     if length_list is not None:
         if len(length_list) != len(report_files_name):
-            raise Exception("\nERROR: Unequal number of report_files (--combine) and length (--length)\n")
+            raise Exception(
+                "\nERROR: Unequal number of report_files (--combine) and length (--length)\n")
         length_dict = dict(zip(report_files_name, length_list))
     return(length_dict)

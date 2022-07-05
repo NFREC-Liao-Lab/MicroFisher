@@ -36,22 +36,23 @@ def test_taxonomy_1():
 
 def test_summarise_data():
     data = {"D1": [
-                {"genus": "genus_1", "species": "species_1", "numReads": 10},
-                {"genus": "genus_1", "species": "species_1", "numReads": 11},
-                {"genus": "genus_1", "species": "species_2", "numReads": 12},
-                {"genus": "genus_2", "species": "species_3", "numReads": 13},
-                {"genus": "genus_2", "species": "species_4", "numReads": 14}
-            ],
-            "D2": [
-                {"genus": "genus_1", "species": "species_1", "numReads": 30},
-                {"genus": "genus_1", "species": "species_1", "numReads": 31},
-                {"genus": "genus_2", "species": "species_2", "numReads": 32},
-                {"genus": "genus_2", "species": "species_3", "numReads": 33},
-                {"genus": "genus_1", "species": "species_4", "numReads": 34}
-            ]
-            }
+        {"genus": "genus_1", "species": "species_1", "numReads": 10},
+        {"genus": "genus_1", "species": "species_1", "numReads": 11},
+        {"genus": "genus_1", "species": "species_2", "numReads": 12},
+        {"genus": "genus_2", "species": "species_3", "numReads": 13},
+        {"genus": "genus_2", "species": "species_4", "numReads": 14}
+    ],
+        "D2": [
+        {"genus": "genus_1", "species": "species_1", "numReads": 30},
+        {"genus": "genus_1", "species": "species_1", "numReads": 31},
+        {"genus": "genus_2", "species": "species_2", "numReads": 32},
+        {"genus": "genus_2", "species": "species_3", "numReads": 33},
+        {"genus": "genus_1", "species": "species_4", "numReads": 34}
+    ]
+    }
     actual = taxonomy_utils.summarise_data(data["D1"], rank="species")
-    expected = {"species_1": 21, "species_2": 12, "species_3": 13, "species_4": 14}
+    expected = {"species_1": 21, "species_2": 12,
+                "species_3": 13, "species_4": 14}
     assert actual == expected
 
     actual = taxonomy_utils.summarise_data(data["D1"], rank="genus")
@@ -86,27 +87,27 @@ def test_inverse_normalise_data_2():
     expected = {"a": 0.4256927, "b": 0.1785163, "c": 0.1908278, "d": 0.2049632}
     assert actual == pytest.approx(expected)
 
- 
+
 def test_weight_data():
 
     data = {"a": 10, "b": 20, "c": 30.30, "d": -40}
     weight = 0.5
     actual = taxonomy_utils.weight_data(data, weight)
-    expected =  {"a": 5, "b": 10, "c": 15.15, "d": -20}
+    expected = {"a": 5, "b": 10, "c": 15.15, "d": -20}
     assert actual == expected
 
     weight = 2.2
     actual = taxonomy_utils.weight_data(data, weight)
-    expected =  {"a": 22, "b": 44, "c": 66.66, "d": -88}
+    expected = {"a": 22, "b": 44, "c": 66.66, "d": -88}
     assert actual == pytest.approx(expected)
 
 
 def test_create_length_dict():
     file_name = ["F1", "F2", "F3"]
     actual = taxonomy_utils.create_length_dict(file_name, None)
-    assert actual == None
+    assert actual is None
     length = [12, 10009, -3.2]
     actual = taxonomy_utils.create_length_dict(file_name, length)
     print(actual)
-    expected = {"F1":12, "F2":10009, "F3":-3.2}
+    expected = {"F1": 12, "F2": 10009, "F3": -3.2}
     assert actual == expected

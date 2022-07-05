@@ -1,10 +1,23 @@
 # Merging algorithms
 from . import taxonomy_utils
 
-MODE_CHOICES = ["boolean", "raw", "weighted", "weighted_centlength", "weighted_centlength_dblength"]
+MODE_CHOICES = ["weighted_centlength_dblength", "boolean", "raw", "weighted",
+                "weighted_centlength"]
+DB_LIST = {"ITS+LSU": ["ITS1_fisher", "ITS2_fisher", "LSU_D1_fisher_new", "LSU_D2_fisher_new"],
+           "ITS": ["ITS1_fisher", "ITS2_fisher"],
+           "LSU": ["LSU_D1_fisher_new", "LSU_D2_fisher_new"]}
+FILTER_DEFAULT = 0.00001
+DEFAULT_DB_LENGTH = {
+    "ITS1": 188.8,
+    "ITS2": 186.8,
+    "LSUD1": 172.8,
+    "LSUD2": 189.4
+}
 
 
-def a_boolean(data_summary, min_db_conut):
+
+
+def a_boolean(data_summary, min_db_count):
 
     counts = dict()
     for data_each in data_summary.values():
@@ -14,7 +27,7 @@ def a_boolean(data_summary, min_db_conut):
             except KeyError:
                 counts[k] = 1
 
-    results = {k: v for k, v in counts.items() if v >= min_db_conut}
+    results = {k: v for k, v in counts.items() if v >= min_db_count}
     return(results)
 
 
@@ -35,7 +48,7 @@ def a_weighted(data_summary, cent_length_dict=None, db_mean_length=None):
     # print(db_mean_length)
     data_mode = {k: taxonomy_utils.normalise_data(v)
                  for k, v in data_summary.items()}
-                 
+
     if cent_length_dict is not None:
         cent_weight = taxonomy_utils.normalise_data(cent_length_dict)
         print("Cent:", cent_weight)
