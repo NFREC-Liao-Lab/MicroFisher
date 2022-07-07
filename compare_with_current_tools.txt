@@ -163,6 +163,7 @@ for i in $(cat metagenome_data_clean/file_list); do
   if [ ! -f metagenome_data_metaphlan/${base}_metaphlan.profile.txt ]; then
    metaphlan metagenome_data_clean/${base}_val_1.fq.gz,  metagenome_data_clean/${base}_val_2.fq.gz  \
              --input_type fastq  --bowtie2out metagenome_data_metaphlan/${base}_metaphlan.bowtie2.bz2  \
+             --force --ignore_bacteria --ignore_archaea \
              --nproc 24 -o metagenome_data_metaphlan/${base}_metaphlan.profile.txt
     echo "processing of ${base} has been done"
    else
