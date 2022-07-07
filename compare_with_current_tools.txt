@@ -157,20 +157,23 @@ MicroFisher search -vv
 #https://github.com/biobakery/biobakery/wiki/metaphlan3
 #https://github.com/biobakery/MetaPhlAn/wiki/MetaPhlAn-3.0
 mkdir metagenome_data_metaphlan
+workdir='/data_storage/SATA3/haihua/metagenome_data'
 for i in $(cat metagenome_data_clean/file_list); do
    base=$(basename $i _val_1.fq.gz)
    echo "start to process the file ${base}"
   if [ ! -f metagenome_data_metaphlan/${base}_metaphlan.profile.txt ]; then
-   metaphlan metagenome_data_clean/${base}_val_1.fq.gz,  metagenome_data_clean/${base}_val_2.fq.gz  \
-             --input_type fastq  --bowtie2out metagenome_data_metaphlan/${base}_metaphlan.bowtie2.bz2  \
+   metaphlan $workdir/metagenome_data_clean/${base}_val_1.fq.gz,  $workdir/metagenome_data_clean/${base}_val_2.fq.gz  \
+             --input_type fastq  --bowtie2out $workdir/metagenome_data_metaphlan/${base}_metaphlan.bowtie2.bz2  \
              --force --ignore_bacteria --ignore_archaea \
-             --nproc 24 -o metagenome_data_metaphlan/${base}_metaphlan.profile.txt
+             --nproc 24 -o $workdir/metagenome_data_metaphlan/${base}_metaphlan.profile.txt
     echo "processing of ${base} has been done"
    else
     echo "${base} was analyzed"
    fi
  done
 
+
+/data_storage/SATA3/haihua/metagenome_data/metagenome_data_metaphlan
 
 #https://github.com/bioinformatics-centre/kaiju/blob/master/README.md
 mkdir metagenome_data_kaiju
