@@ -158,10 +158,10 @@ MicroFisher search -vv
 #https://github.com/biobakery/MetaPhlAn/wiki/MetaPhlAn-3.0
 mkdir metagenome_data_metaphlan
 workdir='/data_storage/SATA3/haihua/metagenome_data'
-for i in $(cat metagenome_data_clean/file_list); do
+for i in $(cat $workdir/metagenome_data_clean/file_list); do
    base=$(basename $i _val_1.fq.gz)
    echo "start to process the file ${base}"
-  if [ ! -f metagenome_data_metaphlan/${base}_metaphlan.profile.txt ]; then
+  if [ ! -f $workdir/metagenome_data_metaphlan/${base}_metaphlan.profile.txt ]; then
    metaphlan $workdir/metagenome_data_clean/${base}_val_1.fq.gz,  $workdir/metagenome_data_clean/${base}_val_2.fq.gz  \
              --input_type fastq  --bowtie2out $workdir/metagenome_data_metaphlan/${base}_metaphlan.bowtie2.bz2  \
              --force --ignore_bacteria --ignore_archaea \
@@ -199,6 +199,58 @@ for i in $(cat metagenome_data_clean/file_list); do
 #Part3:#eukdetect
 eukdetect --mode runall --configfile configfile_for_metagenome.yml --cores 24
 snakemake --snakefile rules/eukdetect.rules --configfile [config file] --cores [cores] runall
+
+
+
+##########################################################################################
+#part4：Kraken2 
+#https://github.com/DerrickWood/kraken2/wiki/Manual
+#https://github.com/bxlab/metaWRAP/issues/355
+#with the fungi database downloading issue, refer 
+#https://blog.csdn.net/weixin_52602016/article/details/120689897
+#https://github.com/DerrickWood/kraken2/issues/508
+
+kraken2-build --download-library "fungi" --threads 24 --db KRAKEN2_DB
+#Then build the taxonomy from those libraries:
+kraken2-build --download-taxonomy --db KRAKEN2_DB
+
+#Then build the entire database:
+kraken2-build --build --db KRAKEN2_DB --threads 24
+
+mkdir metagenome_data_kraken2
+workdir='/data_storage/SATA3/haihua/metagenome_data'
+for i in $(cat $workdir/metagenome_data_clean/file_list); do
+   base=$(basename $i _val_1.fq.gz)
+   echo "start to process the file ${base}"
+  if [ ! -f $workdir/metagenome_data_kraken2/${base}.profile.txt ]; then
+  
+  kraken2 --db   /home/microbiome/data_storage/SATA3/kraken2/KRAKEN2_DB \
+        $workdir/metagenome_data_clean/${base}_val_1.fq.gz,  $workdir/metagenome_data_clean/${base}_val_2.fq.gz \
+        --report  $workdir/metagenome_data_kraken2/${base}.report.tsv \ 
+        --output  $workdir/metagenome_data_kraken2/${base}.profile.txt \ 
+        --threads 24 --use-mpa-style -gzip-compressed 
+        
+    echo "processing of ${base} has been done"
+  else
+    echo "${base} was analyzed"
+  fi
+done
+
+
+
+
+
+  
+kraken2 --db /apps/users/user01/wanghhh/metagenomic/databases/kraken2 
+             TXA_Control_N702.N502.R1_kneaddata_paired.fastq  
+        --report ../kraken2_output/TXA_Control_N702.N502.R1_kneaddata_paired.fastq.report 
+        --output ../kraken2_output/TXA_Control_N702.N502.R1_kneaddata_paired.fastq_profile 
+        --unclassified-out ../kraken2_output/TXA_Control_N702.N502.R1_kneaddata_paired.fastq_unclassified.fastq 
+        --classified-out ../kraken2_output/TXA_Control_N702.N502.R1_kneaddata_paired.fastq_classified.fastq 
+        --threads 3 --use-mpa-style -gzip-compressed 
+
+
+
 
 
 
