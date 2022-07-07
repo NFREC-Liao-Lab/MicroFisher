@@ -226,8 +226,8 @@ for i in $(cat $workdir/metagenome_data_clean/file_list); do
   
   kraken2 --db   /home/microbiome/data_storage/SATA3/kraken2/KRAKEN2_DB \
         $workdir/metagenome_data_clean/${base}_val_1.fq.gz,  $workdir/metagenome_data_clean/${base}_val_2.fq.gz \
-        --report  $workdir/metagenome_data_kraken2/${base}.report.tsv \ 
-        --output  $workdir/metagenome_data_kraken2/${base}.profile.txt \ 
+        --report  $workdir/metagenome_data_kraken2/${base}.report.tsv \
+        --output  $workdir/metagenome_data_kraken2/${base}.profile.txt \
         --threads 24 --use-mpa-style -gzip-compressed 
         
     echo "processing of ${base} has been done"
