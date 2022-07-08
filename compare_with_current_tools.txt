@@ -161,7 +161,7 @@ workdir='/data_storage/SATA3/haihua/metagenome_data'
 for i in $(cat $workdir/metagenome_data_clean/file_list); do
    base=$(basename $i _val_1.fq.gz)
    echo "start to process the file ${base}"
-  if [ ! -f $workdir/metagenome_data_metaphlan/${base}_metaphlan.profile.txt ]; then
+  if [ ! -f $workdir/metagenome_data_metaphlan/${base}_profiled_metagenome.txt ]; then
     metaphlan $workdir/metagenome_data_clean/${base}_val_1.fq.gz,$workdir/metagenome_data_clean/${base}_val_2.fq.gz \
           --bowtie2out $workdir/metagenome_data_metaphlan/${base}.bowtie2.bz2 \
           --nproc 24 --input_type fastq \
@@ -173,12 +173,6 @@ for i in $(cat $workdir/metagenome_data_clean/file_list); do
    fi
  done
 
-
-metaphlan $workdir/metagenome_data_clean/${base}_val_1.fq.gz,$workdir/metagenome_data_clean/${base}_val_2.fq.gz \
-          --bowtie2out $workdir/metagenome_data_metaphlan/${base}.bowtie2.bz2 \
-          --nproc 24 --input_type fastq \
-          --force --ignore_bacteria --ignore_archaea \
-          -o $workdir/metagenome_data_metaphlan/${base}_profiled_metagenome.txt
 
 
 
