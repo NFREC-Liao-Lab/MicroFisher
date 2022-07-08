@@ -162,10 +162,11 @@ for i in $(cat $workdir/metagenome_data_clean/file_list); do
    base=$(basename $i _val_1.fq.gz)
    echo "start to process the file ${base}"
   if [ ! -f $workdir/metagenome_data_metaphlan/${base}_metaphlan.profile.txt ]; then
-   metaphlan $workdir/metagenome_data_clean/${base}_val_1.fq.gz,  $workdir/metagenome_data_clean/${base}_val_2.fq.gz  \
-             --input_type fastq  --bowtie2out $workdir/metagenome_data_metaphlan/${base}_metaphlan.bowtie2.bz2  \
-             --force --ignore_bacteria --ignore_archaea \
-             --nproc 24 -o $workdir/metagenome_data_metaphlan/${base}_metaphlan.profile.txt
+    metaphlan $workdir/metagenome_data_clean/${base}_val_1.fq.gz,$workdir/metagenome_data_clean/${base}_val_2.fq.gz \
+          --bowtie2out $workdir/metagenome_data_metaphlan/${base}.bowtie2.bz2 \
+          --nproc 24 --input_type fastq \
+          --force --ignore_bacteria --ignore_archaea \
+          -o $workdir/metagenome_data_metaphlan/${base}_profiled_metagenome.txt
     echo "processing of ${base} has been done"
    else
     echo "${base} was analyzed"
@@ -173,7 +174,14 @@ for i in $(cat $workdir/metagenome_data_clean/file_list); do
  done
 
 
-/data_storage/SATA3/haihua/metagenome_data/metagenome_data_metaphlan
+metaphlan $workdir/metagenome_data_clean/${base}_val_1.fq.gz,$workdir/metagenome_data_clean/${base}_val_2.fq.gz \
+          --bowtie2out $workdir/metagenome_data_metaphlan/${base}.bowtie2.bz2 \
+          --nproc 24 --input_type fastq \
+          --force --ignore_bacteria --ignore_archaea \
+          -o $workdir/metagenome_data_metaphlan/${base}_profiled_metagenome.txt
+
+
+
 
 #https://github.com/bioinformatics-centre/kaiju/blob/master/README.md
 mkdir metagenome_data_kaiju
