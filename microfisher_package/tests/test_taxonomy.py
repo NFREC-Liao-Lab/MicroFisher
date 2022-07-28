@@ -1,7 +1,7 @@
 import pytest
 import tempfile
-from microfisher import taxonomy
-from microfisher import taxonomy_utils
+from src.microfisher import taxonomy
+from src.microfisher import taxonomy_utils
 
 # @pytest.fixture
 # def setup_args():

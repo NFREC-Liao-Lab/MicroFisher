@@ -1,7 +1,7 @@
 import argparse
 import pytest
 import tempfile
-from microfisher.configuration import Config
+from src.microfisher.configuration import Config
 
 
 @pytest.fixture
