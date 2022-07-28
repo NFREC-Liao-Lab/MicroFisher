@@ -120,7 +120,35 @@ for i in $(cat metagenome_data_clean/file_list); do
 
 
 
+####result combination
+for i in $(cat metagenome_data_clean/file_list); do
+   base=$(basename $i _val_1.fq.gz)
+   echo "start to process the file ${base}"
+   
+   for length in 80 120 150; do
+       #for metagenome
+       MicroFisher combine \
+              -w metagenome_data_Fisher/$base \
+              --combine result_${base}_min${length}_dbITS1_report.tsv \
+                        result_${base}_min${length}_dbITS2_report.tsv \
+                        result_${base}_min${length}_dbLSU_D1_report.tsv \
+                        result_${base}_min${length}_dbLSU_D1_report.tsv \
+              --mode weighted --min_overlap 1
+       mv metagenome_data_Fisher/$base/merged_results metagenome_data_Fisher/$base/merged_results_metaDNA_${length}_${base}
+       #for metatranscriptome
+       MicroFisher combine \
+              -w metagenome_data_Fisher/$base \
+              --combine result_${base}_min${length}_dbITS1_report.tsv \
+                        result_${base}_min${length}_dbITS2_report.tsv \
+                        result_${base}_min${length}_dbLSU_D1_report.tsv \
+                        result_${base}_min${length}_dbLSU_D1_report.tsv \
+              --mode weighted --min_overlap 2
+       mv metagenome_data_Fisher/$base/merged_results metagenome_data_Fisher/$base/merged_results_metaRNA_${length}_${base}
+   done
 
+   echo "processing of ${base} has been done"
+
+ done
 
 
 
@@ -132,19 +160,6 @@ for i in $(cat metagenome_data_clean/file_list); do
                    --combine ${base}_dbITS1_report.tsv ${base}_dbITS2_report.tsv ${base}_LSU_D1_report.tsv ${base}_LSU_D1_report.tsv \
                    --mode weighted --min_overlap 2
 
-
-MicroFisher search -vv --db ITS1_fisher  -w /home/microbiome/data_storage/SATA3/metagenome_data/metagenome_data_clean \
-                   --prefix 12957.1.300262.ACATAGGC-GCCTATGT_val \
-                   --min 120  --db_path /home/microbiome/data_storage/SATA2/Fisher_test/short_DBs/MicroFisher_DBs
-
-
-
-
-MicroFisher search -vv  
-  -w PATH_TO_WORKSPACE \
-  --prefix example_ --min 120 \
-  --centrifuge_path PATH_TO_CENTRIFUGE \
-  --db_path PATH_TO_DATABASE --db LSU_D2 \
 
 
 
