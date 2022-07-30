@@ -230,6 +230,25 @@ snakemake --snakefile rules/eukdetect.rules --configfile [config file] --cores [
 
 
 
+profliling_with_eukdetect () {
+i=$1
+base=$(basename "$i" _val_1.fq.gz)
+
+   echo "start to process the file ${base}"
+      echo -e  “\t$base” > ${base}_fileName.txt
+      cat  configfile_for_metagenome.yml ${base}_fileName.txt > configfile_for_metagenome_${base}.yml
+      eukdetect --mode runall --configfile configfile_for_metagenome_${base}.yml --cores 24
+    echo "${base} was analyzed"
+ done
+}
+
+ 
+export -f profliling_with_eukdetect
+
+time parallel -j 24 --eta --load 100% --noswap  profliling_with_eukdetect ::: $(cat ../metagenome_data_clean/file_list)
+
+
+
 ##########################################################################################
 #part4：Kraken2 
 #https://github.com/DerrickWood/kraken2/wiki/Manual
