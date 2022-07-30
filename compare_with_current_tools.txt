@@ -212,6 +212,17 @@ for i in $(cat metagenome_data_clean/file_list); do
  done
 
 
+
+
+kaiju2table -t /data_storage/SATA3/haihua/metagenome_data/database/kaiju/nodes.dmp \
+            -n /data_storage/SATA3/haihua/metagenome_data/database/kaiju/names.dmp \
+            -r genus -o kaiju_summary.table \
+            *.tsv
+
+
+
+
+
 ###########################################################################################
 #Part3:#eukdetect
 eukdetect --mode runall --configfile configfile_for_metagenome.yml --cores 24
@@ -256,8 +267,8 @@ done
 
 
 
-
-
+python /data_storage/SATA3/haihua/kraken2/KrakenTools/combine_mpa.py -i *.tsv -o kraken_table.txt
+ 
   
 kraken2 --db /apps/users/user01/wanghhh/metagenomic/databases/kraken2 
              TXA_Control_N702.N502.R1_kneaddata_paired.fastq  
