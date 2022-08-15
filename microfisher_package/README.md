@@ -86,9 +86,9 @@ MicroFisher combine -v -w PATH_TO_WORKSPACE \
 MicroFisher combine --combine report_1 report_2 report_3 \
 --mode raw --out_dir custom_output
 
-# weighted with custom filter
+# weighted by abundance only and with custom filter
 MicroFisher combine --combine report_1 report_2 report_3 \
---mode weighted --filter 1e-8
+--mode weighted_abundance_only --filter 1e-8
 
 # weighted_length
 MicroFisher combine --combine report_1 report_2 report_3 \
@@ -96,11 +96,8 @@ MicroFisher combine --combine report_1 report_2 report_3 \
 ```
 
 #### Different combing mode
-- boolean: Present or absent of the taxa (optional: --min_overlap).
-- raw: sum of the number of reads.
-- weighted: normalised by the total number of reads.
-- weighted_centlength: normalised by the total number of reads and minimum
-    length used in centrifuge (--cent_length).
-- weighted_centlength_dblen: normalised by the total number of reads, and
+- weighted: normalised by the total number of reads, and
     minimum length used in centrifuge (--cent_length), and the average
     length of the database (--db_length).
+- boolean: Present or absent of the taxa (optional: --min_overlap).
+- raw: sum of the number of reads.
