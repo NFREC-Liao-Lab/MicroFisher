@@ -99,14 +99,14 @@ def main():
     group_algorithm.add_argument("--mode", choices=merging_algorithm.MODE_CHOICES,
                                  default=merging_algorithm.MODE_CHOICES[0],
                                  help="""Algorithm for combining results together.
-    - boolean: Present or absent of the taxa (optional: --min_overlap).
-    - raw: sum of the number of reads.
-    - weighted: normalised by the total number of reads.
-    - weighted_centlength: normalised by the total number of reads and minimum
-        length used in centrifuge (--cent_length).
-    - weighted_centlength_dblen: normalised by the total number of reads, and
+    - weighted: normalised by the total number of reads, and
         minimum length used in centrifuge (--cent_length), and the average
         length of the database (--db_length).
+    - boolean: Present or absent of the taxa (optional: --min_overlap).
+    - raw: sum of the number of reads.
+    - weighted_abundance_only: normalised by the total number of reads (testing-only).
+    - weighted_centlength_only: normalised by the total number of reads and minimum
+        length used in centrifuge (--cent_length) (testing-only).
 """)
     # (probability): NOT yet implemented.
     group_algorithm.add_argument("--filter", default=merging_algorithm.FILTER_DEFAULT, type=float,
