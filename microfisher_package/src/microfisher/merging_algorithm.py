@@ -3,9 +3,9 @@ from . import taxonomy_utils
 
 MODE_CHOICES = ["weighted_centlength_dblength", "boolean", "raw", "weighted",
                 "weighted_centlength"]
-DB_LIST = {"ITS+LSU": ["ITS1_fisher", "ITS2_fisher", "LSU_D1_fisher_new", "LSU_D2_fisher_new"],
-           "ITS": ["ITS1_fisher", "ITS2_fisher"],
-           "LSU": ["LSU_D1_fisher_new", "LSU_D2_fisher_new"]}
+DB_LIST = {"ITS+LSU": ["ITS1", "ITS2", "LSU_D1", "LSU_D2"],
+           "ITS": ["ITS1", "ITS2"],
+           "LSU": ["LSU_D1", "LSU_D2"]}
 FILTER_DEFAULT = 0.00001
 DEFAULT_DB_LENGTH = {
     "ITS1": 188.8,
