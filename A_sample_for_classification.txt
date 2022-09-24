@@ -1,0 +1,67 @@
+###########################################################################################】
+#MicroFisher classification
+mkdir metagenome_data_Fisher
+for i in $(cat metagenome_data_clean/file_list); do
+   base=$(basename $i _val_1.fq.gz)
+   echo "start to process the file ${base}"
+  if [ ! -d metagenome_data_Fisher/$base ]; then
+   mkdir metagenome_data_Fisher/$base
+   mv metagenome_data_clean/${base}_val_1.fq.gz  metagenome_data_Fisher/$base/${base}_R1.fastq.gz
+   mv metagenome_data_clean/${base}_val_2.fq.gz  metagenome_data_Fisher/$base/${base}_R2.fastq.gz
+   
+   for length in 80 120 150; do
+       MicroFisher search -vv --db ITS1  -w metagenome_data_Fisher/$base \
+                   --prefix ${base} \
+                   --min $length  --db_path /home/microbiome/data_storage/SATA2/Fisher_test/short_DBs/MicroFisher_DBs
+                   
+       MicroFisher search -vv --db ITS2  -w metagenome_data_Fisher/$base \
+                   --prefix ${base} \
+                   --min $length  --db_path /home/microbiome/data_storage/SATA2/Fisher_test/short_DBs/MicroFisher_DBs
+                   
+       MicroFisher search -vv --db LSU_D1  -w metagenome_data_Fisher/$base \
+                   --prefix ${base} \
+                   --min $length  --db_path /home/microbiome/data_storage/SATA2/Fisher_test/short_DBs/MicroFisher_DBs
+                   
+       MicroFisher search -vv --db LSU_D2  -w metagenome_data_Fisher/$base \
+                   --prefix ${base} \
+                   --min $length  --db_path /home/microbiome/data_storage/SATA2/Fisher_test/short_DBs/MicroFisher_DBs
+    done
+    mv  metagenome_data_Fisher/$base/${base}_R1.fastq.gz  metagenome_data_clean/${base}_val_1.fq.gz  
+    mv  metagenome_data_Fisher/$base/${base}_R2.fastq.gz  metagenome_data_clean/${base}_val_2.fq.gz 
+    echo "processing of ${base} has been done"
+   else
+    echo "${base} was analyzed"
+   fi
+ done
+
+
+
+####result combination
+for i in $(cat metagenome_data_clean/file_list); do
+   base=$(basename $i _val_1.fq.gz)
+   echo "start to process the file ${base}"
+   
+   for length in 80 120 150; do
+       #for metagenome
+       MicroFisher combine \
+              -w metagenome_data_Fisher/$base \
+              --combine result_${base}_min${length}_dbITS1_report.tsv \
+                        result_${base}_min${length}_dbITS2_report.tsv \
+                        result_${base}_min${length}_dbLSU_D1_report.tsv \
+                        result_${base}_min${length}_dbLSU_D1_report.tsv \
+              --mode weighted --min_overlap 1
+       mv metagenome_data_Fisher/$base/merged_results metagenome_data_Fisher/$base/merged_results_metaDNA_${length}_${base}
+       #for metatranscriptome
+       MicroFisher combine \
+              -w metagenome_data_Fisher/$base \
+              --combine result_${base}_min${length}_dbITS1_report.tsv \
+                        result_${base}_min${length}_dbITS2_report.tsv \
+                        result_${base}_min${length}_dbLSU_D1_report.tsv \
+                        result_${base}_min${length}_dbLSU_D1_report.tsv \
+              --mode weighted --min_overlap 2
+       mv metagenome_data_Fisher/$base/merged_results metagenome_data_Fisher/$base/merged_results_metaRNA_${length}_${base}
+   done
+
+   echo "processing of ${base} has been done"
+
+ done
