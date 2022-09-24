@@ -28,20 +28,21 @@ def core_merging_data(mode, parsed_data, rank, threshold, cent_length_dict=None,
         output_list, output_filter_list = output_util.format_merge_single(
             results, threshold=None, label="db_conut")
 
+
     elif mode == "weighted":
+        results = merging_algorithm.a_weighted(
+            data_summary, cent_length_dict, db_length_dict)
+        output_list, output_filter_list = output_util.format_merge_single(
+            results, threshold=threshold, label="proportion")
+
+    elif mode == "weighted_abundance_only":
         results = merging_algorithm.a_weighted(data_summary, None, None)
         output_list, output_filter_list = output_util.format_merge_single(
             results, threshold=threshold, label="proportion")
 
-    elif mode == "weighted_centlength":
+    elif mode == "weighted_centlength_only":
         results = merging_algorithm.a_weighted(
             data_summary, cent_length_dict, None)
-        output_list, output_filter_list = output_util.format_merge_single(
-            results, threshold=threshold, label="proportion")
-
-    elif mode == "weighted_centlength_dblength":
-        results = merging_algorithm.a_weighted(
-            data_summary, cent_length_dict, db_length_dict)
         output_list, output_filter_list = output_util.format_merge_single(
             results, threshold=threshold, label="proportion")
 

@@ -1,8 +1,8 @@
 # Merging algorithms
 from . import taxonomy_utils
 
-MODE_CHOICES = ["weighted_centlength_dblength", "boolean", "raw", "weighted",
-                "weighted_centlength"]
+MODE_CHOICES = ["weighted", "boolean", "raw", "weighted_abundance_only",
+                "weighted_centlength_only"]
 DB_LIST = {"ITS+LSU": ["ITS1_fisher", "ITS2_fisher", "LSU_D1_fisher_new", "LSU_D2_fisher_new"],
            "ITS": ["ITS1_fisher", "ITS2_fisher"],
            "LSU": ["LSU_D1_fisher_new", "LSU_D2_fisher_new"]}
