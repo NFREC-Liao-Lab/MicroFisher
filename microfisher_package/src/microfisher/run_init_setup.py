@@ -3,7 +3,7 @@ import tempfile
 from zipfile import ZipFile
 
 
-DB_URL = "https://figshare.com/articles/dataset/MicroFisher_DBs/19679595/2"
+DB_URL = "https://figshare.com/ndownloader/articles/19679595/versions/2"
 
 
 def init_setup_db(output_dir="default_db"):
