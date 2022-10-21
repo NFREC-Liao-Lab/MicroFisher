@@ -84,15 +84,15 @@ def run(args):
 
         outfile = os.path.join(out_dir, f"{out_prefix}_taxa_{rank}.tsv")
         with open(outfile, "w") as fout:
-            fout.write(output_list)
+            fout.writelines(output_list)
 
         outfile = os.path.join(
             out_dir, f"{out_prefix}_filtered_taxa_{rank}.tsv")
-        try:
-            with open(outfile, "w") as fout:
-                fout.write(output_filter_list)
-        except TypeError:
-            pass
+        # try:
+        with open(outfile, "w") as fout:
+            fout.writelines(output_filter_list)
+        # except TypeError:
+        #     pass
     if args.verbose > 0:
         print("==DEBUG== Combining reports: Done.")
     return True
