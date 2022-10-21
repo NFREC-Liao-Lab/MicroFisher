@@ -59,6 +59,7 @@ def run(args):
     out_prefix = args.out_prefix
     threshold = args.filter
     mode = args.mode
+    desired_ranks = args.desired_ranks
     # min_db_conut = args.min_overlap
     # length_list = args.length
 
@@ -75,7 +76,7 @@ def run(args):
     # print(db_length_dict)
     if args.verbose > 0:
         print("==DEBUG== Combining reports: START.")
-    for rank in taxonomy_utils.DESIRED_RANKS:
+    for rank in desired_ranks:
         if args.verbose > 1:
             print(f"===DEBUG=== Combining reports for {rank}.")
         output_list, output_filter_list = core_merging_data(

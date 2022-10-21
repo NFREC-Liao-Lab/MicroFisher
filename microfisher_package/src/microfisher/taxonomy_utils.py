@@ -1,9 +1,6 @@
 from .taxonomy import get_desired_taxa_ranks
 
 
-DESIRED_RANKS = ["class", "order", "family", "genus", "species"]
-
-
 def summarise_data(parsed_data, rank):
     results = dict()
     for info in parsed_data:

@@ -3,7 +3,13 @@ ncbi = NCBITaxa()
 # ncbi.update_taxonomy_database()
 
 
-def get_desired_taxa_ranks(taxid, desired_ranks=["class", "order", "family", "genus", "species"]):
+DESIRED_RANKS = ["family", "genus", "species"]
+FULL_RANKS = ["kingdom", "phylum", "class", "order", "family", "genus", "species"]
+
+def get_desired_taxa_ranks(taxid, desired_ranks=None):
+
+    if desired_ranks is None:
+        desired_ranks = DESIRED_RANKS
     # match = re.match(PATTERN_Genus_species, desc)
     # if match:
     #     tax_g_s = f"{match.group(1)} {match.group(2)}"

@@ -1,9 +1,30 @@
-from . import __version__
 import argparse
 import sys
 
-from . import merging_algorithm
-from . import args_subcommand
+from src.microfisher import taxonomy, taxonomy_utils
+
+from . import __version__, args_subcommand, merging_algorithm
+
+
+def check_is_dict():
+    class RequiredList(argparse.Action):
+        def __call__(self, parser, args, values, option_string=None):
+            if not isinstance(values, list):
+                try: 
+                    values = values.lower()
+                    data = values.split(",")
+                    check = [d in taxonomy.FULL_RANKS for d in data]
+                    if not all(check):
+                        print(data, check)
+                        message = f"Contain invalid taxonomy rank. Input: {values}"
+                        raise argparse.ArgumentTypeError(message)    
+                    setattr(args, self.dest, data)
+                except AttributeError:
+                    message = 'argument "{f}" requires csv format, i.e. A,B,C'.format(
+                        f=self.dest)
+                    raise argparse.ArgumentTypeError(message)    
+    return RequiredList
+
 
 
 def check_length_gt(length):
@@ -109,6 +130,10 @@ def main():
         length used in centrifuge (--cent_length) (testing-only).
 """)
     # (probability): NOT yet implemented.
+    group_algorithm.add_argument("--ranks", default=taxonomy.DESIRED_RANKS, 
+                                 action=check_is_dict(),
+                                 dest="desired_ranks",
+                                 help="Output results for these taxonomy ranks.")
     group_algorithm.add_argument("--filter", default=merging_algorithm.FILTER_DEFAULT, type=float,
                                  help="filter out taxa if the proportion is less than %(default)s")
     group_algorithm.add_argument("--min_overlap", default=1, required=False, type=int,
