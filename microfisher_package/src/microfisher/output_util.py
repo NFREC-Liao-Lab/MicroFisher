@@ -21,38 +21,21 @@ def format_merge_single(results, threshold, label="proportion"):
     sorted_key = sorted(results, key=results.get, reverse=True)
     # output_header = f"taxID\tname\t{label}\n"
     output_header = f"taxID\tname\t{label}\tkingdom\tphylum\tclass\torder\tfamily\tgenus\tspecies\n"
-
-    output_list = [f"{k[0]}\t{k[1]}\t{results[k]:g}" for k in sorted_key]
-    print("sorted_key", sorted_key[0])
-    # full_ranks = taxonomy.get_desired_taxa_ranks(taxid)
-    full_ranks = taxonomy.get_desired_taxa_ranks(sorted_key[0][0])
-    # print(full_ranks)
-    # print(full_ranks.values())
-
-    # output_list = [f"{k[0]}\t{k[1]}\t{results[k]:g}" for k in sorted_key]
-    all_output = {key: generate_single_results(key, results) for key in sorted_key}
-    # print(all_output)
-
-    # output_list = [f"{k[0]}\t{k[1]}\t{results[k]:g}\t{rank_str}" for k in sorted_key]
-
-    # sys.exit(-3)
-    # output_list = output_header + "\n".join(output_list)
-    # output_list = output_header + "\n".join(all_output.values())
-    # print(output_list)
-    output_list = [output_header]
-    output_list.extend(list(all_output.values()))
+    all_output_dict = {key: generate_single_results(key, results) for key in sorted_key}
     
+    output_list = [output_header]
 
+    output_list.extend(list(all_output_dict.values()))
 
-    output_filter_list = output_header
+    output_filter_list = [output_header]
     if threshold is not None:
         filtered_key = [k for k in sorted_key if results[k] > threshold]
-        print(filtered_key, threshold)
+        # print(filtered_key, threshold)
         # print(all_output[filtered_key])
-        output_filter_list = [f"{k[0]}\t{k[1]}\t{results[k]:g}" for k in filtered_key]
-        output_filter_list = [all_output[k] for k in filtered_key]
+        # output_filter_list = [f"{k[0]}\t{k[1]}\t{results[k]:g}" for k in filtered_key]
+        filtered_output_list  = [all_output_dict[k] for k in filtered_key]
         
-        output_filter_list = output_header + "\n".join(output_filter_list)
+        output_filter_list.extend(filtered_output_list)
 
     return(output_list, output_filter_list)
 
