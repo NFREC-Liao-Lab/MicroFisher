@@ -1,4 +1,5 @@
 import argparse
+import sys 
 
 from src.microfisher import taxonomy
 
