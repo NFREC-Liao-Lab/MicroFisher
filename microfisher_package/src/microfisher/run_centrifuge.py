@@ -32,7 +32,6 @@ class Centrifuge:
 
         is_output_exist = os.path.exists(self.config.out_report)
         if is_output_exist and result.returncode == 0:
-            if self.config.verbose > 0 :
+            if self.config.verbose > 0:
                 print("==DEBUG== Centrifuge: Done.")
             return True
-        

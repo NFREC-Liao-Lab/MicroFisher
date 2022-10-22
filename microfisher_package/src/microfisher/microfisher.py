@@ -1,30 +1,28 @@
 import argparse
-import sys
 
-from src.microfisher import taxonomy, taxonomy_utils
+from src.microfisher import taxonomy
 
 from . import __version__, args_subcommand, merging_algorithm
 
 
-def check_is_dict():
+def check_is_list():
     class RequiredList(argparse.Action):
         def __call__(self, parser, args, values, option_string=None):
             if not isinstance(values, list):
-                try: 
+                try:
                     values = values.lower()
                     data = values.split(",")
+                    data = [d.strip() for d in data if len(d) > 0]
                     check = [d in taxonomy.FULL_RANKS for d in data]
                     if not all(check):
-                        print(data, check)
-                        message = f"Contain invalid taxonomy rank. Input: {values}"
-                        raise argparse.ArgumentTypeError(message)    
+                        message = f"Contain invalid taxonomy rank. Input: {values}. Parsed: {data}"
+                        raise argparse.ArgumentTypeError(message)
                     setattr(args, self.dest, data)
                 except AttributeError:
                     message = 'argument "{f}" requires csv format, i.e. A,B,C'.format(
                         f=self.dest)
-                    raise argparse.ArgumentTypeError(message)    
+                    raise argparse.ArgumentTypeError(message)
     return RequiredList
-
 
 
 def check_length_gt(length):
@@ -39,7 +37,8 @@ def check_length_gt(length):
 
 
 def add_args_input_group(parser):
-    group_input = parser.add_argument_group("input (only one of the following argument is allowed)")
+    group_input = parser.add_argument_group(
+        "input (only one of the following argument is allowed)")
     arg_infiles = group_input.add_mutually_exclusive_group(required=True)
     arg_infiles.add_argument("--prefix",
                              help="used for both infiles and outfiles.\n Infiles are in the workspace [prefix_R1.fastq.gz, prefix_R2.fastq.gz].")
@@ -87,7 +86,7 @@ def main():
     parent_parser.add_argument("--dry", action="store_true", help="Dry run")
     parent_parser.add_argument('--version', action='version',
                                version='%(prog)s {version}'.format(version=__version__))
-    parent_parser.add_argument("-w", "--workspace",  default=".",
+    parent_parser.add_argument("-w", "--workspace", default=".",
                                help="path to your workspace/dataset. Default '.' current location.")
     # parser.set_defaults(func=help_message)
 
@@ -130,8 +129,8 @@ def main():
         length used in centrifuge (--cent_length) (testing-only).
 """)
     # (probability): NOT yet implemented.
-    group_algorithm.add_argument("--ranks", default=taxonomy.DESIRED_RANKS, 
-                                 action=check_is_dict(),
+    group_algorithm.add_argument("--ranks", default=taxonomy.DESIRED_RANKS,
+                                 action=check_is_list(),
                                  dest="desired_ranks",
                                  help="Output results for these taxonomy ranks.")
     group_algorithm.add_argument("--filter", default=merging_algorithm.FILTER_DEFAULT, type=float,
