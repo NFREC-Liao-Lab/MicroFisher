@@ -81,10 +81,11 @@ def run(args):
             print(f"===DEBUG=== Combining reports for {rank}.")
         output_list, output_filter_list = core_merging_data(
             mode, parsed_data, rank, threshold, cent_length_dict, db_length_dict)
-
-        outfile = os.path.join(out_dir, f"{out_prefix}_taxa_{rank}.tsv")
-        with open(outfile, "w") as fout:
-            fout.writelines(output_list)
+        
+        if args.include_all:
+            outfile = os.path.join(out_dir, f"{out_prefix}_taxa_{rank}.tsv")
+            with open(outfile, "w") as fout:
+                fout.writelines(output_list)
 
         outfile = os.path.join(
             out_dir, f"{out_prefix}_filtered_taxa_{rank}.tsv")

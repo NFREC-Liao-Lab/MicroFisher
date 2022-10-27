@@ -145,6 +145,8 @@ def main():
                                  metavar="length_1 length_2 [length_n ...]",
                                  action=check_length_gt(2),
                                  help="Average length in the database, used in the 'weighted_length' scheme")
+    group_algorithm.add_argument("--include_all", default=False, action=argparse.BooleanOptionalAction,
+                                 help="Include unfiltered results.")##
     p_combine.set_defaults(func=args_subcommand.combine_reports)
 
     p_full.add_argument("--preset_db", choices=merging_algorithm.DB_LIST.keys(),
