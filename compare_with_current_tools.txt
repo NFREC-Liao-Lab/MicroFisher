@@ -88,7 +88,7 @@ extract_rRNA (){
        --paired_out --out2  --zip-out \
        --reads metagenome_data_clean/${base}_val_1.fq.gz \
        --reads metagenome_data_clean/${base}_val_2.fq.gz \
-       --fastx  --aligned metagenome_data_rRNA——16S/$base.rRNA.16S \
+       --fastx  --aligned metagenome_data_rRNA_16S/$base.rRNA.16S \
        --threads 24
      echo "processing of ${base} is done"
    else
@@ -99,7 +99,7 @@ extract_rRNA (){
 export -f extract_rRNA
 
 
-nohup time parallel -j 2 --eta --load 100% --noswap  extract_rRNA ::: $(cat metagenome_data_clean/file_list) &
+nohup time parallel -j 2 --eta --load 100% --noswap  extract_rRNA ::: $(cat metagenome_data_clean/file_list_metaT) &
 
 
 
