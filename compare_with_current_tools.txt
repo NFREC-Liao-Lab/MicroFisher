@@ -75,6 +75,28 @@ extract_rRNA (){
    fi
 }
 
+
+extract_rRNA (){
+  name=$1
+  base=$(basename $name _val_1.fq.gz)
+  if [ ! -f metagenome_data_rRNA/$base.rRNA_fwd.fq.gz ]; then
+      mkdir metagenome_data_rRNA/$base
+      echo "start to process ${base}" 
+     sortmerna \
+       --workdir metagenome_data_rRNA/$base \
+       --ref /home/microbiome/tools/sortmerna/data/rRNA_databases/unite-fungi-its.fasta \
+       --ref /home/microbiome/tools/sortmerna/data/rRNA_databases/SILVA_138.1_LSURef_NR99_tax_silva.fasta \
+       --paired_out --out2  --zip-out \
+       --reads metagenome_data_clean/${base}_val_1.fq.gz \
+       --reads metagenome_data_clean/${base}_val_2.fq.gz \
+       --fastx  --aligned metagenome_data_rRNA/$base/$base.rRNA \
+       --threads 24
+     echo "processing of ${base} is done"
+   else
+     echo "${base} has been anlyzed"
+   fi
+}
+
 export -f extract_rRNA
 
 
