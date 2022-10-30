@@ -79,16 +79,16 @@ extract_rRNA (){
 extract_rRNA (){
   name=$1
   base=$(basename $name _val_1.fq.gz)
-  if [ ! -f metagenome_data_rRNA_16S/$base.rRNA.16S_fwd.fq.gz ]; then
-      mkdir metagenome_data_rRNA_16S/$base
+  if [ ! -f metagenome_data_rRNA_28S/$base.rRNA.28S_fwd.fq.gz ]; then
+      mkdir metagenome_data_rRNA_28S/$base
       echo "start to process ${base}" 
      sortmerna \
-       --workdir metagenome_data_rRNA/$base \
-       --ref /home/microbiome/tools/sortmerna/data/rRNA_databases/silva-bac-16s-id90.fasta \
+       --workdir metagenome_data_rRNA_28S/$base \
+       --ref /home/microbiome/tools/sortmerna/data/rRNA_databases/silva-euk-28s-id98.fasta \
        --paired_out --out2  --zip-out \
        --reads metagenome_data_clean/${base}_val_1.fq.gz \
        --reads metagenome_data_clean/${base}_val_2.fq.gz \
-       --fastx  --aligned metagenome_data_rRNA_16S/$base.rRNA.16S \
+       --fastx  --aligned metagenome_data_rRNA_28S/$base.rRNA.28S \
        --threads 24
      echo "processing of ${base} is done"
    else
