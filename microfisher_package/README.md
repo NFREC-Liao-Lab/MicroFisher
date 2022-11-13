@@ -56,11 +56,13 @@ MicroFisher preset --preset_db ITS+LSU --verbose\
 `python3 -m microfisher search --help`
 
 #### Arguments
-`--prefix`: One prefix for two paired-end files.
-`--paired`: Two paired-end files.
-`--single`: One single-end file.
-`--db`: Which centrifuge database to search against.
-`--min`: Minimum matching length.
+- `--prefix`: One prefix for two paired-end files.
+- `--paired`: Two paired-end files.
+- `--single`: One single-end file.
+- `--db`: Which centrifuge database to search against.
+- `--min`: Minimum matching length.
+
+
 #### Examples
 ```
 MicroFisher search -v -w PATH_TO_WORKSPACE \
@@ -75,6 +77,23 @@ MicroFisher search -v -w PATH_TO_WORKSPACE \
 `MicroFisher combine --help` \
 `python3 -m microfisher combine --help`
 
+
+#### Arguments
+- `--mode`: Different combining mode.. See the section below.
+- `--rank`: Output results for these taxonomy ranks. Default ranks: `family,genus,species`
+- `--include_all`: Include unfiltered results.
+- `--filter`: Filter out taxa with low proportion in the results. Default: 0.00001.
+  
+  
+#### Different combing mode
+- `weighted`: normalised by the total number of reads, and
+    minimum length used in centrifuge (`--cent_length`), and the average
+    length of the database (`--db_length`).
+- `boolean`: Present or absent of the taxa (optional: `--min_overlap`).
+- `raw`: sum of the number of reads.
+
+
+#### Examples
 
 ```
 # boolean mode: verbose output, and all reports are in PATH_TO_WORKSPACE folder
@@ -94,10 +113,3 @@ MicroFisher combine --combine report_1 report_2 report_3 \
 MicroFisher combine --combine report_1 report_2 report_3 \
 --mode weighted_length --length 90 100 110
 ```
-
-#### Different combing mode
-- weighted: normalised by the total number of reads, and
-    minimum length used in centrifuge (--cent_length), and the average
-    length of the database (--db_length).
-- boolean: Present or absent of the taxa (optional: --min_overlap).
-- raw: sum of the number of reads.

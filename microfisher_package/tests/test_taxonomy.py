@@ -17,12 +17,17 @@ from src.microfisher import taxonomy_utils
 # def config(setup_args):
 #     return Config(setup_args)
 
-
-def test_taxonomy_full():
+def test_taxonomy_desired():
     taxid = 9606
-    actual = taxonomy.get_desired_taxa_ranks(
-        taxid, desired_ranks=["class", "order", "family", "genus", "species"])
-    expected = {'class': (40674, 'Mammalia'), 'order': (9443, 'Primates'), 'family': (
+    actual = taxonomy.get_desired_taxa_ranks(taxid, desired_ranks=taxonomy.DESIRED_RANKS)
+    expected = {'family': (9604, 'Hominidae'), 'genus': (9605, 'Homo'), 'species': (9606, 'Homo sapiens')}
+    assert actual == expected
+
+
+def test_taxonomy_default():
+    taxid = 9606
+    actual = taxonomy.get_desired_taxa_ranks(taxid)# =["phylum", "class", "order", "family", "genus", "species"])
+    expected = {'kingdom': (33208, 'Metazoa'), 'phylum': (7711, 'Chordata'), 'class': (40674, 'Mammalia'), 'order': (9443, 'Primates'), 'family': (
         9604, 'Hominidae'), 'genus': (9605, 'Homo'), 'species': (9606, 'Homo sapiens')}
     assert actual == expected
 
@@ -31,6 +36,10 @@ def test_taxonomy_1():
     taxid = 9606
     actual = taxonomy.get_desired_taxa_ranks(taxid, desired_ranks=["species"])
     expected = {'species': (9606, 'Homo sapiens')}
+    assert actual == expected
+
+    actual = taxonomy.get_desired_taxa_ranks(taxid, desired_ranks=["family", "species"])
+    expected = {'family': (9604, 'Hominidae'), 'species': (9606, 'Homo sapiens')}
     assert actual == expected
 
 
