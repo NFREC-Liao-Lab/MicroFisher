@@ -1,7 +1,7 @@
 import argparse
 import sys 
 
-from src.microfisher import taxonomy
+from . import taxonomy
 
 from . import __version__, args_subcommand, merging_algorithm
 

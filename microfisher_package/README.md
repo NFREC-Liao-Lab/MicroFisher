@@ -1,13 +1,25 @@
 # MicroFisher
 
+## Requirement
+**Centrifuge:** Classifier for metagenomic sequences
+GitHub: https://github.com/DaehwanKimLab/centrifuge
+Website: https://ccb.jhu.edu/software/centrifuge/
+
+
+
+
+
 ## Installation
+Recommended install MicroFisher using pip - the package installer for Python [pip.pypa.io](pip.pypa.io).
 ```bash
-pip3 install microfisher_packages/
+cd microfisher_packages
+pip3 install -r requirements.txt
+pip3 install .
 ```
 **OR**
 ```bash
-cd microfisher_packages
-pip3 install .
+pip3 install -r microfisher_package/requirements.txt
+pip3 install microfisher_package
 ```
 
 ## Usage

@@ -1,6 +1,6 @@
 import sys
 
-from src.microfisher import taxonomy
+from . import taxonomy
 
 
 def generate_taxa_full_rank_str(taxid):

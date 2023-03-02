@@ -1,6 +1,7 @@
 from . import run_merge_reports
 from . import run_init_setup
 from . import merging_algorithm
+from . import taxonomy
 from .configuration import Config
 from .run_centrifuge import Centrifuge
 from .run_kreport import CentrifugeKReport
@@ -18,6 +19,7 @@ def search_db(args):
     config = Config(args)
     centrifuge = Centrifuge(config)
     cent_kreport = CentrifugeKReport(config)
+    is_complete_k = False
     if not args.dry:
         is_complete = centrifuge.run()
         if is_complete:
@@ -38,6 +40,7 @@ def preset_algorithm(args):
     args.min = 120
     args.filter = merging_algorithm.FILTER_DEFAULT
     args.mode = merging_algorithm.MODE_CHOICES[0]
+    args.desired_ranks = taxonomy.DESIRED_RANKS
     args.cent_length = None
     args.db_length = None
     combine_list = []
