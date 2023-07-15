@@ -6,6 +6,7 @@ GitHub: https://github.com/DaehwanKimLab/centrifuge
 Website: https://ccb.jhu.edu/software/centrifuge/
 
 **Python**
+
 Python >= 3.9
 
 
