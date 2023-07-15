@@ -207,7 +207,8 @@ for i in $(cat $workdir/metagenome_data_clean/file_list); do
           --tmp_dir $workdir/metagenome_data_metaphlan/${base} \
           --force \
           --add_viruses  \
-          --ignore_bacteria --ignore_archaea \
+          #--ignore_bacteria \
+          #--ignore_archaea \
           -o $workdir/metagenome_data_metaphlan/${base}_profiled_metagenome.txt
     echo "processing of ${base} has been done"
    else
