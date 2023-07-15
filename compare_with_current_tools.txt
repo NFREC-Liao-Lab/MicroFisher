@@ -199,9 +199,15 @@ for i in $(cat $workdir/metagenome_data_clean/file_list); do
    echo "start to process the file ${base}"
   if [ ! -f $workdir/metagenome_data_metaphlan/${base}_profiled_metagenome.txt ]; then
     metaphlan $workdir/metagenome_data_clean/${base}_val_1.fq.gz,$workdir/metagenome_data_clean/${base}_val_2.fq.gz \
+          --input_type fastq \
+          --bowtie2db /home/microbiome/data_storage/SATA2/tool_database/metaphlan \
+          --bt2_ps very-sensitive \
           --bowtie2out $workdir/metagenome_data_metaphlan/${base}.bowtie2.bz2 \
-          --nproc 24 --input_type fastq \
-          --force --ignore_bacteria --ignore_archaea \
+          --nproc 24 \
+          --tmp_dir $workdir/metagenome_data_metaphlan/${base} \
+          --force \
+          --add_viruses  \
+          --ignore_bacteria --ignore_archaea \
           -o $workdir/metagenome_data_metaphlan/${base}_profiled_metagenome.txt
     echo "processing of ${base} has been done"
    else
