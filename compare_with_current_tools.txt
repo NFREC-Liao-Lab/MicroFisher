@@ -191,10 +191,10 @@ for i in $(ls all_data/*_R1.fastq.gz); do
   if [ ! -d Fisher_classification/$base ]; then
    mkdir Fisher_classification/$base
 
-   MicroFisher preset --workspace ./ \
-                      --preset_db ITS \
+   MicroFisher preset --workspace all_data \
+                      --preset_db ITS+LSU \
                       --paired ${base}_R1.fastq.gz  ${base}_R2.fastq.gz \
-                      --out_dir ./ \
+                      --out_dir Fisher_classification \
                       --out_prefix ${base} \
                       --db_path /home/microbiome/data_storage/SATA3/Fisher_test/MicroFisher/MicroFisher_DBs \
                       --threads 24
