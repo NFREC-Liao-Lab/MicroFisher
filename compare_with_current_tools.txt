@@ -185,24 +185,17 @@ for i in $(cat metagenome_data_clean/file_list); do
 
 ###Preset function
 mkdir Fisher_classification
-for i in $(ls all_data/*_R1.fastq.gz); do
+for i in $(ls *_R1.fastq.gz); do
    base=$(basename $i _R1.fastq.gz)
    echo "start to process the file ${base}"
-  if [ ! -d Fisher_classification/$base ]; then
-   mkdir Fisher_classification/$base
-
-   MicroFisher preset --workspace all_data \
+  if [ ! -d Fisher_classification/${base}_filtered_taxa_genus.tsv ]; then
+   MicroFisher preset --workspace ./ \
                       --preset_db ITS+LSU \
                       --paired ${base}_R1.fastq.gz  ${base}_R2.fastq.gz \
-                      --out_dir Fisher_classification \
+                      --out_dir ../Fisher_classification \
                       --out_prefix ${base} \
                       --db_path /home/microbiome/data_storage/SATA3/Fisher_test/MicroFisher/MicroFisher_DBs \
                       --threads 24
-                      
-
-
-    mv  metagenome_data_Fisher/$base/${base}_R1.fastq.gz  metagenome_data_clean/${base}_val_1.fq.gz  
-    mv  metagenome_data_Fisher/$base/${base}_R2.fastq.gz  metagenome_data_clean/${base}_val_2.fq.gz 
     echo "processing of ${base} has been done"
    else
     echo "${base} was analyzed"
