@@ -2,7 +2,6 @@
 
 ## Requirement
 **Python:** https://www.python.org/
-
 **Centrifuge:** Classifier for metagenomic sequences
 - GitHub: https://github.com/DaehwanKimLab/centrifuge
 - Website: https://ccb.jhu.edu/software/centrifuge/
