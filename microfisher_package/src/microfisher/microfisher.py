@@ -92,14 +92,18 @@ def main():
     # parser.set_defaults(func=help_message)
 
     subparsers = parser.add_subparsers(title="subcommand", dest='subcommand',
-                                       description="Collection of %(prog)s functions.", help="See additional help 'subcommand --help'")
+                                       description="Collection of %(prog)s functions.",
+                                       help="See additional help 'subcommand --help'")
     p_init = subparsers.add_parser('init_db', parents=[parent_parser],
-                                   help='Initialise centrifuge with prebuild databases.', conflict_handler='resolve')
+                                   help='Initialise centrifuge with prebuild databases.',
+                                   conflict_handler='resolve')
     p_search = subparsers.add_parser('search', parents=[parent_parser],
                                      help='Search with centrifuge', conflict_handler='resolve')
-    p_combine = subparsers.add_parser('combine', parents=[parent_parser], formatter_class=argparse.RawTextHelpFormatter,
+    p_combine = subparsers.add_parser('combine', parents=[parent_parser], 
+                                      formatter_class=argparse.RawTextHelpFormatter,
                                       help='Combine results', conflict_handler='resolve')
-    p_full = subparsers.add_parser('preset', parents=[p_combine], formatter_class=argparse.RawTextHelpFormatter,
+    p_full = subparsers.add_parser('preset', parents=[p_combine],
+                                   formatter_class=argparse.RawTextHelpFormatter,
                                    help='Preset pipeline', conflict_handler='resolve')
 
     p_init.add_argument("--db_loc", default="default_db", required=False,
@@ -139,14 +143,16 @@ def main():
     group_algorithm.add_argument("--min_overlap", default=1, required=False, type=int,
                                  help="taxID present in at least (n) database, used in the 'boolean' scheme. (Default: %(default)s)")
     group_algorithm.add_argument("--cent_length", nargs="+", required=False, type=int,
-                                 metavar="length_1 length_2 [length_n ...]", action=check_length_gt(2),
+                                 metavar="length_1 length_2 [length_n ...]",
+                                 action=check_length_gt(2),
                                  help="Minimum matching length used to generate reports in centrifuge, used in the 'weighted_length' scheme")
     group_algorithm.add_argument("--db_length", nargs="+", required=False, type=float,
                                  metavar="length_1 length_2 [length_n ...]",
                                  action=check_length_gt(2),
                                  help="Average length in the database, used in the 'weighted_length' scheme")
-    group_algorithm.add_argument("--include_all", default=False, action=argparse.BooleanOptionalAction,
-                                 help="Include unfiltered results.")##
+    group_algorithm.add_argument("--include_all", default=False,
+                                 action=argparse.BooleanOptionalAction,
+                                 help="Include unfiltered results.")
     p_combine.set_defaults(func=args_subcommand.combine_reports)
 
     p_full.add_argument("--preset_db", choices=merging_algorithm.DB_LIST.keys(),

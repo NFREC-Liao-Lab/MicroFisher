@@ -6,7 +6,8 @@ from . import merging_algorithm
 from . import output_util
 
 
-def core_merging_data(mode, parsed_data, rank, threshold, cent_length_dict=None, db_length_dict=None):
+def core_merging_data(mode, parsed_data, rank, threshold,
+                      cent_length_dict=None, db_length_dict=None):
 
     try:
         assert mode in merging_algorithm.MODE_CHOICES
@@ -27,7 +28,6 @@ def core_merging_data(mode, parsed_data, rank, threshold, cent_length_dict=None,
         # sorted_key = sorted(results, key=results.get, reverse=True)
         output_list, output_filter_list = output_util.format_merge_single(
             results, threshold=None, label="db_conut")
-
 
     elif mode == "weighted":
         results = merging_algorithm.a_weighted(
@@ -79,9 +79,9 @@ def run(args):
     for rank in desired_ranks:
         if args.verbose > 1:
             print(f"===DEBUG=== Combining reports for {rank}.")
+
         output_list, output_filter_list = core_merging_data(
             mode, parsed_data, rank, threshold, cent_length_dict, db_length_dict)
-        
         if args.include_all:
             outfile = os.path.join(out_dir, f"{out_prefix}_taxa_{rank}.tsv")
             with open(outfile, "w") as fout:

@@ -11,7 +11,8 @@ def init_db(args):
     if not args.dry:
         is_complete = run_init_setup.init_setup_db(output_dir=args.db_loc)
         if is_complete:
-            print(f"==DEBUG== subcommand init_db completed.\tPrebuild database at {args.db_loc}.\n")
+            print("==DEBUG== subcommand init_db completed.\t"
+                  f"Prebuild database at {args.db_loc}.\n")
 
 
 def search_db(args):
@@ -25,7 +26,8 @@ def search_db(args):
         if is_complete:
             is_complete_k = cent_kreport.run()
         if is_complete_k:
-            print(f"==DEBUG== subcommand search completed.\tResults at {config.out_report}.\n")
+            print("==DEBUG== subcommand search completed.\t"
+                  f"Results at {config.out_report}.\n")
     return config.out_report
 
 
@@ -33,7 +35,8 @@ def combine_reports(args):
     if not args.dry:
         is_complete = run_merge_reports.run(args)
         if is_complete:
-            print(f"==DEBUG== subcommand combine completed.\tMerged results at {args.out_dir} folder.\n")
+            print("==DEBUG== subcommand combine completed.\t"
+                  f"Merged results at {args.out_dir} folder.\n")
 
 
 def preset_algorithm(args):
@@ -43,6 +46,7 @@ def preset_algorithm(args):
     args.desired_ranks = taxonomy.DESIRED_RANKS
     args.cent_length = None
     args.db_length = None
+    args.include_all = True
     combine_list = []
     if not args.dry:
         for db in merging_algorithm.DB_LIST[args.preset_db]:

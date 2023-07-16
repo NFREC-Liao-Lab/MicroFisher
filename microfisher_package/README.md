@@ -1,18 +1,15 @@
 # MicroFisher
 
 ## Requirement
+**Python:** https://www.python.org/
 **Centrifuge:** Classifier for metagenomic sequences
-GitHub: https://github.com/DaehwanKimLab/centrifuge
-Website: https://ccb.jhu.edu/software/centrifuge/
-
-**Python**
-
-Python >= 3.9
+- GitHub: https://github.com/DaehwanKimLab/centrifuge
+- Website: https://ccb.jhu.edu/software/centrifuge/
 
 
 
 ## Installation
-Recommended install MicroFisher using pip - the package installer for Python [pip.pypa.io](pip.pypa.io).
+Recommended install MicroFisher using pip - the package installer for Python [pip.pypa.io](https://pip.pypa.io).
 ```bash
 cd microfisher_packages
 pip3 install -r requirements.txt
@@ -31,38 +28,39 @@ pip3 install microfisher_package
 `--db_loc`: Custom location/folder for the prebuilt centrifuge databases.
 
 #### Examples
-Fetch prebuilt databases and store at default location.
-```bash
-MicroFisher init_db
-```
-Fetch prebuilt database and store is custom folder (`PATH_TO_NEW_DATABASE_FOLDER`)
+Fetch prebuilt databases and store at the default location.
+Fetch the prebuilt database and store is a custom folder (`PATH_TO_NEW_DATABASE_FOLDER`)
 ```bash
 MicroFisher init_db --db_loc PATH_TO_NEW_DATABASE_FOLDER
 ```
 
 ### Preset pipeline
 Run both steps in the MicroFisher with default configurations.
-`MicroFisher preset --help` \
+`MicroFisher preset --help` 
 
 #### Different preset databases
-- IST+LSU: Search against four databases: ITS1, IST2, LSU_D1, and LSU_D2.
-- IST: ITS1 and IST2
-- LSU: LSU_D1 and LSU_D2
+- `IST+LSU`: Search against four databases: ITS1, IST2, LSU_D1, and LSU_D2.
+- `IST`: ITS1 and IST2
+- `LSU`: LSU_D1 and LSU_D2
 
 #### Examples
 ```bash
 MicroFisher preset --preset_db ITS+LSU \
--w PATH_TO_WORKSPACE \
+-w $PATH_TO_WORKSPACE \
 --prefix example_reads \
---out_dir OUTPUT_DIR 
+--out_dir $OUTPUT_DIR 
 ```
+
 Full configuration
 ```bash
-MicroFisher preset --preset_db ITS+LSU --verbose\
---workspace PATH_TO_WORKSPACE
---paired example_R1.fastq.gz example_R2.fastq.gz \ 
---out_dir merged_result_folder --out_prefix results_prefix \
---centrifuge_path PATH_TO_CENTRIFUGE --db_path DB_PATH --threads 2
+MicroFisher preset --preset_db ITS+LSU --verbose \
+--workspace $PATH_TO_WORKSPACE \
+--paired example_R1.fastq.gz example_R2.fastq.gz \
+--out_dir merged_result_folder \
+--out_prefix results_prefix \
+--centrifuge_path $PATH_TO_CENTRIFUGE \
+--db_path $PATH_TO_DATABASE \
+--threads 4
 ```
 
 ### Search taxonomy with centrifuge
@@ -78,11 +76,11 @@ MicroFisher preset --preset_db ITS+LSU --verbose\
 
 
 #### Examples
-```
-MicroFisher search -v -w PATH_TO_WORKSPACE \
+```bash
+MicroFisher search -v -w $PATH_TO_WORKSPACE \
   --prefix example_ --min 120 \
-  --centrifuge_path PATH_TO_CENTRIFUGE \
-  --db_path PATH_TO_DATABASE --db LSU_D2 \
+  --centrifuge_path $PATH_TO_CENTRIFUGE \
+  --db_path $PATH_TO_DATABASE --db LSU_D2
 ```
 
 
@@ -109,9 +107,9 @@ MicroFisher search -v -w PATH_TO_WORKSPACE \
 
 #### Examples
 
-```
-# boolean mode: verbose output, and all reports are in PATH_TO_WORKSPACE folder
-MicroFisher combine -v -w PATH_TO_WORKSPACE \
+```bash
+# boolean mode: verbose output, and all reports are in $PATH_TO_WORKSPACE folder
+MicroFisher combine -v -w $PATH_TO_WORKSPACE \
 --combine report_1 report_2 report_3 \
 --mode boolean --min_overlap 3
 
@@ -125,5 +123,5 @@ MicroFisher combine --combine report_1 report_2 report_3 \
 
 # weighted_length
 MicroFisher combine --combine report_1 report_2 report_3 \
---mode weighted_length --length 90 100 110
+--mode weighted_centlength_only --length 90 100 110
 ```
