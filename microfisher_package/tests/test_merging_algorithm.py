@@ -1,7 +1,7 @@
 import pytest
 import shlex
-import src.microfisher.merging_algorithm as malg
-from src.microfisher import taxonomy_utils
+import microfisher.merging_algorithm as malg
+from microfisher import taxonomy_utils
 
 data_summary = {
     "data1": {
