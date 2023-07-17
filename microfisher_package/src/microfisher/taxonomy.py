@@ -6,6 +6,7 @@ ncbi = NCBITaxa()
 DESIRED_RANKS = ["family", "genus", "species"]
 FULL_RANKS = ["kingdom", "phylum", "class", "order", "family", "genus", "species"]
 
+
 def get_desired_taxa_ranks(taxid, desired_ranks=None):
 
     if desired_ranks is None:

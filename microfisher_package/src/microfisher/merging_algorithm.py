@@ -26,7 +26,7 @@ def a_boolean(data_summary, min_db_count):
                 counts[k] = 1
 
     results = {k: v for k, v in counts.items() if v >= min_db_count}
-    return(results)
+    return results
 
 
 def a_equal(data_summary):
@@ -38,7 +38,7 @@ def a_equal(data_summary):
                 results[k] += v
             except KeyError:
                 results[k] = v
-    return(results)
+    return results
 
 
 def a_weighted(data_summary, cent_length_dict=None, db_mean_length=None):
@@ -63,7 +63,7 @@ def a_weighted(data_summary, cent_length_dict=None, db_mean_length=None):
     # normalised_factor = sum(results.values())
     # percentage = {k: v / normalised_factor for k, v in results.items()}
     percentage = taxonomy_utils.normalise_data(results)
-    return(percentage)
+    return percentage
 
 
 def a_probability(data_summary, report_length_dict):
@@ -77,10 +77,10 @@ def a_probability(data_summary, report_length_dict):
     # normalised_factor = len(data_summary)
     # percentage = {k:v/normalised_factor for k, v in results.items()}
     probability = None
-    return(probability)
+    return probability
 
 
 def calculate_percentage(results):
     total = sum(results.values())
     percentage = {k: v / total for k, v in results.items()}
-    return(percentage)
+    return percentage

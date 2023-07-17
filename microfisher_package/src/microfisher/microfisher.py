@@ -1,5 +1,5 @@
 import argparse
-import sys 
+import sys
 
 from . import taxonomy
 
@@ -99,7 +99,7 @@ def main():
                                    conflict_handler='resolve')
     p_search = subparsers.add_parser('search', parents=[parent_parser],
                                      help='Search with centrifuge', conflict_handler='resolve')
-    p_combine = subparsers.add_parser('combine', parents=[parent_parser], 
+    p_combine = subparsers.add_parser('combine', parents=[parent_parser],
                                       formatter_class=argparse.RawTextHelpFormatter,
                                       help='Combine results', conflict_handler='resolve')
     p_full = subparsers.add_parser('preset', parents=[p_combine],
