@@ -1,6 +1,7 @@
 import argparse
+
 import pytest
-import tempfile
+
 from microfisher.configuration import Config
 
 

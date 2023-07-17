@@ -1,7 +1,9 @@
-import pytest
 import shlex
-from tests.test_config import setup_args, config
+
+import pytest
+
 from microfisher.run_centrifuge import Centrifuge
+from tests.test_config import config, setup_args
 
 
 @pytest.mark.usefixtures("setup_args", "config")
