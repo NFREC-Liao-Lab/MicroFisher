@@ -19,7 +19,7 @@ conda install bioconda::centrifuge
 Recommended install MicroFisher using pip - the package installer for Python [pip.pypa.io](https://pip.pypa.io).
 ```bash
 git clon https://github.com/NFREC-Liao-Lab/MicroFisher.git
-cd MicroFisher/microfisher_packages
+cd MicroFisher/microfisher_package
 pip3 install -r requirements.txt
 pip3 install .
 ```
@@ -63,7 +63,6 @@ MicroFisher preset --preset_db ITS+LSU \
 Full configuration
 ```bash
 MicroFisher preset --preset_db ITS+LSU --verbose \
---min 120
 --workspace $PATH_TO_WORKSPACE \
 --paired example_R1.fastq.gz example_R2.fastq.gz \
 --out_dir merged_result_folder \
@@ -76,10 +75,9 @@ MicroFisher preset --preset_db ITS+LSU --verbose \
 Explanation for the full configuration 
 ```bash
 MicroFisher preset --preset_db ITS+LSU --verbose \ #The selected databases used for the job (In general, Metagenomic data: ITS+LSU; Metatranscriptomic data: LSU)
---min 120 #Minimum matching length.
---workspace $PATH_TO_WORKSPACE \ #Path to the folder fastq datasets
---paired example_R1.fastq.gz example_R2.fastq.gz \ #File name of fastq files (without PATH; using --single if the data is single end reads)
---out_dir merged_result_folder \ #Path to folder the results will be output
+--workspace $PATH_TO_WORKSPACE \ #Path to the work folder (output the searching result) 
+--paired example_R1.fastq.gz example_R2.fastq.gz \ #Path to fastq file(s) (without PATH; using --single if the data is single end reads)
+--out_dir merged_result_folder \ #Path to folder output the results files
 --out_prefix results_prefix \ #Prefix of the result output files
 --centrifuge_path $PATH_TO_CENTRIFUGE \ #Path to the centrifuge package (if necessary)
 --db_path $PATH_TO_DATABASE \ #Path to the DATABASE of MicroFisher
