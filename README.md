@@ -74,9 +74,9 @@ MicroFisher preset --preset_db ITS+LSU --verbose \
 
 Explanation for the full configuration 
 ```bash
-MicroFisher preset --preset_db ITS+LSU --verbose \ #The selected databases used for the job (In general, Metagenomic data: ITS+LSU; Metatranscriptomic data: LSU)
+MicroFisher preset --preset_db ITS+LSU --verbose \ #The selected databases used for the job (Metagenomic data: ITS+LSU; Metatranscriptomic data: LSU)
 --workspace $PATH_TO_WORKSPACE \ #Path to the work folder (output the searching result) 
---paired example_R1.fastq.gz example_R2.fastq.gz \ #Path to fastq file(s) (without PATH; using --single if the data is single end reads)
+--paired example_R1.fastq.gz example_R2.fastq.gz \ #Path to fastq file(s) (using --single if the data is single end reads)
 --out_dir merged_result_folder \ #Path to folder output the results files
 --out_prefix results_prefix \ #Prefix of the result output files
 --centrifuge_path $PATH_TO_CENTRIFUGE \ #Path to the centrifuge package (if necessary)
