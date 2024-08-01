@@ -31,16 +31,16 @@ class Config:
     def centrifuge_input_files(self, args):
         if args.prefix is not None:
             infiles = [os.path.join(
-                self.workspace, f"{args.prefix}_R{i}.fastq.gz") for i in [1, 2]]
+                 f"{args.prefix}_R{i}.fastq.gz") for i in [1, 2]]
             self.param_input = f"-1 {infiles[0]} -2 {infiles[1]}"
             self.out_prefix = args.prefix
         elif args.paired is not None:
             infiles = [os.path.join(
-                self.workspace, f"{i}") for i in args.paired]
+                 f"{i}") for i in args.paired]
             self.param_input = f"-1 {infiles[0]} -2 {infiles[1]}"
             self.out_prefix = Path(args.paired[0]).stem
         elif args.single is not None:
-            infiles = os.path.join(self.workspace, args.single)
+            infiles = os.path.join(args.single)
             self.param_input = f"-U {infiles}"
             self.out_prefix = Path(args.single).stem
 
