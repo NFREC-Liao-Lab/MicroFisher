@@ -75,6 +75,7 @@ MicroFisher preset --preset_db ITS+LSU --verbose \
 Explanation for the full configuration 
 ```bash
 MicroFisher preset --preset_db ITS+LSU --verbose \ #The selected databases used for the job (Metagenomic data: ITS+LSU; Metatranscriptomic data: LSU)
+--min 120 \ #Minimum matching length (Default: 120).
 --workspace $PATH_TO_WORKSPACE \ #Path to the work folder (output the searching result) 
 --paired example_R1.fastq.gz example_R2.fastq.gz \ #Path to fastq file(s) (using --single if the data is single end reads)
 --out_dir merged_result_folder \ #Path to folder output the results files
