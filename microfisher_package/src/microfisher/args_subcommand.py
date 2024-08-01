@@ -40,7 +40,7 @@ def combine_reports(args):
 
 
 def preset_algorithm(args):
-    args.min = 120
+    args.min = args.min
     args.filter = merging_algorithm.FILTER_DEFAULT
     args.mode = merging_algorithm.MODE_CHOICES[0]
     args.desired_ranks = taxonomy.DESIRED_RANKS
