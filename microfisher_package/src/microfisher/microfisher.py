@@ -67,7 +67,8 @@ def add_args_centrifuge(parser, full_config=True):
                                   help="path to the database (if it is not available by default). Currently append to centrifuge_path")
     group_centrifuge.add_argument("--threads", type=int, default=1,
                                   help="number of alignment threads to launch. (%(default)s)")
-
+    group_centrifuge.add_argument("-m", "--min", type=int, default=120,
+                                  help="minimum matching length (Default: %(default)s)")
     if full_config:
         group_centrifuge.add_argument("-m", "--min", type=int, default=120,
                                       help="minimum matching length (Default: %(default)s)")
