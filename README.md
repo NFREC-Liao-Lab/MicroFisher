@@ -63,6 +63,7 @@ MicroFisher preset --preset_db ITS+LSU \
 Full configuration
 ```bash
 MicroFisher preset --preset_db ITS+LSU --verbose \
+--min 120 \
 --workspace $PATH_TO_WORKSPACE \
 --paired example_R1.fastq.gz example_R2.fastq.gz \
 --out_dir merged_result_folder \
@@ -82,7 +83,7 @@ MicroFisher preset --preset_db ITS+LSU --verbose \ #The selected databases used 
 --out_prefix results_prefix \ #Prefix of the result output files
 --centrifuge_path $PATH_TO_CENTRIFUGE \ #Path to the centrifuge package (if necessary)
 --db_path $PATH_TO_DATABASE \ #Path to the DATABASE of MicroFisher
---threads 4 #Number of cores
+--threads 4 #Number of threads
 ```
 
 
