@@ -1,5 +1,9 @@
 ![MicroFisher](https://github.com/NFREC-Liao-Lab/MicroFisher/assets/58599570/fd62dd70-800f-437b-8faf-b05af0fa4277)
 # MicroFisher
+Create an environment using conda create
+```bash
+conda create -n Microfisher Python
+```
 
 ## Requirement
 **Python:** https://www.python.org/
@@ -7,18 +11,21 @@
 **Centrifuge:** Classifier for metagenomic sequences
 - GitHub: https://github.com/DaehwanKimLab/centrifuge
 - Website: https://ccb.jhu.edu/software/centrifuge/
-
-
+```bash
+conda install bioconda::centrifuge
+```
 
 ## Installation
 Recommended install MicroFisher using pip - the package installer for Python [pip.pypa.io](https://pip.pypa.io).
 ```bash
-cd microfisher_packages
+git clon https://github.com/NFREC-Liao-Lab/MicroFisher.git
+cd MicroFisher/microfisher_packages
 pip3 install -r requirements.txt
 pip3 install .
 ```
 **OR**
 ```bash
+cd MicroFisher
 pip3 install -r microfisher_package/requirements.txt
 pip3 install microfisher_package
 ```
@@ -56,6 +63,7 @@ MicroFisher preset --preset_db ITS+LSU \
 Full configuration
 ```bash
 MicroFisher preset --preset_db ITS+LSU --verbose \
+--min 120
 --workspace $PATH_TO_WORKSPACE \
 --paired example_R1.fastq.gz example_R2.fastq.gz \
 --out_dir merged_result_folder \
@@ -65,6 +73,23 @@ MicroFisher preset --preset_db ITS+LSU --verbose \
 --threads 4
 ```
 
+Explanation for the full configuration 
+```bash
+MicroFisher preset --preset_db ITS+LSU --verbose \ #The selected databases used for the job (In general, Metagenomic data: ITS+LSU; Metatranscriptomic data: LSU)
+--min 120 #Minimum matching length.
+--workspace $PATH_TO_WORKSPACE \ #Path to the folder fastq datasets
+--paired example_R1.fastq.gz example_R2.fastq.gz \ #File name of fastq files (without PATH; using --single if the data is single end reads)
+--out_dir merged_result_folder \ #Path to folder the results will be output
+--out_prefix results_prefix \ #Prefix of the result output files
+--centrifuge_path $PATH_TO_CENTRIFUGE \ #Path to the centrifuge package (if necessary)
+--db_path $PATH_TO_DATABASE \ #Path to the DATABASE of MicroFisher
+--threads 4 #Number of cores
+```
+
+
+
+
+
 ### Search taxonomy with centrifuge
 `MicroFisher search --help` \
 `python3 -m microfisher search --help`
@@ -73,7 +98,7 @@ MicroFisher preset --preset_db ITS+LSU --verbose \
 - `--prefix`: One prefix for two paired-end files.
 - `--paired`: Two paired-end files.
 - `--single`: One single-end file.
-- `--db`: Which centrifuge database to search against.
+- `--preset_db`: Which centrifuge database to search against.
 - `--min`: Minimum matching length.
 
 
