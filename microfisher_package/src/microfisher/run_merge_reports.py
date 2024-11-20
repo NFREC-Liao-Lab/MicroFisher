@@ -54,8 +54,8 @@ def core_merging_data(mode, parsed_data, rank, threshold,
 
 
 def run(args):
-    report_files = [os.path.join(f) for f in args.combine]
-    out_dir = os.path.join(args.out_dir)
+    report_files = [os.path.join(args.workspace, f) for f in args.combine]
+    out_dir = os.path.join(args.workspace, args.out_dir)
     out_prefix = args.out_prefix
     threshold = args.filter
     mode = args.mode
