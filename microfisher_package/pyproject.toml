@@ -4,7 +4,7 @@ authors = [
     { name = "Steven Wu", email = "stevenwu@ntu.edu.tw" },
     { name = "Haihua Wang", email = "wanghaihua@ufl.edu" },
 ]
-description = "Fungal taxonomic classification for metatranscriptomic and metagenomic data"
+description = "Fungal taxonomic classification for metatranscriptomic and metagenomic data using multiple hypervariable markers"
 # long_description = {file= "README.md"}
 # long_description_content_type = "text/markdown"
 license = { file = "LICENSE" }
