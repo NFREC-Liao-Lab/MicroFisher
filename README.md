@@ -1,3 +1,8 @@
+![MicroFisher workflow](https://github.com/NFREC-Liao-Lab/MicroFisher/actions/workflows/python-app.yml/badge.svg)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
+
+
 ![MicroFisher](https://github.com/NFREC-Liao-Lab/MicroFisher/assets/58599570/fd62dd70-800f-437b-8faf-b05af0fa4277)
 # MicroFisher
 
