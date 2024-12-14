@@ -1,9 +1,5 @@
 ![MicroFisher](https://github.com/NFREC-Liao-Lab/MicroFisher/assets/58599570/fd62dd70-800f-437b-8faf-b05af0fa4277)
 # MicroFisher
-Create an environment using conda create
-```bash
-conda create -n Microfisher Python
-```
 
 ## Requirement
 **Python:** https://www.python.org/
@@ -11,24 +7,27 @@ conda create -n Microfisher Python
 **Centrifuge:** Classifier for metagenomic sequences
 - GitHub: https://github.com/DaehwanKimLab/centrifuge
 - Website: https://ccb.jhu.edu/software/centrifuge/
-```bash
-conda install bioconda::centrifuge
-```
 
 ## Installation
 Recommended install MicroFisher using pip - the package installer for Python [pip.pypa.io](https://pip.pypa.io).
 ```bash
-git clon https://github.com/NFREC-Liao-Lab/MicroFisher.git
+# Create an environment using conda create
+# Note: `cgi` package is removed in Python3.13 https://peps.python.org/pep-0594/
+conda create -n Microfisher Python=3.12
+
+# Activate Microfisher environment
+conda activate Microfisher
+conda install bioconda::centrifuge
+
+# Clone this repository
+git clone https://github.com/NFREC-Liao-Lab/MicroFisher.git
 cd MicroFisher/microfisher_package
+
+# Install dependencies and MicroFisher
 pip3 install -r requirements.txt
 pip3 install .
 ```
-**OR**
-```bash
-cd MicroFisher
-pip3 install -r microfisher_package/requirements.txt
-pip3 install microfisher_package
-```
+
 
 ## Usage
 ### Initialize centrifuge database
@@ -38,14 +37,14 @@ pip3 install microfisher_package
 
 #### Examples
 Fetch prebuilt databases and store at the default location.
-Fetch the prebuilt database and store is a custom folder (`PATH_TO_NEW_DATABASE_FOLDER`)
+Fetch the prebuilt database and store is a custom folder (`$PATH_TO_NEW_DATABASE_FOLDER`)
 ```bash
-MicroFisher init_db --db_loc PATH_TO_NEW_DATABASE_FOLDER
+MicroFisher init_db --db_loc $PATH_TO_NEW_DATABASE_FOLDER
 ```
 
 ### Preset pipeline
 Run both steps in the MicroFisher with default configurations.
-`MicroFisher preset --help` 
+`MicroFisher preset --help`
 
 #### Different preset databases
 - `IST+LSU`: Search against four databases: ITS1, IST2, LSU_D1, and LSU_D2.
@@ -57,7 +56,7 @@ Run both steps in the MicroFisher with default configurations.
 MicroFisher preset --preset_db ITS+LSU \
 -w $PATH_TO_WORKSPACE \
 --prefix example_reads \
---out_dir $OUTPUT_DIR 
+--out_dir $OUTPUT_DIR
 ```
 
 Full configuration
@@ -73,11 +72,11 @@ MicroFisher preset --preset_db ITS+LSU --verbose \
 --threads 4
 ```
 
-Explanation for the full configuration 
+Explanation for the full configuration
 ```bash
 MicroFisher preset --preset_db ITS+LSU --verbose \ #The selected databases used for the job (Metagenomic data: ITS+LSU; Metatranscriptomic data: LSU)
 --min 120 \ #Minimum matching length (Default: 120).
---workspace $PATH_TO_WORKSPACE \ #Path to the work folder (output the searching result) 
+--workspace $PATH_TO_WORKSPACE \ #Path to the work folder (output the searching result)
 --paired example_R1.fastq.gz example_R2.fastq.gz \ #Path to fastq file(s) (using --single if the data is single end reads)
 --out_dir merged_result_folder \ #Path to folder output the results files
 --out_prefix results_prefix \ #Prefix of the result output files
@@ -122,8 +121,8 @@ MicroFisher search -v -w $PATH_TO_WORKSPACE \
 - `--rank`: Output results for these taxonomy ranks. Default ranks: `family,genus,species`
 - `--include_all`: Include unfiltered results.
 - `--filter`: Filter out taxa with low proportion in the results. Default: 0.00001.
-  
-  
+
+
 #### Different combing mode
 - `weighted`: normalised by the total number of reads, and
     minimum length used in centrifuge (`--cent_length`), and the average

@@ -1,5 +1,5 @@
 import argparse
-import sys 
+import sys
 
 from . import taxonomy
 
@@ -78,7 +78,9 @@ def add_args_centrifuge(parser, full_config=True):
 def main():
 
     parser = argparse.ArgumentParser(
-        prog="MicroFisher", description="%(prog)s: TODO XXX.")
+        prog="MicroFisher", description="%(prog)s: Fungal taxonomic classification for metatranscriptomic and metagenomic data using multiple hypervariable markers.")
+    parser.add_argument('--version', action='version',
+                        version='%(prog)s {version}'.format(version=__version__))
     parent_parser = argparse.ArgumentParser(
         description="Parent parser.", add_help=False)
     # formatter_class=argparse.ArgumentDefaultsHelpFormatter)
@@ -86,8 +88,7 @@ def main():
     parent_parser.add_argument("-v", "--verbose", action='count', default=0,
                                help="Verbose mode (allow multiples)")
     parent_parser.add_argument("--dry", action="store_true", help="Dry run")
-    parent_parser.add_argument('--version', action='version',
-                               version='%(prog)s {version}'.format(version=__version__))
+
     parent_parser.add_argument("-w", "--workspace", default=".",
                                help="path to your workspace/dataset. Default '.' current location.")
     # parser.set_defaults(func=help_message)
@@ -100,7 +101,7 @@ def main():
                                    conflict_handler='resolve')
     p_search = subparsers.add_parser('search', parents=[parent_parser],
                                      help='Search with centrifuge', conflict_handler='resolve')
-    p_combine = subparsers.add_parser('combine', parents=[parent_parser], 
+    p_combine = subparsers.add_parser('combine', parents=[parent_parser],
                                       formatter_class=argparse.RawTextHelpFormatter,
                                       help='Combine results', conflict_handler='resolve')
     p_full = subparsers.add_parser('preset', parents=[p_combine],
