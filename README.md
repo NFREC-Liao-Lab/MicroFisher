@@ -1,3 +1,8 @@
+![MicroFisher workflow](https://github.com/NFREC-Liao-Lab/MicroFisher/actions/workflows/python-app.yml/badge.svg)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
+
+
 ![MicroFisher](https://github.com/NFREC-Liao-Lab/MicroFisher/assets/58599570/fd62dd70-800f-437b-8faf-b05af0fa4277)
 # MicroFisher
 
@@ -151,3 +156,12 @@ MicroFisher combine --combine report_1 report_2 report_3 \
 MicroFisher combine --combine report_1 report_2 report_3 \
 --mode weighted_centlength_only --length 90 100 110
 ```
+
+## Database generation
+The `database_generation` contains scripts for curating customised database for MicroFisher.
+
+
+## Manuscript
+The `manuscript` folder contains source codes used to perform analyses and validation for the manuscript
+Wang H., S. Wu, K. Zhang, K. Chen, R. Vilgalys, H. Liao. MicroFisher: Fungal taxonomic classification for metatranscriptomic and metagenomic data using multiple short hypervariable markers.
+
