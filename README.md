@@ -151,3 +151,12 @@ MicroFisher combine --combine report_1 report_2 report_3 \
 MicroFisher combine --combine report_1 report_2 report_3 \
 --mode weighted_centlength_only --length 90 100 110
 ```
+
+## Database generation
+The `database_generation` contains scripts for curating customised database for MicroFisher.
+
+
+## Manuscript
+The `manuscript` folder contains source codes used to perform analyses and validation for the manuscript
+Wang H., S. Wu, K. Zhang, K. Chen, R. Vilgalys, H. Liao. MicroFisher: Fungal taxonomic classification for metatranscriptomic and metagenomic data using multiple short hypervariable markers.
+
