@@ -1,6 +1,48 @@
+[project]
+name = "microfisher"
+authors = [
+    { name = "Steven Wu", email = "stevenwu@ntu.edu.tw" },
+    { name = "Haihua Wang", email = "wanghaihua@ufl.edu" },
+]
+description = "Fungal taxonomic classification for metatranscriptomic and metagenomic data"
+# long_description = {file= "README.md"}
+# long_description_content_type = "text/markdown"
+license = { file = "LICENSE" }
+dynamic = ["version", "dependencies"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Topic :: Database",
+    "Topic :: Scientific/Engineering :: Bio-Informatics",
+    "Topic :: Software Development :: Version Control :: Git"
+]
+
+[project.urls]
+homepage = "https://github.com/NFREC-Liao-Lab/MicroFisher.git"
+project_urls = "https://github.com/NFREC-Liao-Lab/MicroFisher/issues"
+
+[project.scripts]
+MicroFisher = "microfisher.microfisher:main"
+
+
 [build-system]
-requires = ["setuptools>=43", "wheel"]
+requires = ["setuptools>=61", "wheel"]
 build-backend = "setuptools.build_meta"
+
+[tool.setuptools.dynamic]
+dependencies = {file = "requirements.txt"}
+version = {attr = "microfisher.__version__"}
+
+[tool.setuptools]
+package-dir = { "" = "src" }
+
+[tool.setuptools.packages.find]
+where = ["src"]
 
 [tool.pytest.ini_options]
 pythonpath = ["src"]
+testpaths = ["tests"]
+addopts = [ "-ra", "-v", "--color=yes"]
+# addopts = [ "-ra", "-v", "--color=yes", "--cov-report=html", "--cov-report=term", "--cov=src", "--cov=tests", ]
+
