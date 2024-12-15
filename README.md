@@ -34,6 +34,22 @@ pip3 install .
 ```
 
 
+## Quick start
+1. Install MicroFisher. See [Installation](#installation) section
+2. Go to the `MicroFisher/microfisher_package` folder
+    ```bash
+    cd MicroFisher/microfisher_package
+    ```
+1. Initialize the database. The prebuild database is available at the `default_db` folder.
+    ```bash
+    MicroFisher init_db
+    ```
+1. Run example dataset
+    ```bash
+    MicroFisher preset --preset_db ITS+LSU --workspace example --db_path default_db --paired example_R1.fastq.gz example_R2.fastq.gz --out_dir merged_result_folder
+    MicroFisher preset --db_path default_db --paired example/example_R1.fastq.gz example/example_R2.fastq.gz --out_dir merged_result_folder
+    ```
+
 ## Usage
 ### Initialize centrifuge database
 `MicroFisher init_db --help`

@@ -15,6 +15,8 @@ class Config:
 
         self.centrifuge_path = os.path.expanduser(args.centrifuge_path)
         self.workspace = os.path.expanduser(args.workspace)
+        self.out_dir = args.out_dir
+
 
         # self.centrifuge_path = args.centrifuge_path
         self.db_path = os.path.join(self.centrifuge_path, args.db_path)
@@ -47,9 +49,9 @@ class Config:
     def centrifuge_output_files(self):
         prefix_outfile = f"result_{self.out_prefix}_min{self.min_len}_db{self.db_name}"
         self.out_output = os.path.join(
-            self.workspace, f"{prefix_outfile}_output.txt")
+            self.out_dir, f"{prefix_outfile}_output.txt")
         self.out_report = os.path.join(
-            self.workspace, f"{prefix_outfile}_report.tsv")
+            self.out_dir, f"{prefix_outfile}_report.tsv")
         return self.out_output, self.out_report
 
     def get_io_files(self):

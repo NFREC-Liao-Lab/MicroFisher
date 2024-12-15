@@ -1,9 +1,8 @@
 import argparse
+import os
 import sys
 
-from . import taxonomy
-
-from . import __version__, args_subcommand, merging_algorithm
+from . import __version__, args_subcommand, merging_algorithm, taxonomy
 
 
 def check_is_list():
@@ -36,6 +35,15 @@ def check_length_gt(length):
             setattr(args, self.dest, values)
     return RequiredLength
 
+def add_args_parent_parser(parent_parser):
+    parent_parser.add_argument("-v", "--verbose", action='count', default=0,
+                               help="Verbose mode (allow multiples)")
+    parent_parser.add_argument("--dry", action="store_true", help="Dry run")
+
+    parent_parser.add_argument("-w", "--workspace", default=".",
+                               help="path to your workspace/dataset. Default '.' current location.")
+
+
 
 def add_args_input_group(parser):
     group_input = parser.add_argument_group(
@@ -53,7 +61,7 @@ def add_args_input_group(parser):
 def add_args_output_group(parser):
     group_output = parser.add_argument_group("output")
     group_output.add_argument("--out_dir", default="merged_results",
-                              help="Output folders for all results.")
+                              help="Output folder for results. This can be absolute path or relative path under the WORKSPACE. (Default: %(default)s).")
     group_output.add_argument("--out_prefix", default="reports_",
                               help="Prefix for output reports.")
     return group_output
@@ -75,53 +83,7 @@ def add_args_centrifuge(parser, full_config=True):
     return group_centrifuge
 
 
-def main():
-
-    parser = argparse.ArgumentParser(
-        prog="MicroFisher", description="%(prog)s: Fungal taxonomic classification for metatranscriptomic and metagenomic data using multiple hypervariable markers.")
-    parser.add_argument('--version', action='version',
-                        version='%(prog)s {version}'.format(version=__version__))
-    parent_parser = argparse.ArgumentParser(
-        description="Parent parser.", add_help=False)
-    # formatter_class=argparse.ArgumentDefaultsHelpFormatter)
-
-    parent_parser.add_argument("-v", "--verbose", action='count', default=0,
-                               help="Verbose mode (allow multiples)")
-    parent_parser.add_argument("--dry", action="store_true", help="Dry run")
-
-    parent_parser.add_argument("-w", "--workspace", default=".",
-                               help="path to your workspace/dataset. Default '.' current location.")
-    # parser.set_defaults(func=help_message)
-
-    subparsers = parser.add_subparsers(title="subcommand", dest='subcommand',
-                                       description="Collection of %(prog)s functions.",
-                                       help="See additional help 'subcommand --help'")
-    p_init = subparsers.add_parser('init_db', parents=[parent_parser],
-                                   help='Initialise centrifuge with prebuild databases.',
-                                   conflict_handler='resolve')
-    p_search = subparsers.add_parser('search', parents=[parent_parser],
-                                     help='Search with centrifuge', conflict_handler='resolve')
-    p_combine = subparsers.add_parser('combine', parents=[parent_parser],
-                                      formatter_class=argparse.RawTextHelpFormatter,
-                                      help='Combine results', conflict_handler='resolve')
-    p_full = subparsers.add_parser('preset', parents=[p_combine],
-                                   formatter_class=argparse.RawTextHelpFormatter,
-                                   help='Preset pipeline', conflict_handler='resolve')
-
-    p_init.add_argument("--db_loc", default="default_db", required=False,
-                        help="Location to store the default centrifuge databases. (Default: ./%(default)s)")
-    p_init.set_defaults(func=args_subcommand.init_db)
-
-    p_search.add_argument("-d", "--db", required=True, help="Database name")
-    add_args_input_group(p_search)
-    add_args_centrifuge(p_search)
-    p_search.set_defaults(func=args_subcommand.search_db)
-
-    p_combine.add_argument("--combine", nargs="+", required=True,
-                           help="Results file(s) to combine. minimum 2 files",
-                           metavar="result1 result2 [result_n ...]",
-                           action=check_length_gt(2))
-    add_args_output_group(p_combine)
+def add_args_group_alg(p_combine):
     group_algorithm = p_combine.add_argument_group("combining")
     group_algorithm.add_argument("--mode", choices=merging_algorithm.MODE_CHOICES,
                                  default=merging_algorithm.MODE_CHOICES[0],
@@ -155,6 +117,66 @@ def main():
     group_algorithm.add_argument("--include_all", default=False,
                                  action=argparse.BooleanOptionalAction,
                                  help="Include unfiltered results.")
+    return group_algorithm
+
+
+def parse_output_dir(args):
+    if args.out_dir != os.path.realpath(args.out_dir):
+        args.out_dir = os.path.join(args.workspace, args.out_dir)
+    try:
+        os.makedirs(args.out_dir)
+    except FileExistsError:
+        pass
+    except PermissionError:
+        print(f"==Error== Permission denied to create output directory: {args.out_dir}")
+        sys.exit(-1)
+    return args
+
+
+def main():
+
+    parser = argparse.ArgumentParser(
+        prog="MicroFisher", description="%(prog)s: Fungal taxonomic classification for metatranscriptomic and metagenomic data using multiple hypervariable markers.")
+    parser.add_argument('--version', action='version',
+                        version='%(prog)s {version}'.format(version=__version__))
+    # formatter_class=argparse.ArgumentDefaultsHelpFormatter)
+
+    parent_parser = argparse.ArgumentParser(
+        description="Parent parser.", add_help=False)
+    add_args_parent_parser(parent_parser)
+    # parser.set_defaults(func=help_message)
+
+    subparsers = parser.add_subparsers(title="subcommand", dest='subcommand',
+                                       description="Collection of %(prog)s functions.",
+                                       help="See additional help 'subcommand --help'")
+    p_init = subparsers.add_parser('init_db', parents=[parent_parser],
+                                   help='Initialise centrifuge with prebuild databases.',
+                                   conflict_handler='resolve')
+    p_search = subparsers.add_parser('search', parents=[parent_parser],
+                                     help='Search with centrifuge', conflict_handler='resolve')
+    p_combine = subparsers.add_parser('combine', parents=[parent_parser],
+                                      formatter_class=argparse.RawTextHelpFormatter,
+                                      help='Combine results', conflict_handler='resolve')
+    p_full = subparsers.add_parser('preset', parents=[p_combine],
+                                   formatter_class=argparse.RawTextHelpFormatter,
+                                   help='Preset pipeline', conflict_handler='resolve')
+
+
+    p_init.add_argument("--db_loc", default="default_db", required=False,
+                        help="Location to store the default centrifuge databases. (Default: ./%(default)s)")
+    p_init.set_defaults(func=args_subcommand.init_db)
+
+    p_search.add_argument("-d", "--db", required=True, help="Database name")
+    add_args_input_group(p_search)
+    add_args_centrifuge(p_search)
+    p_search.set_defaults(func=args_subcommand.search_db)
+
+    p_combine.add_argument("--combine", nargs="+", required=True,
+                           help="Results file(s) to combine. minimum 2 files",
+                           metavar="result1 result2 [result_n ...]",
+                           action=check_length_gt(2))
+    add_args_output_group(p_combine)
+    add_args_group_alg(p_combine)
     p_combine.set_defaults(func=args_subcommand.combine_reports)
 
     p_full.add_argument("--preset_db", choices=merging_algorithm.DB_LIST.keys(),
@@ -165,6 +187,7 @@ def main():
     p_full.set_defaults(func=args_subcommand.preset_algorithm)
 
     args = parser.parse_args()
+    args = parse_output_dir(args)
 
     if args.subcommand is None:
         parser.print_help()
@@ -173,7 +196,6 @@ def main():
     if args.verbose > 0:
         print(f"\n==DEBUG== Arguments: {args}")
     args.func(args)
-
 
 if __name__ == "__main__":
     main()
