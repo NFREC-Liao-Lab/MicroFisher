@@ -42,4 +42,4 @@ def combine_reports(args):
     config.out_report = args.output
     cent_kreport = CentrifugeKReport(config)
     if not args.dry:
-        output = cent_kreport.run()
+        _output = cent_kreport.run()

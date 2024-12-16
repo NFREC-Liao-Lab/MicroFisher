@@ -19,8 +19,7 @@ def check_is_list():
                         raise argparse.ArgumentTypeError(message)
                     setattr(args, self.dest, data)
                 except AttributeError:
-                    message = 'argument "{f}" requires csv format, i.e. A,B,C'.format(
-                        f=self.dest)
+                    message = f"argument {self.destf} requires csv format, i.e. A,B,C"
                     raise argparse.ArgumentTypeError(message)
     return RequiredList
 
@@ -35,6 +34,7 @@ def check_length_gt(length):
             setattr(args, self.dest, values)
     return RequiredLength
 
+
 def add_args_parent_parser(parent_parser):
     parent_parser.add_argument("-v", "--verbose", action='count', default=0,
                                help="Verbose mode (allow multiples)")
@@ -42,7 +42,6 @@ def add_args_parent_parser(parent_parser):
 
     parent_parser.add_argument("-w", "--workspace", default=".",
                                help="path to your workspace/dataset. Default '.' current location.")
-
 
 
 def add_args_input_group(parser):
@@ -196,6 +195,7 @@ def main():
     if args.verbose > 0:
         print(f"\n==DEBUG== Arguments: {args}")
     args.func(args)
+
 
 if __name__ == "__main__":
     main()

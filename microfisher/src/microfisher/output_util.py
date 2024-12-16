@@ -1,5 +1,3 @@
-import sys
-
 from . import taxonomy
 
 
@@ -39,7 +37,7 @@ def format_merge_single(results, threshold, label="proportion"):
         filtered_output_list = [all_output_dict[k] for k in filtered_key]
         output_filter_list.extend(filtered_output_list)
 
-    return(output_list, output_filter_list)
+    return (output_list, output_filter_list)
 
 
 def format_merge_two(results, percentage, threshold,
@@ -58,4 +56,4 @@ def format_merge_two(results, percentage, threshold,
     filtered_output_list = [all_output_dict[k] for k in filtered_key]
     output_filter_list.extend(filtered_output_list)
 
-    return(output_list, output_filter_list)
+    return (output_list, output_filter_list)

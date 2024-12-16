@@ -26,7 +26,7 @@ conda install bioconda::centrifuge
 
 # Clone this repository
 git clone https://github.com/NFREC-Liao-Lab/MicroFisher.git
-cd MicroFisher/microfisher_package
+cd MicroFisher/microfisher
 
 # Install dependencies and MicroFisher
 pip3 install -r requirements.txt
@@ -36,9 +36,9 @@ pip3 install .
 
 ## Quick start
 1. Install MicroFisher. See [Installation](#installation) section
-2. Go to the `MicroFisher/microfisher_package` folder
+2. Go to the `MicroFisher/microfisher` folder
     ```bash
-    cd MicroFisher/microfisher_package
+    cd MicroFisher/microfisher
     ```
 1. Initialize the database. The prebuild database is available at the `default_db` folder.
     ```bash

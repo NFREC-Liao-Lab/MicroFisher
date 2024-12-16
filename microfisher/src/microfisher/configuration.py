@@ -17,7 +17,6 @@ class Config:
         self.workspace = os.path.expanduser(args.workspace)
         self.out_dir = args.out_dir
 
-
         # self.centrifuge_path = args.centrifuge_path
         self.db_path = os.path.join(self.centrifuge_path, args.db_path)
         self.db_name = args.db
