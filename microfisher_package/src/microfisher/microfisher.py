@@ -172,7 +172,7 @@ def main():
     p_search.set_defaults(func=args_subcommand.search_db)
 
     p_combine.add_argument("--combine", nargs="+", required=True,
-                           help="Results file(s) to combine. minimum 2 files",
+                           help="Results files to combine. minimum 2 files",
                            metavar="result1 result2 [result_n ...]",
                            action=check_length_gt(2))
     add_args_output_group(p_combine)
