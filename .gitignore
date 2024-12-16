@@ -1,3 +1,12 @@
+# Custom
+*.tsv
+demo/
+default_db/
+merged_results/
+*.vscode
+*.vscode/**
+
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
@@ -160,10 +169,3 @@ cython_debug/
 #.idea
 
 
-# Custom
-*.tsv
-demo/
-default_db/
-merged_results/
-*.vscode
-*.vscode/**
