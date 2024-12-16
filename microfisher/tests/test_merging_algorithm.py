@@ -1,5 +1,4 @@
 import pytest
-import shlex
 import src.microfisher.merging_algorithm as malg
 from src.microfisher import taxonomy_utils
 
@@ -109,9 +108,7 @@ def test_cal_percentage_weighted_db():
     assert actual == pytest.approx(expected)
 
 
-
-
-def test_cal_percentage_weighted_db():
+def test_cal_percentage_weighted_db2():
 
     cent_length = {
         "data1": 100,
@@ -128,9 +125,11 @@ def test_cal_percentage_weighted_db():
     inv_total = 1/100 + 1/50 + 1/200
     inv_prop = [(1/100)/inv_total, (1/50)/inv_total, (1/200)/inv_total]
     prop = [inv_prop[0]*1/6, inv_prop[1]*2/6, inv_prop[2]*3/6]
-    expected_temp = {"s1": sum([0.1*p for p in prop]),
-                "s2": 0.2*prop[0] + 0.5*prop[2],
-                "s3": 0.7*prop[0] + 0.3*prop[1],
-                "s4": 0.6*prop[1] + 0.4*prop[2]}
+    expected_temp = {
+        "s1": sum([0.1 * p for p in prop]),
+        "s2": 0.2 * prop[0] + 0.5 * prop[2],
+        "s3": 0.7 * prop[0] + 0.3 * prop[1],
+        "s4": 0.6 * prop[1] + 0.4 * prop[2],
+    }
     expected = taxonomy_utils.normalise_data(expected_temp)
     assert actual == pytest.approx(expected)

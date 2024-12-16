@@ -14,7 +14,7 @@ def summarise_data(parsed_data, rank):
         except KeyError:
             results[key] = [count]
     summary = {k: sum(v) for k, v in results.items()}
-    return(summary)
+    return summary
 
 
 def process_report(all_lines, heading):
@@ -25,27 +25,29 @@ def process_report(all_lines, heading):
         rank_data = get_desired_taxa_ranks(info["taxID"])
         info.update(rank_data)
         parsed_data.append(info)
-    return(parsed_data)
+    return parsed_data
 
 
 def normalise_data(data_each):
     total = sum(data_each.values())
-    data_n = {k: (v/total) for k, v in data_each.items()}
-    return(data_n)
+    data_n = {k: (v / total) for k, v in data_each.items()}
+    return data_n
 
 
 def inverse_normalise_data(data_each):
-    total = sum([1/v for v in data_each.values()])
+    total = sum([1 / v for v in data_each.values()])
     # total = sum(data_each.values())
-    data_n = {k: ((1/v)/total) for k, v in data_each.items()}
-    return(data_n)
+    data_n = {k: ((1 / v) / total) for k, v in data_each.items()}
+    return data_n
 
 
 def weight_data(data_each, weight=1):
     if weight != 1:
-        data_n = {k: (v*weight) for k, v in data_each.items()}
-        return(data_n)
-    return(data_each)
+        data_n = {k: (v * weight) for k, v in data_each.items()}
+        return data_n
+    return data_each
+
+
 #
 # report_files = "example.report.tsv"
 # report_files = ["eg1.report.tsv", "eg2.report.tsv"]
@@ -58,14 +60,13 @@ def parse_report_files(report_files):
             heading = report.readline().strip().split("\t")
             all_lines = report.readlines()
             parsed_data[f] = process_report(all_lines, heading)
-    return(parsed_data)
+    return parsed_data
 
 
 def create_length_dict(report_files_name, length_list):
     length_dict = None
     if length_list is not None:
         if len(length_list) != len(report_files_name):
-            raise Exception(
-                "\nERROR: Unequal number of report_files (--combine) and length (--length)\n")
+            raise Exception("\nERROR: Unequal number of report_files (--combine) and length (--length)\n")
         length_dict = dict(zip(report_files_name, length_list))
-    return(length_dict)
+    return length_dict
