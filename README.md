@@ -14,14 +14,14 @@
 - Website: https://ccb.jhu.edu/software/centrifuge/
 
 ## Installation
-Recommended install MicroFisher using pip - the package installer for Python [pip.pypa.io](https://pip.pypa.io).
+Recommended installing MicroFisher using pip - package installer for Python [pip.pypa.io](https://pip.pypa.io).
 ```bash
-# Create an environment using conda create
-# Note: `cgi` package is removed in Python3.13 https://peps.python.org/pep-0594/
-conda create -n Microfisher Python=3.12
+# Create a new conda environment
+# Note: The `cgi` package has been removed in Python3.13 https://peps.python.org/pep-0594/
+conda create -n MicroFisher Python=3.12
 
-# Activate Microfisher environment
-conda activate Microfisher
+# Activate MicroFisher environment
+conda activate MicroFisher
 conda install bioconda::centrifuge
 
 # Clone this repository
@@ -34,6 +34,23 @@ pip3 install .
 ```
 
 
+## Quick start
+1. Install MicroFisher. See [Installation](#installation) section
+2. Go to the `MicroFisher/microfisher_package` folder
+    ```bash
+    cd MicroFisher/microfisher_package
+    ```
+1. Initialize the database. The prebuild database is available at the `default_db` folder.
+    ```bash
+    MicroFisher init_db
+    ```
+1. Run example dataset
+    ```bash
+    MicroFisher preset --db_path default_db --paired example/example_R1.fastq.gz example/example_R2.fastq.gz
+    # OR
+    MicroFisher preset --db_path default_db --workspace example --paired example_R1.fastq.gz example_R2.fastq.gz
+    ```
+
 ## Usage
 ### Initialize centrifuge database
 `MicroFisher init_db --help`
@@ -41,15 +58,16 @@ pip3 install .
 `--db_loc`: Custom location/folder for the prebuilt centrifuge databases.
 
 #### Examples
-Fetch prebuilt databases and store at the default location.
-Fetch the prebuilt database and store is a custom folder (`$PATH_TO_NEW_DATABASE_FOLDER`)
+Fetch the prebuilt database and store it in a custom folder `$PATH_TO_NEW_DATABASE_FOLDER`
 ```bash
 MicroFisher init_db --db_loc $PATH_TO_NEW_DATABASE_FOLDER
 ```
 
 ### Preset pipeline
 Run both steps in the MicroFisher with default configurations.
-`MicroFisher preset --help`
+```bash
+MicroFisher preset --help
+```
 
 #### Different preset databases
 - `IST+LSU`: Search against four databases: ITS1, IST2, LSU_D1, and LSU_D2.
@@ -57,46 +75,56 @@ Run both steps in the MicroFisher with default configurations.
 - `LSU`: LSU_D1 and LSU_D2
 
 #### Examples
-```bash
-MicroFisher preset --preset_db ITS+LSU \
--w $PATH_TO_WORKSPACE \
---prefix example_reads \
---out_dir $OUTPUT_DIR
-```
+- Basic example
+    ```bash
+    MicroFisher preset --preset_db ITS+LSU \
+    --db_path default_db \
+    --workspace example \
+    --prefix example \
+    --out_dir merged_results
+    ```
 
-Full configuration
-```bash
-MicroFisher preset --preset_db ITS+LSU --verbose \
---min 120 \
---workspace $PATH_TO_WORKSPACE \
---paired example_R1.fastq.gz example_R2.fastq.gz \
---out_dir merged_result_folder \
---out_prefix results_prefix \
---centrifuge_path $PATH_TO_CENTRIFUGE \
---db_path $PATH_TO_DATABASE \
---threads 4
-```
+- Full configuration
+    ```bash
+    MicroFisher preset --preset_db ITS+LSU --verbose \
+    --db_path default_db \
+    --min 120 \
+    --workspace example \
+    --paired example_R1.fastq.gz example_R2.fastq.gz \
+    --out_dir merged_result_folder \
+    --out_prefix results_prefix \
+    --threads 4
+    ```
 
-Explanation for the full configuration
-```bash
-MicroFisher preset --preset_db ITS+LSU --verbose \ #The selected databases used for the job (Metagenomic data: ITS+LSU; Metatranscriptomic data: LSU)
---min 120 \ #Minimum matching length (Default: 120).
---workspace $PATH_TO_WORKSPACE \ #Path to the work folder (output the searching result)
---paired example_R1.fastq.gz example_R2.fastq.gz \ #Path to fastq file(s) (using --single if the data is single end reads)
---out_dir merged_result_folder \ #Path to folder output the results files
---out_prefix results_prefix \ #Prefix of the result output files
---centrifuge_path $PATH_TO_CENTRIFUGE \ #Path to the centrifuge package (if necessary)
---db_path $PATH_TO_DATABASE \ #Path to the DATABASE of MicroFisher
---threads 4 #Number of threads
-```
+    Explanation for the full configuration
+    ```bash
+    MicroFisher preset --preset_db ITS+LSU --verbose \  # The selected databases used for the job (Metagenomic data: ITS+LSU; Metatranscriptomic data: LSU)
+    --db_path $PATH_TO_DATABASE \  # Path to the DATABASE of MicroFisher
+    --min 120 \  # Minimum matching length (Default: 120).
+    --workspace example \  # Path to the work folder (output the searching result)
+    --paired example_R1.fastq.gz example_R2.fastq.gz \  # Path to fastq file(s) (using --single if the data is single end reads)
+    --out_dir merged_result_folder \  # Path to folder output the results files
+    --out_prefix results_prefix \  # Prefix of the result output files
+    --threads 4 #Number of threads
+    ```
 
-
-
+- Customized the path for `centrifuge`
+    ```bash
+    # e.g.
+    # FULL_PATH_TO_CENTRIFUGE="/home/user/software/centrifuge/
+    MicroFisher preset --preset_db ITS+LSU \
+    --db_path default_db \
+    --centrifuge_path $FULL_PATH_TO_CENTRIFUGE \
+    --workspace example \
+    --paired example_R1.fastq.gz example_R2.fastq.gz
+    --out_dir merged_results
+    ```
 
 
 ### Search taxonomy with centrifuge
-`MicroFisher search --help` \
-`python3 -m microfisher search --help`
+```bash
+MicroFisher search --help
+```
 
 #### Arguments
 - `--prefix`: One prefix for two paired-end files.
@@ -108,20 +136,23 @@ MicroFisher preset --preset_db ITS+LSU --verbose \ #The selected databases used 
 
 #### Examples
 ```bash
-MicroFisher search -v -w $PATH_TO_WORKSPACE \
-  --prefix example_ --min 120 \
-  --centrifuge_path $PATH_TO_CENTRIFUGE \
-  --db_path $PATH_TO_DATABASE --db LSU_D2
+MicroFisher search -v
+  --db_path default_db --db LSU_D2
+  --workspace example \
+  --prefix example \
+  --min 120 \
 ```
 
 
 
 ### Combine reports from multiple databases
-`MicroFisher combine --help` \
-`python3 -m microfisher combine --help`
+```bash
+MicroFisher combine --help
+```
 
 
 #### Arguments
+- `--combine`: List of results files to combine.
 - `--mode`: Different combining mode.. See the section below.
 - `--rank`: Output results for these taxonomy ranks. Default ranks: `family,genus,species`
 - `--include_all`: Include unfiltered results.
@@ -134,27 +165,48 @@ MicroFisher search -v -w $PATH_TO_WORKSPACE \
     length of the database (`--db_length`).
 - `boolean`: Present or absent of the taxa (optional: `--min_overlap`).
 - `raw`: sum of the number of reads.
+<!-- -
+`weighted_abundance_only`: normalised by the total number of reads (testing-only).
+- `weighted_centlength_only`: normalised by the total number of reads and minimum length used in centrifuge (--cent_length) (testing-only).
+-->
 
 
 #### Examples
+Note: `--combine` argument list multiple result files. Users might need to change these filenames.
+- `boolean` mode.
+    ```bash
+    MicroFisher combine -v \
+    --workspace example \
+    --combine result_*_dbITS1_report.tsv result_*_dbITS2_report.tsv result_*_dbLSU_D1_report.tsv result_*_dbLSU_D2_report.tsv \
+    --mode boolean --min_overlap 3
+    ```
 
+- `raw` mode with custom output folder
+    ```bash
+    MicroFisher combine \
+    --combine result_*_dbITS1_report.tsv result_*_dbITS2_report.tsv \
+    --mode raw --out_dir custom_output
+    ```
+
+- `weighted` mode with custom filter
+    ```bash
+    MicroFisher combine \
+    --combine result_*_dbLSU_D1_report.tsv result_*_dbLSU_D2_report.tsv \
+    --mode weighted --filter 1e-8
+    ```
+
+- `weighted` mode with custom length
+    ```bash
+    MicroFisher combine \
+    --combine report_1.tsv report_2.tsv report_3.tsv \
+    --mode weighted --cent_length 90 100 110
+    ```
+
+
+### Test
+To run the tests for MicroFisher, use the following command:
 ```bash
-# boolean mode: verbose output, and all reports are in $PATH_TO_WORKSPACE folder
-MicroFisher combine -v -w $PATH_TO_WORKSPACE \
---combine report_1 report_2 report_3 \
---mode boolean --min_overlap 3
-
-# raw mode with custom output folder
-MicroFisher combine --combine report_1 report_2 report_3 \
---mode raw --out_dir custom_output
-
-# weighted by abundance only and with custom filter
-MicroFisher combine --combine report_1 report_2 report_3 \
---mode weighted_abundance_only --filter 1e-8
-
-# weighted_length
-MicroFisher combine --combine report_1 report_2 report_3 \
---mode weighted_centlength_only --length 90 100 110
+pytest
 ```
 
 ## Database generation
@@ -162,6 +214,7 @@ The `database_generation` contains scripts for curating customised database for 
 
 
 ## Manuscript
-The `manuscript` folder contains source codes used to perform analyses and validation for the manuscript
+The `manuscript` folder contains source codes used to perform analyses and validation for the manuscript.
+
 Wang H., S. Wu, K. Zhang, K. Chen, R. Vilgalys, H. Liao. MicroFisher: Fungal taxonomic classification for metatranscriptomic and metagenomic data using multiple short hypervariable markers.
 

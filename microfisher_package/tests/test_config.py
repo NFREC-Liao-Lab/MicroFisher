@@ -2,6 +2,7 @@ import argparse
 import pytest
 import tempfile
 from src.microfisher.configuration import Config
+from src.microfisher import microfisher
 
 
 @pytest.fixture
@@ -10,8 +11,10 @@ def setup_args():
     parser.set_defaults(verbose=1, min=100, prefix="example",
                         threads=4,
                         workspace="workspace",
+                        out_dir="merged_results",
                         centrifuge_path="cpath", db_path="db", db="dbName")
     args = parser.parse_args([])
+    args = microfisher.parse_output_dir(args)
     return args
 
 
@@ -56,8 +59,8 @@ def test_centrifuge_input_paired(setup_args):
 
 def test_output_files(config):
     output = config.centrifuge_output_files()
-    expected = ("workspace/result_example_min100_dbdbName_output.txt",
-                "workspace/result_example_min100_dbdbName_report.tsv")
+    expected = ("workspace/merged_results/result_example_min100_dbdbName_output.txt",
+                "workspace/merged_results/result_example_min100_dbdbName_report.tsv")
     assert expected == output
 
 
@@ -67,4 +70,4 @@ def test_format(config):
     assert "-p 4 -k 1 --min-hitlen 100 -x cpath/db/dbName" == output
 
     output = config.format_params_kreport()
-    assert "-x cpath/db/dbName workspace/result_example_min100_dbdbName_report.tsv" == output
+    assert "-x cpath/db/dbName workspace/merged_results/result_example_min100_dbdbName_report.tsv" == output

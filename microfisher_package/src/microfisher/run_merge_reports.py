@@ -54,8 +54,8 @@ def core_merging_data(mode, parsed_data, rank, threshold,
 
 
 def run(args):
-    report_files = [os.path.join(args.workspace, f) for f in args.combine]
-    out_dir = os.path.join(args.workspace, args.out_dir)
+    report_files = args.combine # [f for f in args.combine]
+    out_dir = args.out_dir
     out_prefix = args.out_prefix
     threshold = args.filter
     mode = args.mode
@@ -64,10 +64,6 @@ def run(args):
     # length_list = args.length
 
     parsed_data = taxonomy_utils.parse_report_files(report_files)
-    try:
-        os.makedirs(out_dir)
-    except FileExistsError:
-        pass
 
     cent_length_dict = taxonomy_utils.create_length_dict(
         report_files, args.cent_length)

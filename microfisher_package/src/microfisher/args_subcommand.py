@@ -1,5 +1,5 @@
 from . import run_merge_reports
-from . import run_init_setup
+from . import run_init_db
 from . import merging_algorithm
 from . import taxonomy
 from .configuration import Config
@@ -9,10 +9,10 @@ from .run_kreport import CentrifugeKReport
 
 def init_db(args):
     if not args.dry:
-        is_complete = run_init_setup.init_setup_db(output_dir=args.db_loc)
+        is_complete = run_init_db.init_setup_db(output_dir=args.db_loc)
         if is_complete:
-            print("==DEBUG== subcommand init_db completed.\t"
-                  f"Prebuild database at {args.db_loc}.\n")
+            print("==DEBUG== subcommand init_db completed.\n"
+                  f"Prebuild database available at: {args.db_loc}\n")
 
 
 def search_db(args):
