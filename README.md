@@ -20,7 +20,7 @@ We developed the MicroFisher package, a comprehensive bioinformatics tool for an
 - Website: https://ccb.jhu.edu/software/centrifuge/
 
 ## Installation
-Recommended installing MicroFisher using pip - package installer for Python [pip.pypa.io](https://pip.pypa.io).
+To use the MicroFisher, installation is required. Recommended installing MicroFisher using pip - package installer for Python [pip.pypa.io](https://pip.pypa.io).
 ```bash
 # Create a new conda environment
 # Note: The `cgi` package has been removed in Python3.13 https://peps.python.org/pep-0594/
@@ -59,6 +59,7 @@ pip3 install .
 
 ## Usage
 ### Initialize centrifuge database
+To get started with MicroFisher, you will have to get the database files on your system, you can download prebuilt database files, database files are available [online](https://figshare.com/articles/dataset/MicroFisher_DBs/19679595). 
 `MicroFisher init_db --help`
 #### Arguments
 `--db_loc`: Custom location/folder for the prebuilt centrifuge databases.
