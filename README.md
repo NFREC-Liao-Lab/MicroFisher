@@ -141,8 +141,11 @@ For Metagenomic sequencing datasets, use "ITS+LSU"; for Metatranscriptomic datas
     --out_dir merged_results
     ```
 
+  
+ 
+ 
 ### (2) Performing the fungal community classification in two steps using "--search" and "--combine"
-### Step 1: Search fungal taxa with centrifuge
+### Step 1: Alignment: Align the qualified reads of metagenomic and metagenomic to marker databases (Search fungal taxa with centrifuge).
 ```bash
 MicroFisher search --help
 ```
@@ -154,7 +157,6 @@ MicroFisher search -v
   --prefix example \
   --min 120 \
 ```
-
 #### Arguments
 - `--prefix`: One prefix for two paired-end files.
 - `--paired`: Two paired-end files.
@@ -163,7 +165,8 @@ MicroFisher search -v
 - `--min`: Minimum matching length.
 
 
-### Step2: Combine reports from Results using multiple databases
+  
+### Step2: Integration and Optimization: Integrate abundance reports using weight-based algorithms (Combine reports from Results using multiple databases).
 ```bash
 MicroFisher combine --help
 ```
@@ -216,12 +219,12 @@ Note: `--combine` argument list multiple result files. Users might need to chang
 - `weighted_centlength_only`: normalised by the total number of reads and minimum length used in centrifuge (--cent_length) (testing-only).
 -->
 
+ 
 
+ 
 
-
-
-
-
+ 
+ 
 
 
 
@@ -232,11 +235,11 @@ pytest
 ```
 
 ## Database generation
-The `database_generation` contains scripts for curating customised database for MicroFisher.
+The `database_generation` contains scripts for curating customized databases for MicroFisher.
 
 
 ## Manuscript
 The `manuscript` folder contains source codes used to perform analyses and validation for the manuscript.
 
-Wang H., S. Wu, K. Zhang, K. Chen, R. Vilgalys, H. Liao. MicroFisher: Fungal taxonomic classification for metatranscriptomic and metagenomic data using multiple short hypervariable markers.
+Citation: Wang H., S. Wu, K. Zhang, K. Chen, R. Vilgalys, H. Liao. MicroFisher: Fungal taxonomic classification for metatranscriptomic and metagenomic data using multiple short hypervariable markers.
 
