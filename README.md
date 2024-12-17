@@ -145,7 +145,7 @@ For Metagenomic sequencing datasets, use "ITS+LSU"; for Metatranscriptomic datas
  
  
 ### (2) Performing the fungal community classification in two steps using "--search" and "--combine"
-### Step 1: Alignment: Align the qualified reads of metagenomic and metagenomic to marker databases (Search fungal taxa with centrifuge).
+#### Step 1: Alignment: Align the qualified reads of metagenomic and metagenomic to marker databases (Search fungal taxa with centrifuge).
 ```bash
 MicroFisher search --help
 ```
@@ -166,7 +166,7 @@ MicroFisher search -v
 
 
   
-### Step2: Integration and Optimization: Integrate abundance reports using weight-based algorithms (Combine reports from Results using multiple databases).
+#### Step2: Integration and Optimization: Integrate abundance reports using weight-based algorithms (Combine reports from Results using multiple databases).
 ```bash
 MicroFisher combine --help
 ```
