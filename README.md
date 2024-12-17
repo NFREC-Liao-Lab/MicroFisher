@@ -3,7 +3,8 @@
 
 
 
-![microfisher_2](https://github.com/user-attachments/assets/6c25bd39-5bfd-4ca6-b4ed-5a7897d5bf68)
+![microfisher_2](https://github.com/user-attachments/assets/81a83a18-654b-4e56-a533-d6ab2f97e8ef)
+
 
 # MicroFisher
 Profiling the taxonomic and functional composition of microbes using metagenomic and metatranscriptomic sequencing is advancing our understanding of microbial functions. However, the sensitivity and accuracy of microbial classification using genome- or core protein-based approaches, especially the classification of eukaryotic organisms, is limited by the availability of reference genomes and the resolution of sequence databases. To address this, we propose the MicroFisher, a novel tool to filter out taxonomically useful reads from metagenomic or metatranscriptomic data, enabling taxonomic identification of community members based on multiple marker regions. We applied MicroFisher to profile the simulated mock fungal communities to assess the performance of the developed tool, and found high performance in fungal prediction and abundance estimation. In addition, we also used metagenomes from forest soil and metatranscriptomics of root eukaryotic microbes to test our method and found that MicroFisher provided more accurate profiling of environmental microbiomes compared to other classification tools. Overall, MicroFisher serves as a novel pipeline for classification of fungal communities from metagenomes and metatranscriptomics.
