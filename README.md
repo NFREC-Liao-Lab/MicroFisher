@@ -20,6 +20,7 @@ MicroFisher employs multiple hypervariable marker databases (including ITS1, ITS
 Fig. 1 Overview of hypervariable marker database generation and the principle of MicroFisher classification.
 
 
+
 ## Requirement
 **Python:** https://www.python.org/
 
@@ -75,26 +76,27 @@ MicroFisher init_db --help
 MicroFisher init_db --db_loc $PATH_TO_NEW_DATABASE_FOLDER
 ```
 #### Arguments
-`--db_loc`: Custom location/folder for the prebuilt centrifuge databases.
+`--db_loc`: Custom location/folder for the prebuilt MicroFisher databases.
 
 
 
 ### Running MicroFisher for fungal taxonomic classification from Metagenomic and Metatranscriptomic sequencing datasets
 The MicroFisher pipeline identifies the fungal taxa from Metagenomic and Metatranscriptomic datasets using the ITS and LSU rRNA sequences. Thus, the datasets that filtered the adaptors and low-quality reads were used for fungal taxonomic classification (Note: do not remove the rRNA sequences). MicroFisher pipeline applies two steps to classify the fungal community composition: (1) Alignment: Align the qualified reads of metagenomic and metagenomic to marker databases; and (2) Integration and Optimization: Integrate abundance reports using weight-based algorithms. You can run the fungal classification in one step or two steps.
 
-### Performing the fungal community classification in one step using "--preset"
+### (1) Performing the fungal community classification in one step using "--preset"
 Run both steps in the MicroFisher with default configurations.
 ```bash
 MicroFisher preset --help
 ```
 
-#### Different preset databases
-- `IST+LSU`: Search against four databases: ITS1, IST2, LSU_D1, and LSU_D2.
-- `IST`: ITS1 and IST2
-- `LSU`: LSU_D1 and LSU_D2
+#### Different preset databases in "--preset_db"
+- `ITS+LSU`: Search against four databases: ITS1, IST2, LSU_D1, and LSU_D2.
+- `ITS`: Search against four databases: ITS1 and IST2
+- `LSU`: Search against four databases: LSU_D1 and LSU_D2
+For Metagenomic sequencing datasets, use "ITS+LSU"; for Metatranscriptomic datasets, use "LSU".
 
 #### Examples
-- Basic example
+- Basic example: the MicroFisher will run in default settings
     ```bash
     MicroFisher preset --preset_db ITS+LSU \
     --db_path default_db \
@@ -103,7 +105,7 @@ MicroFisher preset --help
     --out_dir merged_results
     ```
 
-- Full configuration
+- Full configuration: modify the parameters of MicroFisher 
     ```bash
     MicroFisher preset --preset_db ITS+LSU --verbose \
     --db_path default_db \
@@ -115,19 +117,19 @@ MicroFisher preset --help
     --threads 4
     ```
 
-    Explanation for the full configuration
+ - Explanation for the full configuration
     ```bash
     MicroFisher preset --preset_db ITS+LSU --verbose \  # The selected databases used for the job (Metagenomic data: ITS+LSU; Metatranscriptomic data: LSU)
     --db_path $PATH_TO_DATABASE \  # Path to the DATABASE of MicroFisher
     --min 120 \  # Minimum matching length (Default: 120).
     --workspace example \  # Path to the work folder (output the searching result)
-    --paired example_R1.fastq.gz example_R2.fastq.gz \  # Path to fastq file(s) (using --single if the data is single end reads)
+    --paired example_R1.fastq.gz example_R2.fastq.gz \  # Path to .fastq file(s) (using --single if the data is single end reads)
     --out_dir merged_result_folder \  # Path to folder output the results files
     --out_prefix results_prefix \  # Prefix of the result output files
     --threads 4 #Number of threads
     ```
 
-- Customized the path for `centrifuge`
+- Customized the path for `centrifuge`: when the package "Centrifuge" was manually installed.
     ```bash
     # e.g.
     # FULL_PATH_TO_CENTRIFUGE="/home/user/software/centrifuge/
@@ -135,14 +137,22 @@ MicroFisher preset --help
     --db_path default_db \
     --centrifuge_path $FULL_PATH_TO_CENTRIFUGE \
     --workspace example \
-    --paired example_R1.fastq.gz example_R2.fastq.gz
+    --paired example_R1.fastq.gz example_R2.fastq.gz \
     --out_dir merged_results
     ```
 
-
-### Search taxonomy with centrifuge
+### (2) Performing the fungal community classification in two steps using "--search" and "--combine"
+### Step 1: Search fungal taxa with centrifuge
 ```bash
 MicroFisher search --help
+```
+#### Examples
+```bash
+MicroFisher search -v
+  --db_path default_db --db LSU_D2
+  --workspace example \
+  --prefix example \
+  --min 120 \
 ```
 
 #### Arguments
@@ -153,22 +163,39 @@ MicroFisher search --help
 - `--min`: Minimum matching length.
 
 
-#### Examples
-```bash
-MicroFisher search -v
-  --db_path default_db --db LSU_D2
-  --workspace example \
-  --prefix example \
-  --min 120 \
-```
-
-
-
-### Combine reports from multiple databases
+### Step2: Combine reports from Results using multiple databases
 ```bash
 MicroFisher combine --help
 ```
+#### Examples
+Note: `--combine` argument list multiple result files. Users might need to change these filenames.
+- `boolean` mode.
+    ```bash
+    MicroFisher combine -v \
+    --workspace example \
+    --combine result_*_dbITS1_report.tsv result_*_dbITS2_report.tsv result_*_dbLSU_D1_report.tsv result_*_dbLSU_D2_report.tsv \
+    --mode boolean --min_overlap 3
+    ```
 
+- `raw` mode with custom output folder
+    ```bash
+    MicroFisher combine \
+    --combine result_*_dbITS1_report.tsv result_*_dbITS2_report.tsv \
+    --mode raw --out_dir custom_output
+    ```
+- `weighted` mode with custom filter
+    ```bash
+    MicroFisher combine \
+    --combine result_*_dbLSU_D1_report.tsv result_*_dbLSU_D2_report.tsv \
+    --mode weighted --filter 1e-8
+    ```
+
+- `weighted` mode with custom length
+    ```bash
+    MicroFisher combine \
+    --combine report_1.tsv report_2.tsv report_3.tsv \
+    --mode weighted --cent_length 90 100 110
+    ```
 
 #### Arguments
 - `--combine`: List of results files to combine.
@@ -190,36 +217,12 @@ MicroFisher combine --help
 -->
 
 
-#### Examples
-Note: `--combine` argument list multiple result files. Users might need to change these filenames.
-- `boolean` mode.
-    ```bash
-    MicroFisher combine -v \
-    --workspace example \
-    --combine result_*_dbITS1_report.tsv result_*_dbITS2_report.tsv result_*_dbLSU_D1_report.tsv result_*_dbLSU_D2_report.tsv \
-    --mode boolean --min_overlap 3
-    ```
 
-- `raw` mode with custom output folder
-    ```bash
-    MicroFisher combine \
-    --combine result_*_dbITS1_report.tsv result_*_dbITS2_report.tsv \
-    --mode raw --out_dir custom_output
-    ```
 
-- `weighted` mode with custom filter
-    ```bash
-    MicroFisher combine \
-    --combine result_*_dbLSU_D1_report.tsv result_*_dbLSU_D2_report.tsv \
-    --mode weighted --filter 1e-8
-    ```
 
-- `weighted` mode with custom length
-    ```bash
-    MicroFisher combine \
-    --combine report_1.tsv report_2.tsv report_3.tsv \
-    --mode weighted --cent_length 90 100 110
-    ```
+
+
+
 
 
 ### Test
