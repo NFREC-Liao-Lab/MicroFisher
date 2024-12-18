@@ -3,8 +3,23 @@
 
 
 
-![MicroFisher](https://github.com/NFREC-Liao-Lab/MicroFisher/assets/58599570/fd62dd70-800f-437b-8faf-b05af0fa4277)
+![microfisher_2](https://github.com/user-attachments/assets/81a83a18-654b-4e56-a533-d6ab2f97e8ef)
+
+
 # MicroFisher
+Profiling the taxonomic and functional composition of microbes using metagenomic and metatranscriptomic sequencing is advancing our understanding of microbial functions. However, the sensitivity and accuracy of microbial classification using genome- or core protein-based approaches, especially the classification of eukaryotic organisms, is limited by the availability of reference genomes and the resolution of sequence databases. To address this, we propose the MicroFisher, a novel tool to filter out taxonomically useful reads from metagenomic or metatranscriptomic data, enabling taxonomic identification of community members based on multiple marker regions. We applied MicroFisher to profile the simulated mock fungal communities to assess the performance of the developed tool, and found high performance in fungal prediction and abundance estimation. In addition, we also used metagenomes from forest soil and metatranscriptomics of root eukaryotic microbes to test our method and found that MicroFisher provided more accurate profiling of environmental microbiomes compared to other classification tools. Overall, MicroFisher serves as a novel pipeline for the classification of fungal communities from metagenomes and metatranscriptomics.
+
+## Introduction
+We developed the MicroFisher package, a comprehensive bioinformatics tool for analyzing fungal community composition from metagenomic and metatranscriptomic sequencing datasets using multiple hypervariable marker databases. Our approach integrates 104,072 fungi from 6,545 genera, utilizing carefully curated hypervariable regions from ITS1, ITS2, LSU D1, and LSU D2 markers with sequence lengths ranging from 120 to 350 bp. The pipeline employs a weight-based integration algorithm that maps metagenomic and metatranscriptomic reads across these hypervariable marker databases using Centrifuge, strategically addressing key challenges in fungal taxonomic classification from short-read sequencing datasets. This innovative approach provides researchers with a robust, multiple hypervariable marker strategy for comprehensive and precise fungal taxonomic analysis, overcoming the limitations of traditional classification methods.
+### Database constructions
+The MicroFisher pipeline compiled databases of hypervariable regions within fungal ITS and LSU sequences, covering 104,072 fungi within 6,545 genera (Fig. 1A). The hypervariable marker databases provide high-resolution (by applying hypervariable sequence regions) and multiple set references, which reduces the number of mismatches (false positives) and false negatives in fungal classification. The trimming steps (Steps 6-7 in Fig. 1A) based upon sequence consensus allow us to keep only the hypervariable region for marker databases, which improves the accuracy of fungal taxa predictions. The flanking regions of the trimmed sequences in marker databases are less than 10 bp to minimize the false positives in the fungal classification. The marker sequences have a wide range of lengths (120 - 350 bp) to enhance variability.
+
+### MicroFisher pipeline and algorithms
+MicroFisher employs multiple hypervariable marker databases (including ITS1, ITS2, LSU D1, and LSU D2) to analyze the taxonomic composition of fungal communities from metagenomics and metatranscriptomic sequence data to classify fungal composition and estimate taxa abundance from metagenomic and metatranscriptomic sequencing (Figs. 1B and 1C). The first step of the MicroFisher pipeline is to map reads to several marker databases HMDs and generate corresponding abundance reports using Centrifuge. A weight-based algorithm is further employed to optimize and integrate those Centrifuge reports into a final abundance table of detected taxa. The weight-based integration algorithm takes into account the total number of mapped reads, MiniHit length, and average sequence length of the mapped data. Thus, the weight-based integration algorithm effectively reduces mismatches (false positives), and the combination of multiple marker databases HMDs reduces the chance of missing taxa (false negatives). 
+![microfisher_pipeline](https://github.com/user-attachments/assets/809870a5-b9aa-436a-b375-e6a4a5f11152)
+Fig. 1 Overview of hypervariable marker database generation and the principle of MicroFisher classification.
+
+
 
 ## Requirement
 **Python:** https://www.python.org/
@@ -14,7 +29,7 @@
 - Website: https://ccb.jhu.edu/software/centrifuge/
 
 ## Installation
-Recommended installing MicroFisher using pip - package installer for Python [pip.pypa.io](https://pip.pypa.io).
+To use the MicroFisher, installation is required. Recommended installing MicroFisher using pip - package installer for Python [pip.pypa.io](https://pip.pypa.io).
 ```bash
 # Create a new conda environment
 # Note: The `cgi` package has been removed in Python3.13 https://peps.python.org/pep-0594/
@@ -53,29 +68,35 @@ pip3 install .
 
 ## Usage
 ### Initialize centrifuge database
-`MicroFisher init_db --help`
-#### Arguments
-`--db_loc`: Custom location/folder for the prebuilt centrifuge databases.
+To get started with MicroFisher, you will have to get the database files on your system, database files are available [online](https://figshare.com/articles/dataset/MicroFisher_DBs/19679595), and you can download prebuilt database files using the code below.
 
-#### Examples
 Fetch the prebuilt database and store it in a custom folder `$PATH_TO_NEW_DATABASE_FOLDER`
 ```bash
+MicroFisher init_db --help
 MicroFisher init_db --db_loc $PATH_TO_NEW_DATABASE_FOLDER
 ```
+#### Arguments
+`--db_loc`: Custom location/folder for the prebuilt MicroFisher databases.
 
-### Preset pipeline
+
+
+### Running MicroFisher for fungal taxonomic classification from Metagenomic and Metatranscriptomic sequencing datasets
+The MicroFisher pipeline identifies the fungal taxa from Metagenomic and Metatranscriptomic datasets using the ITS and LSU rRNA sequences. Thus, the datasets that filtered the adaptors and low-quality reads were used for fungal taxonomic classification (Note: do not remove the rRNA sequences). MicroFisher pipeline applies two steps to classify the fungal community composition: (1) Alignment: Align the qualified reads of metagenomic and metagenomic to marker databases; and (2) Integration and Optimization: Integrate abundance reports using weight-based algorithms. You can run the fungal classification in one step or two steps.
+
+### (1) Performing the fungal community classification in one step using "--preset"
 Run both steps in the MicroFisher with default configurations.
 ```bash
 MicroFisher preset --help
 ```
 
-#### Different preset databases
-- `IST+LSU`: Search against four databases: ITS1, IST2, LSU_D1, and LSU_D2.
-- `IST`: ITS1 and IST2
-- `LSU`: LSU_D1 and LSU_D2
+#### Different preset databases in "--preset_db"
+- `ITS+LSU`: Search against four databases: ITS1, IST2, LSU_D1, and LSU_D2.
+- `ITS`: Search against four databases: ITS1 and IST2
+- `LSU`: Search against four databases: LSU_D1 and LSU_D2
+For Metagenomic sequencing datasets, use "ITS+LSU"; for Metatranscriptomic datasets, use "LSU".
 
 #### Examples
-- Basic example
+- Basic example: the MicroFisher will run in default settings
     ```bash
     MicroFisher preset --preset_db ITS+LSU \
     --db_path default_db \
@@ -84,7 +105,7 @@ MicroFisher preset --help
     --out_dir merged_results
     ```
 
-- Full configuration
+- Full configuration: modify the parameters of MicroFisher 
     ```bash
     MicroFisher preset --preset_db ITS+LSU --verbose \
     --db_path default_db \
@@ -96,19 +117,19 @@ MicroFisher preset --help
     --threads 4
     ```
 
-    Explanation for the full configuration
+ - Explanation for the full configuration
     ```bash
     MicroFisher preset --preset_db ITS+LSU --verbose \  # The selected databases used for the job (Metagenomic data: ITS+LSU; Metatranscriptomic data: LSU)
     --db_path $PATH_TO_DATABASE \  # Path to the DATABASE of MicroFisher
     --min 120 \  # Minimum matching length (Default: 120).
     --workspace example \  # Path to the work folder (output the searching result)
-    --paired example_R1.fastq.gz example_R2.fastq.gz \  # Path to fastq file(s) (using --single if the data is single end reads)
+    --paired example_R1.fastq.gz example_R2.fastq.gz \  # Path to .fastq file(s) (using --single if the data is single end reads)
     --out_dir merged_result_folder \  # Path to folder output the results files
     --out_prefix results_prefix \  # Prefix of the result output files
     --threads 4 #Number of threads
     ```
 
-- Customized the path for `centrifuge`
+- Customized the path for `centrifuge`: when the package "Centrifuge" was manually installed.
     ```bash
     # e.g.
     # FULL_PATH_TO_CENTRIFUGE="/home/user/software/centrifuge/
@@ -116,24 +137,18 @@ MicroFisher preset --help
     --db_path default_db \
     --centrifuge_path $FULL_PATH_TO_CENTRIFUGE \
     --workspace example \
-    --paired example_R1.fastq.gz example_R2.fastq.gz
+    --paired example_R1.fastq.gz example_R2.fastq.gz \
     --out_dir merged_results
     ```
 
-
-### Search taxonomy with centrifuge
+  
+ 
+ 
+### (2) Performing the fungal community classification in two steps using "--search" and "--combine"
+#### Step 1: Alignment: Align the qualified reads of metagenomic and metagenomic to marker databases (Search fungal taxa with centrifuge).
 ```bash
 MicroFisher search --help
 ```
-
-#### Arguments
-- `--prefix`: One prefix for two paired-end files.
-- `--paired`: Two paired-end files.
-- `--single`: One single-end file.
-- `--preset_db`: Which centrifuge database to search against.
-- `--min`: Minimum matching length.
-
-
 #### Examples
 ```bash
 MicroFisher search -v
@@ -142,14 +157,48 @@ MicroFisher search -v
   --prefix example \
   --min 120 \
 ```
+#### Arguments
+- `--prefix`: One prefix for two paired-end files.
+- `--paired`: Two paired-end files.
+- `--single`: One single-end file.
+- `--preset_db`: Which centrifuge database to search against.
+- `--min`: Minimum matching length.
 
 
-
-### Combine reports from multiple databases
+  
+#### Step2: Integration and Optimization: Integrate abundance reports using weight-based algorithms (Combine reports from Results using multiple databases).
 ```bash
 MicroFisher combine --help
 ```
+#### Examples
+Note: `--combine` argument list multiple result files. Users might need to change these filenames.
+- `boolean` mode.
+    ```bash
+    MicroFisher combine -v \
+    --workspace example \
+    --combine result_*_dbITS1_report.tsv result_*_dbITS2_report.tsv result_*_dbLSU_D1_report.tsv result_*_dbLSU_D2_report.tsv \
+    --mode boolean --min_overlap 3
+    ```
 
+- `raw` mode with custom output folder
+    ```bash
+    MicroFisher combine \
+    --combine result_*_dbITS1_report.tsv result_*_dbITS2_report.tsv \
+    --mode raw --out_dir custom_output
+    ```
+- `weighted` mode with custom filter
+    ```bash
+    MicroFisher combine \
+    --combine result_*_dbLSU_D1_report.tsv result_*_dbLSU_D2_report.tsv \
+    --mode weighted --filter 1e-8
+    ```
+
+- `weighted` mode with custom length
+    ```bash
+    MicroFisher combine \
+    --combine report_1.tsv report_2.tsv report_3.tsv \
+    --mode weighted --cent_length 90 100 110
+    ```
 
 #### Arguments
 - `--combine`: List of results files to combine.
@@ -170,37 +219,13 @@ MicroFisher combine --help
 - `weighted_centlength_only`: normalised by the total number of reads and minimum length used in centrifuge (--cent_length) (testing-only).
 -->
 
+ 
 
-#### Examples
-Note: `--combine` argument list multiple result files. Users might need to change these filenames.
-- `boolean` mode.
-    ```bash
-    MicroFisher combine -v \
-    --workspace example \
-    --combine result_*_dbITS1_report.tsv result_*_dbITS2_report.tsv result_*_dbLSU_D1_report.tsv result_*_dbLSU_D2_report.tsv \
-    --mode boolean --min_overlap 3
-    ```
+ 
 
-- `raw` mode with custom output folder
-    ```bash
-    MicroFisher combine \
-    --combine result_*_dbITS1_report.tsv result_*_dbITS2_report.tsv \
-    --mode raw --out_dir custom_output
-    ```
+ 
+ 
 
-- `weighted` mode with custom filter
-    ```bash
-    MicroFisher combine \
-    --combine result_*_dbLSU_D1_report.tsv result_*_dbLSU_D2_report.tsv \
-    --mode weighted --filter 1e-8
-    ```
-
-- `weighted` mode with custom length
-    ```bash
-    MicroFisher combine \
-    --combine report_1.tsv report_2.tsv report_3.tsv \
-    --mode weighted --cent_length 90 100 110
-    ```
 
 
 ### Test
@@ -210,11 +235,11 @@ pytest
 ```
 
 ## Database generation
-The `database_generation` contains scripts for curating customised database for MicroFisher.
+The `database_generation` contains scripts for curating customized databases for MicroFisher.
 
 
 ## Manuscript
 The `manuscript` folder contains source codes used to perform analyses and validation for the manuscript.
 
-Wang H., S. Wu, K. Zhang, K. Chen, R. Vilgalys, H. Liao. MicroFisher: Fungal taxonomic classification for metatranscriptomic and metagenomic data using multiple short hypervariable markers.
+Citation: Wang H., S. Wu, K. Zhang, K. Chen, R. Vilgalys, H. Liao. MicroFisher: Fungal taxonomic classification for metatranscriptomic and metagenomic data using multiple short hypervariable markers.
 
