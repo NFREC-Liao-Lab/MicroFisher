@@ -67,7 +67,7 @@ pip3 install .
     ```
 
 ## Usage
-### Initialize centrifuge database
+### Initialize MicroFisher database
 To get started with MicroFisher, you will have to get the database files on your system, database files are available [online](https://figshare.com/articles/dataset/MicroFisher_DBs/19679595), and you can download prebuilt database files using the code below.
 
 Fetch the prebuilt database and store it in a custom folder `$PATH_TO_NEW_DATABASE_FOLDER`
