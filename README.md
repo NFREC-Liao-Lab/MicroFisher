@@ -16,8 +16,9 @@ The MicroFisher pipeline compiled databases of hypervariable regions within fung
 
 ### MicroFisher pipeline and algorithms
 MicroFisher employs multiple hypervariable marker databases (including ITS1, ITS2, LSU D1, and LSU D2) to analyze the taxonomic composition of fungal communities from metagenomics and metatranscriptomic sequence data to classify fungal composition and estimate taxa abundance from metagenomic and metatranscriptomic sequencing (Figs. 1B and 1C). The first step of the MicroFisher pipeline is to map reads to several marker databases HMDs and generate corresponding abundance reports using Centrifuge. A weight-based algorithm is further employed to optimize and integrate those Centrifuge reports into a final abundance table of detected taxa. The weight-based integration algorithm takes into account the total number of mapped reads, MiniHit length, and average sequence length of the mapped data. Thus, the weight-based integration algorithm effectively reduces mismatches (false positives), and the combination of multiple marker databases HMDs reduces the chance of missing taxa (false negatives). 
-![microfisher_pipeline](https://github.com/user-attachments/assets/809870a5-b9aa-436a-b375-e6a4a5f11152)
-Fig. 1 Overview of hypervariable marker database generation and the principle of MicroFisher classification.
+
+![image](https://github.com/user-attachments/assets/b065c2c4-2a7f-48f7-bc66-47cb6cefdc32)
+Fig.1 Overview of hypervariable marker database generation and the principle of MicroFisher classification.
 
 
 
