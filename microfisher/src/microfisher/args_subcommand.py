@@ -17,7 +17,7 @@ def init_db(args):
                   f"Prebuild database available at: {args.db_loc}\n")
 
 def parse_output_dir(args):
-    args.workspace = os.path.realpath(args.workspace)
+    # args.workspace = os.path.realpath(args.workspace)
     try:
         if args.out_dir != os.path.realpath(args.out_dir):
             args.out_dir = os.path.join(os.path.realpath(args.workspace), args.out_dir)
@@ -30,7 +30,7 @@ def parse_output_dir(args):
 
 def search_db(args):
     # print('((%s))' % args.search)
-    parse_output_dir(args)
+    args = parse_output_dir(args)
     config = Config(args)
     centrifuge = Centrifuge(config)
     cent_kreport = CentrifugeKReport(config)
@@ -47,7 +47,7 @@ def search_db(args):
 
 def combine_reports(args):
     if not args.dry:
-        parse_output_dir(args)
+        args = parse_output_dir(args)
         is_complete = run_merge_reports.run(args)
         if is_complete:
             print("==DEBUG== subcommand combine completed.\t"

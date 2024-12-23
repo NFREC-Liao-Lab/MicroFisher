@@ -1,7 +1,7 @@
 
 import os
 from unittest.mock import patch, MagicMock
-from src.microfisher.microfisher import parse_output_dir
+from src.microfisher.args_subcommand import parse_output_dir
 
 
 def test_parse_output_dir_abs_output():

@@ -2,7 +2,7 @@ import argparse
 import pytest
 import tempfile
 from src.microfisher.configuration import Config
-from src.microfisher import microfisher
+from src.microfisher import args_subcommand
 
 
 @pytest.fixture
@@ -14,7 +14,7 @@ def setup_args():
                         out_dir="merged_results",
                         centrifuge_path="cpath", db_path="db", db="dbName")
     args = parser.parse_args([])
-    args = microfisher.parse_output_dir(args)
+    args = args_subcommand.parse_output_dir(args)
     return args
 
 

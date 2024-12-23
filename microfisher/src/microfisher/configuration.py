@@ -1,6 +1,7 @@
 # from ast import arg
 from pathlib import Path
 import os
+import sys
 
 
 class Config:
@@ -14,6 +15,7 @@ class Config:
             self.min_len = 0
 
         self.centrifuge_path = os.path.expanduser(args.centrifuge_path)
+
         self.workspace = os.path.expanduser(args.workspace)
         self.out_dir = args.out_dir
 
