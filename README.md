@@ -180,6 +180,7 @@ MicroFisher search -v
 MicroFisher search -v
   --db_path  $PATH_TO_DATABASE_FOLDER --db LSU_D2
   --workspace $PATH_TO_WORKSAPCE_FOLDER \
+  --paired $PATH_TO_INPUT_FILE_FOLDER/example_R1.fastq.gz $PATH_TO_INPUT_FILE_FOLDER/example_R2.fastq.gz \
   --prefix OUTPUT_FILE_NAME \
   --min 120 \
 ```
