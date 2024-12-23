@@ -119,11 +119,12 @@ For Metagenomic sequencing datasets, use "ITS+LSU"; for Metatranscriptomic datas
     ```
 
  - Explanation for the full configuration
+ - (The input .fastq files should be in the --worksapce folder)
     ```bash
     MicroFisher preset --preset_db ITS+LSU --verbose \  # The selected databases used for the job (Metagenomic data: ITS+LSU; Metatranscriptomic data: LSU)
     --db_path $PATH_TO_DATABASE \  # Path to the DATABASE of MicroFisher
     --min 120 \  # Minimum matching length (Default: 120).
-    --workspace example \  # Path to the work folder (output the searching result)
+    --workspace example \  # Path to the work folder (The folder contains input files and output the temporal searching result)
     --paired example_R1.fastq.gz example_R2.fastq.gz \  # Path to .fastq file(s) (using --single if the data is single end reads)
     --out_dir merged_result_folder \  # Path to folder output the results files
     --out_prefix results_prefix \  # Prefix of the result output files
