@@ -119,17 +119,6 @@ def add_args_group_alg(p_combine):
     return group_algorithm
 
 
-def parse_output_dir(args):
-    if args.out_dir != os.path.realpath(args.out_dir):
-        args.out_dir = os.path.join(args.workspace, args.out_dir)
-    try:
-        os.makedirs(args.out_dir)
-    except FileExistsError:
-        pass
-    except PermissionError:
-        print(f"==Error== Permission denied to create output directory: {args.out_dir}")
-        sys.exit(-1)
-    return args
 
 
 def main():
@@ -186,7 +175,6 @@ def main():
     p_full.set_defaults(func=args_subcommand.preset_algorithm)
 
     args = parser.parse_args()
-    args = parse_output_dir(args)
 
     if args.subcommand is None:
         parser.print_help()
