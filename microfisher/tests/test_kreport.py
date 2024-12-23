@@ -9,7 +9,7 @@ def test_kreport(config):
     config.centrifuge_output_files()
     kreport = CentrifugeKReport(config)
     commands = ("cpath/centrifuge-kreport "
-                "-x cpath/db/dbName workspace/merged_results/result_example_min100_dbdbName_report.tsv"
+                "-x cpath/db/dbName /workspace/merged_results/result_example_min100_dbdbName_report.tsv"
                 )
     expected = shlex.split(commands)
     assert kreport.command_list == expected
