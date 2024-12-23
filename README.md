@@ -56,7 +56,7 @@ pip3 install .
     ```bash
     cd MicroFisher/microfisher
     ```
-1. Initialize the database. The prebuild database is available at the `default_db` folder.
+1. Initialize the database. The prebuild database is available at the `$MicroFisher/microfisher/default_db` folder.
     ```bash
     MicroFisher init_db
     ```
@@ -74,7 +74,7 @@ To get started with MicroFisher, you will have to get the database files on your
 Fetch the prebuilt database and store it in a custom folder `$PATH_TO_NEW_DATABASE_FOLDER`
 ```bash
 MicroFisher init_db --help
-MicroFisher init_db --db_loc $PATH_TO_NEW_DATABASE_FOLDER
+MicroFisher init_db --db_loc $PATH_TO_DATABASE_FOLDER
 ```
 #### Arguments
 `--db_loc`: Custom location/folder for the prebuilt MicroFisher databases.
@@ -97,37 +97,50 @@ MicroFisher preset --help
 For Metagenomic sequencing datasets, use "ITS+LSU"; for Metatranscriptomic datasets, use "LSU".
 
 #### Examples
+- Run with the test samples
+   ```bash
+   cd MicroFisher/microfisher
+   MicroFisher preset --preset_db ITS+LSU --verbose \
+   --db_path default_db \
+   --min 120 \
+   --workspace example \
+   --paired example_R1.fastq.gz example_R2.fastq.gz \
+   --out_dir merged_result_folder \
+   --out_prefix results_prefix \
+   --threads 4
+   ```
+
 - Basic example: the MicroFisher will run in default settings
     ```bash
     MicroFisher preset --preset_db ITS+LSU \
-    --db_path default_db \
-    --workspace example \
-    --prefix example \
-    --out_dir merged_results
+    --db_path $PATH_TO_DATABASE_FOLDER \
+    --workspace $PATH_TO_WORKSAPCE_FOLDER \
+    --paired $PATH_TO_INPUT_FILE_FOLDER/example_R1.fastq.gz $PATH_TO_INPUT_FILE_FOLDER/example_R2.fastq.gz \
+    --out_dir $PATH_TO_OUTPUT_FILE_FOLDER \
+    --prefix OUTPUT_FILE_NAME    
     ```
 
 - Full configuration: modify the parameters of MicroFisher 
     ```bash
     MicroFisher preset --preset_db ITS+LSU --verbose \
-    --db_path default_db \
+    --db_path $PATH_TO_DATABASE_FOLDER \
     --min 120 \
-    --workspace example \
-    --paired example_R1.fastq.gz example_R2.fastq.gz \
-    --out_dir merged_result_folder \
-    --out_prefix results_prefix \
+    --workspace $PATH_TO_WORKSAPCE_FOLDER \
+    --paired $PATH_TO_INPUT_FILE_FOLDER/example_R1.fastq.gz $PATH_TO_INPUT_FILE_FOLDER/example_R2.fastq.gz \
+    --out_dir $PATH_TO_OUTPUT_FILE_FOLDER \
+    --out_prefix OUTPUT_FILE_NAME \
     --threads 4
     ```
 
  - Explanation for the full configuration
- - (The input .fastq files should be in the --worksapce folder)
     ```bash
     MicroFisher preset --preset_db ITS+LSU --verbose \  # The selected databases used for the job (Metagenomic data: ITS+LSU; Metatranscriptomic data: LSU)
-    --db_path $PATH_TO_DATABASE \  # Path to the DATABASE of MicroFisher
+    --db_path $PATH_TO_DATABASE_FOLDER \  # Path to the DATABASE of MicroFisher
     --min 120 \  # Minimum matching length (Default: 120).
-    --workspace example \  # Path to the work folder (The folder contains input files and output the temporal searching result)
-    --paired example_R1.fastq.gz example_R2.fastq.gz \  # Path to .fastq file(s) (using --single if the data is single end reads)
-    --out_dir merged_result_folder \  # Path to folder output the results files
-    --out_prefix results_prefix \  # Prefix of the result output files
+    --workspace $PATH_TO_WORKSAPCE_FOLDER \  # Path to the work folder (The folder contains input files and output the temporal searching result)
+    --paired $PATH_TO_INPUT_FILE_FOLDER/example_R1.fastq.gz $PATH_TO_INPUT_FILE_FOLDER/example_R2.fastq.gz \  # Path to .fastq file(s) (using --single if the data is single end reads)
+    --out_dir $PATH_TO_OUTPUT_FILE_FOLDER \  # Path to folder output the results files
+    --out_prefix OUTPUT_FILE_NAME \  # Prefix of the result output files
     --threads 4 #Number of threads
     ```
 
@@ -136,11 +149,12 @@ For Metagenomic sequencing datasets, use "ITS+LSU"; for Metatranscriptomic datas
     # e.g.
     # FULL_PATH_TO_CENTRIFUGE="/home/user/software/centrifuge/
     MicroFisher preset --preset_db ITS+LSU \
-    --db_path default_db \
+    --db_path $PATH_TO_DATABASE_FOLDER \
     --centrifuge_path $FULL_PATH_TO_CENTRIFUGE \
-    --workspace example \
-    --paired example_R1.fastq.gz example_R2.fastq.gz \
-    --out_dir merged_results
+    --workspace $PATH_TO_WORKSAPCE_FOLDER \
+    --paired $PATH_TO_INPUT_FILE_FOLDER/example_R1.fastq.gz $PATH_TO_INPUT_FILE_FOLDER/example_R2.fastq.gz \
+    --out_dir $PATH_TO_OUTPUT_FILE_FOLDER \
+    --out_prefix OUTPUT_FILE_NAME
     ```
 
   
@@ -151,12 +165,23 @@ For Metagenomic sequencing datasets, use "ITS+LSU"; for Metatranscriptomic datas
 ```bash
 MicroFisher search --help
 ```
-#### Examples
+
+- Example using test files
 ```bash
+cd MicroFisher/microfisher
 MicroFisher search -v
   --db_path default_db --db LSU_D2
   --workspace example \
   --prefix example \
+  --min 120 \
+```
+- Full configuration: modify the parameters of MicroFisher 
+```bash
+MicroFisher search -v
+  --db_path  $PATH_TO_DATABASE_FOLDER --db LSU_D2
+  --workspace $PATH_TO_WORKSAPCE_FOLDER \
+  --paired $PATH_TO_INPUT_FILE_FOLDER/example_R1.fastq.gz $PATH_TO_INPUT_FILE_FOLDER/example_R2.fastq.gz \
+  --prefix OUTPUT_FILE_NAME \
   --min 120 \
 ```
 #### Arguments
@@ -172,8 +197,24 @@ MicroFisher search -v
 ```bash
 MicroFisher combine --help
 ```
-#### Examples
+
+- Example using test files
+```bash
+  MicroFisher combine -v \
+    --workspace example \
+    --combine result_*_dbITS1_report.tsv result_*_dbITS2_report.tsv result_*_dbLSU_D1_report.tsv result_*_dbLSU_D2_report.tsv \
+    --mode weighted --min_overlap 3
+```
+
+- Full configuration: modify the parameters of MicroFisher 
 Note: `--combine` argument list multiple result files. Users might need to change these filenames.
+- `weighted` mode with custom filter
+    ```bash
+    MicroFisher combine \
+    --combine result_*_dbLSU_D1_report.tsv result_*_dbLSU_D2_report.tsv \
+    --mode weighted --filter 1e-8
+    ```
+    
 - `boolean` mode.
     ```bash
     MicroFisher combine -v \
@@ -188,12 +229,7 @@ Note: `--combine` argument list multiple result files. Users might need to chang
     --combine result_*_dbITS1_report.tsv result_*_dbITS2_report.tsv \
     --mode raw --out_dir custom_output
     ```
-- `weighted` mode with custom filter
-    ```bash
-    MicroFisher combine \
-    --combine result_*_dbLSU_D1_report.tsv result_*_dbLSU_D2_report.tsv \
-    --mode weighted --filter 1e-8
-    ```
+
 
 - `weighted` mode with custom length
     ```bash
