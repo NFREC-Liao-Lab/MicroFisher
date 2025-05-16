@@ -279,5 +279,5 @@ The `database_generation` contains scripts for curating customized databases for
 ## Manuscript
 The `manuscript` folder contains source codes used to perform analyses and validation for the manuscript.
 
-Citation: Wang H., S. Wu, K. Zhang, K. Chen, R. Vilgalys, H. Liao. MicroFisher: Fungal taxonomic classification for metatranscriptomic and metagenomic data using multiple short hypervariable markers.
+Citation: Wang, H., Wu, S., Zhang, K., Chen, K. H., Vilgalys, R., & Liao, H. L. (2024). MicroFisher: Fungal taxonomic classification for metatranscriptomic and metagenomic data using multiple short hypervariable markers. bioRxiv, 2024-01.
 
