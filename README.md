@@ -138,7 +138,7 @@ For Metagenomic sequencing datasets, use "ITS+LSU"; for Metatranscriptomic datas
     --db_path $PATH_TO_DATABASE_FOLDER \  # Path to the DATABASE of MicroFisher
     --min 120 \  # Minimum matching length (Default: 120).
     --workspace $PATH_TO_WORKSAPCE_FOLDER \  # Path to the work folder (The folder contains input files and output the temporal searching result)
-    --paired example_R1.fastq.gz example_R2.fastq.gz \  # Path to .fastq file(s) (using --single if the data is single end reads)
+    --paired example_R1.fastq.gz example_R2.fastq.gz \  # Input .fastq file(s) (using --single if the data is single end reads)
     --out_dir $PATH_TO_OUTPUT_FILE_FOLDER \  # Path to folder output the results files
     --out_prefix OUTPUT_FILE_NAME \  # Prefix of the result output files
     --threads 4 #Number of threads
