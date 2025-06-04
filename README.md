@@ -115,7 +115,7 @@ For Metagenomic sequencing datasets, use "ITS+LSU"; for Metatranscriptomic datas
     MicroFisher preset --preset_db ITS+LSU \
     --db_path $PATH_TO_DATABASE_FOLDER \
     --workspace $PATH_TO_WORKSAPCE_FOLDER \
-    --paired $PATH_TO_INPUT_FILE_FOLDER/example_R1.fastq.gz $PATH_TO_INPUT_FILE_FOLDER/example_R2.fastq.gz \
+    --paired example_R1.fastq.gz example_R2.fastq.gz \
     --out_dir $PATH_TO_OUTPUT_FILE_FOLDER \
     --prefix OUTPUT_FILE_NAME    
     ```
@@ -126,7 +126,7 @@ For Metagenomic sequencing datasets, use "ITS+LSU"; for Metatranscriptomic datas
     --db_path $PATH_TO_DATABASE_FOLDER \
     --min 120 \
     --workspace $PATH_TO_WORKSAPCE_FOLDER \
-    --paired $PATH_TO_INPUT_FILE_FOLDER/example_R1.fastq.gz $PATH_TO_INPUT_FILE_FOLDER/example_R2.fastq.gz \
+    --paired example_R1.fastq.gz example_R2.fastq.gz \
     --out_dir $PATH_TO_OUTPUT_FILE_FOLDER \
     --out_prefix OUTPUT_FILE_NAME \
     --threads 4
@@ -138,7 +138,7 @@ For Metagenomic sequencing datasets, use "ITS+LSU"; for Metatranscriptomic datas
     --db_path $PATH_TO_DATABASE_FOLDER \  # Path to the DATABASE of MicroFisher
     --min 120 \  # Minimum matching length (Default: 120).
     --workspace $PATH_TO_WORKSAPCE_FOLDER \  # Path to the work folder (The folder contains input files and output the temporal searching result)
-    --paired $PATH_TO_INPUT_FILE_FOLDER/example_R1.fastq.gz $PATH_TO_INPUT_FILE_FOLDER/example_R2.fastq.gz \  # Path to .fastq file(s) (using --single if the data is single end reads)
+    --paired example_R1.fastq.gz example_R2.fastq.gz \  # Path to .fastq file(s) (using --single if the data is single end reads)
     --out_dir $PATH_TO_OUTPUT_FILE_FOLDER \  # Path to folder output the results files
     --out_prefix OUTPUT_FILE_NAME \  # Prefix of the result output files
     --threads 4 #Number of threads
@@ -152,7 +152,7 @@ For Metagenomic sequencing datasets, use "ITS+LSU"; for Metatranscriptomic datas
     --db_path $PATH_TO_DATABASE_FOLDER \
     --centrifuge_path $FULL_PATH_TO_CENTRIFUGE \
     --workspace $PATH_TO_WORKSAPCE_FOLDER \
-    --paired $PATH_TO_INPUT_FILE_FOLDER/example_R1.fastq.gz $PATH_TO_INPUT_FILE_FOLDER/example_R2.fastq.gz \
+    --paired example_R1.fastq.gz example_R2.fastq.gz \
     --out_dir $PATH_TO_OUTPUT_FILE_FOLDER \
     --out_prefix OUTPUT_FILE_NAME
     ```
@@ -180,7 +180,7 @@ MicroFisher search -v
 MicroFisher search -v
   --db_path  $PATH_TO_DATABASE_FOLDER --db LSU_D2
   --workspace $PATH_TO_WORKSAPCE_FOLDER \
-  --paired $PATH_TO_INPUT_FILE_FOLDER/example_R1.fastq.gz $PATH_TO_INPUT_FILE_FOLDER/example_R2.fastq.gz \
+  --paired example_R1.fastq.gz example_R2.fastq.gz \
   --prefix OUTPUT_FILE_NAME \
   --min 120 \
 ```
