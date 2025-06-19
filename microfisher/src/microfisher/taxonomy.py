@@ -11,6 +11,12 @@ def get_desired_taxa_ranks(taxid, desired_ranks=None):
 
     if desired_ranks is None:
         desired_ranks = FULL_RANKS
+            
+    try:
+        lineage = ncbi.get_lineage(taxid)
+    except ValueError:
+        # Skip silently if taxid not found
+        return {}
     # match = re.match(PATTERN_Genus_species, desc)
     # if match:
     #     tax_g_s = f"{match.group(1)} {match.group(2)}"
