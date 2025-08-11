@@ -98,7 +98,7 @@ for replicate in 1 2 3 4 5 6 7 8 9 10; do
                        --draft $genomes \
                        --model novaseq \
                        --abundance exponential \
-                       --n_reads 10000M \
+                       --n_reads 2000M \
                        --output $result_dir/simulating_${species_num}species_${replicate}.short_read
 
 done
