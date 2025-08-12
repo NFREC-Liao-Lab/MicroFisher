@@ -43,15 +43,21 @@ do
      cp $genome_file $target_folder/${genus}_${species}_AssemblyScaffolds.fasta.gz
      gunzip $target_folder/${genus}_${species}_AssemblyScaffolds.fasta.gz
 
-     cat ITS_RefSeq_Fungi.fa  |seqkit seq -w 0 -g -u |grep -A 1 "${taxa}" > $target_folder/${genus}_${species}_RefSeq_ITS.fasta
-     for i in {1..2000}; do cat $target_folder/${genus}_${species}_RefSeq_ITS.fasta; done > $target_folder/${genus}_${species}_RefSeq_ITS_500x.fasta
-     awk 'BEGIN{RS=">"; ORS=""} NR==1 {print ">"$0; next} {seq=""; n=split($0,a,"\n"); for(i=2;i<=n;i++) seq=seq a[i] "\n"; if(!seen[seq]++){print ">"$0} else {print seq}}' $target_folder/${genus}_${species}_RefSeq_ITS_500x.fasta > $target_folder/${genus}_${species}_RefSeq_ITS_500x_1.fasta
+     cat ITS_RefSeq_Fungi.fa  |seqkit seq -w 0 -g -u |grep -A 1 "${taxa}" |tail -n 1 > $target_folder/${genus}_${species}_RefSeq_ITS_sequence.fasta
+     cat ITS_RefSeq_Fungi.fa  |seqkit seq -w 0 -g -u |grep "${taxa}" > $target_folder/${genus}_${species}_RefSeq_ITS.fasta
+     for i in {1..12}; do cat $target_folder/${genus}_${species}_RefSeq_ITS_sequence.fasta >> $target_folder/${genus}_${species}_RefSeq_ITS_sequence_1000X.fasta; rm -f $target_folder/${genus}_${species}_RefSeq_ITS_sequence.fasta ; cp $target_folder/${genus}_${species}_RefSeq_ITS_sequence_1000X.fasta $target_folder/${genus}_${species}_RefSeq_ITS_sequence.fasta;  done
+      sed -i ':a;N;$!ba;s/\n//g' $target_folder/${genus}_${species}_RefSeq_ITS_sequence_1000X.fasta
+     cat $target_folder/${genus}_${species}_RefSeq_ITS_sequence_1000X.fasta >> $target_folder/${genus}_${species}_RefSeq_ITS.fasta 
 
-     cat 28S_fungal_sequences.fa  |seqkit seq -w 0 -g -u |grep -A 1 "${taxa}" > $target_folder/${genus}_${species}_RefSeq_28S.fasta
-     for i in {1..2000}; do cat $target_folder/${genus}_${species}_RefSeq_28S.fasta; done > $target_folder/${genus}_${species}_RefSeq_28S_500x.fasta
-     awk 'BEGIN{RS=">"; ORS=""} NR==1 {print ">"$0; next} {seq=""; n=split($0,a,"\n"); for(i=2;i<=n;i++) seq=seq a[i] "\n"; if(!seen[seq]++){print ">"$0} else {print seq}}' $target_folder/${genus}_${species}_RefSeq_28S_500x.fasta > $target_folder/${genus}_${species}_RefSeq_28S_500x_1.fasta
 
-     cat $target_folder/${genus}_${species}_AssemblyScaffolds.fasta  $target_folder/${genus}_${species}_RefSeq_ITS_500x_1.fasta $target_folder/${genus}_${species}_RefSeq_28S_500x_1.fasta > $target_folder/${genus}_${species}_genome_combined.fasta
+     cat 28S_fungal_sequences.fa  |seqkit seq -w 0 -g -u |grep -A 1 "${taxa}" |tail -n 1 > $target_folder/${genus}_${species}_RefSeq_28S_sequence.fasta
+     cat 28S_fungal_sequences.fa  |seqkit seq -w 0 -g -u |grep  "${taxa}" > $target_folder/${genus}_${species}_RefSeq_28S.fasta
+     for i in {1..12}; do cat $target_folder/${genus}_${species}_RefSeq_28S_sequence.fasta >> $target_folder/${genus}_${species}_RefSeq_28S_sequence_1000X.fasta; rm -f $target_folder/${genus}_${species}_RefSeq_28S_sequence.fasta; cp $target_folder/${genus}_${species}_RefSeq_28S_sequence_1000X.fasta  $target_folder/${genus}_${species}_RefSeq_28S_sequence.fasta; done 
+     sed -i ':a;N;$!ba;s/\n//g' $target_folder/${genus}_${species}_RefSeq_28S_sequence_1000X.fasta
+     cat $target_folder/${genus}_${species}_RefSeq_28S_sequence_1000X.fasta >> $target_folder/${genus}_${species}_RefSeq_28S.fasta
+
+    
+     cat $target_folder/${genus}_${species}_AssemblyScaffolds.fasta  $target_folder/${genus}_${species}_RefSeq_ITS.fasta  $target_folder/${genus}_${species}_RefSeq_28S.fasta > $target_folder/${genus}_${species}_genome_combined.fasta
      
      #rename the seq
      filename=${genus}_${species}_genome_combined
@@ -60,6 +66,11 @@ do
     /^>/ {print ">" fn "_" count++; next}
     {print}
     ' $target_folder/${genus}_${species}_genome_combined.fasta > $target_folder/${genus}_${species}_genome_combined_renamed.fasta
+
+    rm -f $target_folder/${genus}_${species}_RefSeq_ITS_sequence.fasta  $target_folder/${genus}_${species}_RefSeq_ITS.fasta $target_folder/${genus}_${species}_RefSeq_ITS_sequence_1000X.fasta
+    rm -f $target_folder/${genus}_${species}_RefSeq_28S_sequence.fasta  $target_folder/${genus}_${species}_RefSeq_28S.fasta   $target_folder/${genus}_${species}_RefSeq_28S_sequence_1000X.fasta
+    rm -f $target_folder/${genus}_${species}_AssemblyScaffolds.fasta.gz $target_folder/${genus}_${species}_AssemblyScaffolds.fasta  $target_folder/${genus}_${species}_genome_combined.fasta
+    
 
 
      echo $line >> 28S_ITS_jgiGenome_common_species_update
@@ -98,7 +109,7 @@ for replicate in 1 2 3 4 5 6 7 8 9 10; do
                        --draft $genomes \
                        --model novaseq \
                        --abundance exponential \
-                       --n_reads 2000M \
+                       --n_reads 1000M \
                        --output $result_dir/simulating_${species_num}species_${replicate}.short_read
 
 done
